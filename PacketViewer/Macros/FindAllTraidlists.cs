@@ -24,9 +24,9 @@ namespace PacketViewer.Macros
         {
             Dictionary<int, Dictionary<int, List<int>>> npcTraidList = new Dictionary<int, Dictionary<int, List<int>>>();
 
-            short spTradeListOpcode = Packet.GetPacketOpcode(MainWindow, "SpTradeList");
-            short rpShowDialog = Packet.GetPacketOpcode(MainWindow, "RpShowDialog", false);
-            short spNpcInfo = Packet.GetPacketOpcode(MainWindow, "SpNpcInfo");
+            ushort spTradeListOpcode = Packet.GetPacketOpcode(MainWindow, "SpTradeList");
+            ushort rpShowDialog = Packet.GetPacketOpcode(MainWindow, "RpShowDialog", false);
+            ushort spNpcInfo = Packet.GetPacketOpcode(MainWindow, "SpNpcInfo");
 
             long lastDialogUid = 0;
 

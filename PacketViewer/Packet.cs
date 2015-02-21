@@ -9,22 +9,22 @@ namespace PacketViewer
 {
     public class Packet
     {
-        public static Dictionary<short, string> ServerPacketNames = new Dictionary<short, string>();
-        public static Dictionary<short, string> ClientPacketNames = new Dictionary<short, string>();
+        public static Dictionary<ushort, string> ServerPacketNames = new Dictionary<ushort, string>();
+        public static Dictionary<ushort, string> ClientPacketNames = new Dictionary<ushort, string>();
 
         public static void Init()
         {
             OpCodes.Init();
 
-            foreach (KeyValuePair<Type, short> keyValuePair in OpCodes.Send)
-                ServerPacketNames.Add(keyValuePair.Value, keyValuePair.Key.Name);
+            foreach (KeyValuePair<ushort, string> keyValuePair in OpCodes.Send)
+                ServerPacketNames.Add(keyValuePair.Key, keyValuePair.Value);
 
-            foreach (KeyValuePair<short, Type> keyValuePair in OpCodes.Recv)
-                ClientPacketNames.Add(keyValuePair.Key, keyValuePair.Value.Name);
+            foreach (KeyValuePair<ushort, string> keyValuePair in OpCodes.Recv)
+                ClientPacketNames.Add(keyValuePair.Key, keyValuePair.Value);
         }
 
         public bool IsServer { get; set; }
-        public short OpCode { get; set; }
+        public ushort OpCode { get; set; }
         public byte[] Data { get; set; }
 
         public string Name { get; set; }
@@ -32,7 +32,7 @@ namespace PacketViewer
         public string Hex { get; set; }
         public string Text { get; set; }
 
-        public Packet(bool isServer, short opCode, byte[] data)
+        public Packet(bool isServer, ushort opCode, byte[] data)
         {
             IsServer = isServer;
             OpCode = opCode;
@@ -58,9 +58,9 @@ namespace PacketViewer
             Text = "0x" + Hex.Substring(2, 2) + Hex.Substring(0, 2) + "\n\n" + Data.FormatHex();
         }
 
-        public static short GetPacketOpcode(MainWindow window, string name, bool isServer = true)
+        public static ushort GetPacketOpcode(MainWindow window, string name, bool isServer = true)
         {
-            short opCode =
+            ushort opCode =
                 (from val in isServer ? ServerPacketNames : ClientPacketNames
                  where val.Value.Equals(name)
                  select val.Key).FirstOrDefault();
@@ -75,7 +75,7 @@ namespace PacketViewer
                         if (inputBox.Show() == false)
                             return 0;
 
-                        opCode = BitConverter.ToInt16(inputBox.Result.ToBytes(), 0);
+                        opCode = BitConverter.ToUInt16(inputBox.Result.ToBytes(), 0);
                         break;
                     }
                     // ReSharper disable EmptyGeneralCatchClause

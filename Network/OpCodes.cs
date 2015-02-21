@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Network.Client;
-using Network.Server;
 
 namespace Network
 {
     public class OpCodes
     {
-        public static Dictionary<short, Type> Recv = new Dictionary<short, Type>();
-        public static Dictionary<Type, short> Send = new Dictionary<Type, short>();
+        public static Dictionary<ushort, String> Recv = new Dictionary<ushort, String>();
+        public static Dictionary<ushort, String> Send = new Dictionary<ushort, String>();
 
         public static Dictionary<short, string> SendNames = new Dictionary<short, string>();
 
@@ -19,333 +17,424 @@ namespace Network
         {
             #region Client packets
 
-            // ReSharper disable RedundantCast
-            Recv.Add(unchecked((short) 0x4DBC), typeof (RpCheckVersion)); //all revs
-            Recv.Add(unchecked((short) 0xC644), typeof (RpAuth)); //1725 EU
-            Recv.Add(unchecked((short) 0x6CE4), typeof (RpSystemInfo)); //1725 EU
-            Recv.Add(unchecked((short) 0x8844), typeof (RpCheckName)); //1725 EU
-            Recv.Add(unchecked((short) 0x7B3D), typeof (RpCheckNameForUse)); //1725 EU
-            Recv.Add(unchecked((short) 0xE5E4), typeof (RpGetPlayerList)); //1725 EU
-            Recv.Add(unchecked((short) 0x6755), typeof (RpCreateCharacter)); //1725 EU
-            Recv.Add(unchecked((short) 0x8D6A), typeof (RpPlay)); //1725 EU
-            Recv.Add(unchecked((short) 0xB61D), typeof (RpGetBindPoint)); //1725 EU
-            Recv.Add(unchecked((short) 0xBCC4), typeof (RpEnterWorld)); //1725 EU
-            Recv.Add(unchecked((short) 0xFBE6), typeof (RpChatMessage)); //1725 EU
-            Recv.Add(unchecked((short) 0xE932), typeof (RpChatInfo)); //1725 EU
-            Recv.Add(unchecked((short) 0xFA08), typeof (RpMove)); //1725 EU
-            Recv.Add(unchecked((short) 0x837D), typeof (RpInactive)); //1725 EU
-            Recv.Add(unchecked((short) 0xADF4), typeof (RpRelog)); //1725 EU
-            Recv.Add(unchecked((short) 0x99EB), typeof (RpAbortRelog)); //1725 EU
-            Recv.Add(unchecked((short) 0xF19F), typeof (RpExit)); //1725 EU
-            Recv.Add(unchecked((short) 0x878D), typeof (RpDialogShow)); //1725 EU
-            Recv.Add(unchecked((short) 0x4EE4), typeof (RpItemPickUp)); //1725 EU
-            Recv.Add(unchecked((short) 0xBD08), typeof (RpGetInventory)); //1725 EU
-            Recv.Add(unchecked((short) 0xA02D), typeof (RpInventoryRemoveItem)); //1725 EU
-            Recv.Add(unchecked((short) 0xFEAD), typeof (RpInventoryReplaceItem)); //1725 EU
-            Recv.Add(unchecked((short) 0x63D8), typeof (RpInventoryDressItem)); //1725 EU
-            Recv.Add(unchecked((short) 0xB77E), typeof (RpInventoryUndressItem)); //1725 EU
-            Recv.Add(unchecked((short) 0xC4BA), typeof (RpStorageSort)); //1725 EU
-            Recv.Add(unchecked((short) 0xBED7), typeof (RpDialogSelect)); //1725 EU
-            Recv.Add(unchecked((short) 0xBC40), typeof (RpDeleteCharacter)); //1725 EU
-            Recv.Add(unchecked((short) 0xA7B1), typeof (RpGetItemInfo)); //1725 EU
-            Recv.Add(unchecked((short) 0xB14B), typeof (RpGetSimpleItemInfo)); //1725 EU
-            Recv.Add(unchecked((short) 0xC5C6), typeof (RpGetFriendList)); //1603 EU
-            Recv.Add(unchecked((short) 0xE020), typeof (RpMoveToBind)); //1603 EU
-            //Recv.Add(unchecked((short) 0xE806), typeof (RpGetCharacterEquipment)); //1513
-            Recv.Add(unchecked((short) 0xC233), typeof (RpCharacterSettings1)); //1725 EU
-            Recv.Add(unchecked((short) 0xA7A5), typeof (RpQuestTopSwitch)); //1603 EU
-            Recv.Add(unchecked((short)0xFC7C), typeof(RpQuestRefuse)); //1603 EU
-            Recv.Add(unchecked((short)0xAF84), typeof(RpTeleportCharacter)); //1725 EU
-            Recv.Add(unchecked((short) 0xED71), typeof (RpAddToTrade)); // 1725 EU
-            Recv.Add(unchecked((short) 0x7DD5), typeof (RpAddToExtract)); // 1725 EU
-            Recv.Add(unchecked((short) 0xB73C), typeof (RpSellItem)); //1725 EU
-            Recv.Add(unchecked((short) 0xF204), typeof (RpRemoveBuyTrade)); //1725 EU
-            Recv.Add(unchecked((short) 0xC327), typeof (RpRemoveSellTrade)); //1725 EU
-            Recv.Add(unchecked((short) 0x7219), typeof (RpCompleteTraid)); //1725 EU
-            Recv.Add(unchecked((short) 0x5879), typeof (RpOwnerCancelRequest)); //1725 EU
-            Recv.Add(unchecked((short) 0x5B72), typeof (RpRequestAccept)); // 1725 EU
-            Recv.Add(unchecked((short) 0xB32B), typeof (RpRequestCancel)); // 1725 EU
-            Recv.Add(unchecked((short) 0xF9A9), typeof (RpSystemRequest)); //1725 EU
-            Recv.Add(unchecked((short) 0x6621), typeof (RpSkillBuy)); //1725 EU
-            //Recv.Add(unchecked((short) 0x6A09), typeof (RpInviteUnk)); //1606
-            Recv.Add(unchecked((short) 0xB2AA), typeof (RpDialogCancelRelog)); //1603 EU
-            Recv.Add(unchecked((short) 0x819B), typeof (RpCharacterEmotion)); //1725 EU
-            Recv.Add(unchecked((short) 0xA8FA), typeof (RpChatPrivate)); //1725 EU
-            Recv.Add(unchecked((short) 0xAF9D), typeof (RpChatBlock)); //1603 EU
-            Recv.Add(unchecked((short) 0x8875), typeof (RpGatherStart)); //1725 EU
-            Recv.Add(unchecked((short) 0xB351), typeof (RpFriendAdd)); //1603 EU
-            Recv.Add(unchecked((short) 0xD500), typeof (RpFriendRemove)); //1603 EU
-            Recv.Add(unchecked((short) 0xFC9B), typeof (RpInteruptAction)); //1725 EU
-            Recv.Add(unchecked((short) 0xD2E0), typeof (RpRessurect)); //1725 EU
-            Recv.Add(unchecked((short) 0x86E2), typeof (RpUnstuck)); //1725 EU
+            //From jenova by angelis86, should be 2405
+            //https://code.google.com/p/tera-jenova/source/browse/trunk/src/TeraGame/src/main/java/com/angelis/tera/game/presentation/network/packet/ClientPacketHandler.java?r=61
+            // AUTH
+            Recv.Add((ushort)0x4DBC, "CM_CHECK_VERSION"); // OK
+            Recv.Add((ushort)0xB114, "CM_ACCOUNT_AUTH"); // OK
+            Recv.Add((ushort)0xA204, "CM_HARDWARE_INFO"); // OK
 
-            //Inspect
-            Recv.Add(unchecked((short)0xC036), typeof(RpCharacterInspect)); //1725 EU
-            Recv.Add(unchecked((short)0x7A8D), typeof(RpGetInspectUid)); //1725 EU
-            Recv.Add(unchecked((short)0x91D7), typeof(RpInspectUnk)); //1725 EU
+            // CHARACTER
+            Recv.Add((ushort)0x96F1, "CM_CHARACTER_LIST"); // OK
+            Recv.Add((ushort)0xFBC3, "CM_CHARACTER_CREATE_ALLOWED"); // OK
+            Recv.Add((ushort)0x7F90, "CM_CHARACTER_CREATE_NAME_PATTERN_CHECK"); // OK
+            Recv.Add((ushort)0xAE1B, "CM_CHARACTER_CREATE_NAME_USED_CHECK"); // OK
+            Recv.Add((ushort)0xD932, "CM_CHARACTER_CREATE"); // OK
+            Recv.Add((ushort)0xAD7C, "CM_CHARACTER_DELETE"); // OK
+            Recv.Add((ushort)0xDA2D, "CM_CHARACTER_RESTORE"); // OK
 
-            //Climb
-            Recv.Add(unchecked((short) 0xE364), typeof (RpClimb)); //1725 EU
-            Recv.Add(unchecked((short) 0x89A4), typeof (RpClimbUp)); //1725 EU
-            Recv.Add(unchecked((short) 0xF3CD), typeof (RpClimbEnd)); //1725 EU
+            // ENTER WORLD
+            Recv.Add((ushort)0xA5B7, "CM_ENTER_WORLD"); // OK
+            Recv.Add((ushort)0xDE8B, "CM_TRADEBROKER_HIGHEST_ITEM_LEVEL"); // OK
+            Recv.Add((ushort)0x910B, "CM_LOAD_TOPO_FIN"); // Not sure
+            Recv.Add((ushort)0x96A5, "CM_UPDATE_CONTENTS_PLAYTIME");
+            Recv.Add((ushort)0xB135, "CM_SIMPLE_TIP_REPEATED_CHECK"); // OK
+            Recv.Add((ushort)0xD99E, "CM_PLAYER_CLIMB_START");
+            Recv.Add((ushort)0x7957, "CM_USER_SETTINGS_SAVE");
+            Recv.Add((ushort)0x74F3, "CM_MOVIE_END");
 
-            //Skills
-            Recv.Add(unchecked((short) 0xBDEE), typeof (RpAttack)); //1725 EU
-            Recv.Add(unchecked((short) 0x68CA), typeof (RpTargetAttack)); //1725 EU
-            Recv.Add(unchecked((short) 0x8691), typeof (RpUseDelaySkill)); //1725 EU
-            Recv.Add(unchecked((short) 0xC8B3), typeof (RpUseSkill)); //1725 EU //Move skills
-            Recv.Add(unchecked((short) 0xF34A), typeof (RpUseCrosstargetSkill)); //1725 EU
-            Recv.Add(unchecked((short) 0x7E21), typeof (RpUseItem)); // 1725 EU
-            Recv.Add(unchecked((short) 0xB16A), typeof (RpMarkTarget)); //1725 EU
-            Recv.Add(unchecked((short) 0x77BB), typeof (RpReleaseAttack)); //1725 EU
+            // REQUEST
+            Recv.Add((ushort)0xE952, "CM_REQUEST_CONTRACT"); // OK
+            Recv.Add((ushort)0xD870, "CM_REQUEST_ANSWER"); // OK
+            Recv.Add((ushort)0xC09A, "CM_REQUEST_GAMESTAT_PING");
 
-            //Party
-            Recv.Add(unchecked((short)0x86BD), typeof(RpPartyLeave)); //1725 EU
-            Recv.Add(unchecked((short) 0x4F34), typeof (RpPartyDisband)); //1603 EU
-            Recv.Add(unchecked((short)0xF86C), typeof(RpPartyRemoveMember)); //1725 EU
-            Recv.Add(unchecked((short)0x82AE), typeof(RpPartyVote)); //1603 EU
-            Recv.Add(unchecked((short)0xBA24), typeof(RpPartyPromoteMember)); //1725 EU
+            // MOUNT
+            Recv.Add((ushort)0xB118, "CM_PLAYER_UNMOUNT");
 
-            //Guilds
-            Recv.Add(unchecked((short)0x8781), typeof(RpGetServerGuilds)); //1603 EU
-            Recv.Add(unchecked((short) 0xDB99), typeof (RpRequestInviteProcess)); //1725 EU
-            //Recv.Add(unchecked((short) 0xA7A6), typeof (RpGuildAddMemberRequest)); //1606
-            Recv.Add(unchecked((short) 0xEFE0), typeof (RpGuildGetMemberList)); //1725 EU
-            //Recv.Add(unchecked((short) 0x6A2B), typeof (RpGuildInvite)); //1606
-            Recv.Add(unchecked((short) 0xFF67), typeof (RpGuildGetHistory)); //1725 EU
-            Recv.Add(unchecked((short) 0xDD03), typeof (RpGuildRemoveMember)); //1725 EU
-            Recv.Add(unchecked((short)0x7029), typeof(RpGuildChangeRankPrivileges)); //1725 EU
-            Recv.Add(unchecked((short)0x8A75), typeof(RpGuildRankAdd)); //1725 EU
-            Recv.Add(unchecked((short)0x901F), typeof(RpGuildChangeMemberRank)); //1725 EU
-            Recv.Add(unchecked((short)0xAEA2), typeof(RpGuildChangeLeader)); //1725 EU
-            Recv.Add(unchecked((short)0x968D), typeof(RpGuildMemberLeave)); //1725 EU
-            Recv.Add(unchecked((short)0x9DE5), typeof(RpServerGuildsPage)); //1725 EU
-            Recv.Add(unchecked((short)0xF494), typeof(RpGuildChangeAd)); //1725 EU
-            Recv.Add(unchecked((short)0x9D87), typeof(RpGuildChangeMotd)); //1725 EU
-            Recv.Add(unchecked((short)0xBFC1), typeof(RpGuildChangeTitle)); //1725 EU
-            Recv.Add(unchecked((short)0xD23D), typeof(RpGuildPraise)); //1725 EU
-            Recv.Add(unchecked((short)0xF22B), typeof(RpGuildMemberGuildPraise)); //1725 EU
+            // OPTIONS
+            Recv.Add((ushort)0xAD59, "CM_OPTION_SHOW_MASK");
+            Recv.Add((ushort)0x6CCD, "CM_OPTION_SET_VISIBILITY_DISTANCE"); // OK
 
+            // CHAT
+            Recv.Add((ushort)0xA951, "CM_CHAT"); // OK
+            Recv.Add((ushort)0x5F0E, "CM_CHAT_INFO"); // OK
+            Recv.Add((ushort)0x5042, "CM_LOOKING_FOR_GROUP_CHAT_INFO"); // OK
+            Recv.Add((ushort)0xECF7, "CM_WHISP"); // OK
 
-            //Trade player vs player
-            Recv.Add(unchecked((short) 0x6EDF), typeof (RpPlayerTradeAdd)); //1725 EU
-            Recv.Add(unchecked((short)0x6AAE), typeof(RpPlayerTradeRemoveItem)); //1725 EU
-            Recv.Add(unchecked((short)0x79BA), typeof(RpPlayerTradeLock)); //1725 EU
-            Recv.Add(unchecked((short) 0xD457), typeof (RpTradeInterupt)); //1603 EU
-            Recv.Add(unchecked((short)0xE3C1), typeof(RpPlayerTradeCancel)); //1725 EU
+            // DIALOG
+            Recv.Add((ushort)0x94BE, "CM_NPC_CONTACT"); // OK
+            Recv.Add((ushort)0x9A93, "CM_DIALOG_EVENT"); // OK
+            Recv.Add((ushort)0xA308, "CM_DIALOG"); // OK
 
-            //Craft-Extract
-            Recv.Add(unchecked((short) 0xC1E3), typeof (RpCraftStart)); //1725 EU
-            Recv.Add(unchecked((short) 0x8B9C), typeof (RpExtractStart)); //1725 EU
+            // ALLIANCE
+            Recv.Add((ushort)0x7E06, "CM_ALLIANCE_INFO"); // OK
 
-            //Zone
-            Recv.Add(unchecked((short) 0xAB32), typeof (RpZoneChange)); //1725 EU
-            Recv.Add(unchecked((short) 0x4F4F), typeof (RpZoneUnk)); //1725 EU
-            Recv.Add(unchecked((short) 0xD03F), typeof (RpZoneSwitchContinent)); //1725 EU
+            // GAMEOBJECT
+            Recv.Add((ushort)0x89F9, "CM_GAMEOBJECT_REMOVE");
 
-            //Warehouse
-            Recv.Add(unchecked((short)0xE0D4), typeof(RpWarehouseAddItem)); //1725 EU
-            Recv.Add(unchecked((short)0xD7B5), typeof(RpWarehouseAddItemToInventory)); //1725 EU
-            Recv.Add(unchecked((short)0xF085), typeof(RpWarehouseChangeSection)); //1725 EU
-            Recv.Add(unchecked((short)0xCCEC), typeof(RpWarehouseReplaceItem)); //1725 EU
+            // SKILL
+            Recv.Add((ushort)0xF8DD, "CM_SKILL_START"); // OK
+            Recv.Add((ushort)0x70AB, "CM_SKILL_INSTANCE_START"); // OK
+            Recv.Add((ushort)0x76A8, "CM_SKILL_CANCEL");
+            Recv.Add((ushort)0x738A, "CM_GLYPH_REINIT");
 
-            //mount
-            Recv.Add(unchecked((short)0x4F59), typeof(RpMountUnkQuestion)); //1725 EU
+            // PLAYER
+            Recv.Add((ushort)0x4E90, "CM_PLAYER_MOVE"); // OK
+            Recv.Add((ushort)0x6797, "CM_PLAYER_ZONE_CHANGE"); // OK
+            Recv.Add((ushort)0xC6D1, "CM_LOOKING_FOR_BATTLEGROUND_WINDOW_OPEN"); // OK
+            Recv.Add((ushort)0xC590, "CM_LOOKING_FOR_INSTANCE_WINDOW_OPEN"); // OK
+            Recv.Add((ushort)0xE8A2, "CM_PLAYER_REPORT"); // TODO
+            Recv.Add((ushort)0x8DA7, "CM_PLAYER_COMPARE_ACHIEVEMENTS");
+            Recv.Add((ushort)0xADCF, "CM_PLAYER_INSPECT"); // Not sure // TODO
+            Recv.Add((ushort)0x9520, "CM_PLAYER_SELECT_CREATURE"); // OK
+            Recv.Add((ushort)0xE195, "CM_PLAYER_DONJON_CLEAR_COUNT_LIST");
 
-            //User interface
-            Recv.Add(unchecked((short)0x7D1B), typeof(RpUISettings));
+            // GATHER
+            Recv.Add((ushort)0x885F, "CM_GATHER_START");
+
+            // PROFIL
+            Recv.Add((ushort)0x96A4, "CM_PLAYER_SET_TITLE");
+            Recv.Add((ushort)0x7653, "CM_PLAYER_DESCRIPTION");
+            Recv.Add((ushort)0x6DF5, "CM_PLAYER_REINIT_INSTANCES");
+            Recv.Add((ushort)0xE9BC, "CM_PLAYER_DONJON_STATS_PVP"); // TODO
+
+            // INVENTORY
+            Recv.Add((ushort)0xF9FD, "CM_INVENTORY_SHOW"); // OK
+            Recv.Add((ushort)0x7EEF, "CM_ITEM_MOVE"); // OK
+            Recv.Add((ushort)0xB139, "CM_ITEM_USE"); // OK
+            Recv.Add((ushort)0xD1F6, "CM_ITEM_SIMPLE_INFO");
+            Recv.Add((ushort)0x83A1, "CM_INVENTORY_ORDER"); // OK
+            Recv.Add((ushort)0xBE5B, "CM_ITEM_UNEQUIP"); // OK
+            Recv.Add((ushort)0xF8D3, "CM_ITEM_EQUIP");
+            Recv.Add((ushort)0xF772, "CM_PLAYER_EQUIPEMENT_ITEM_INFO"); // OK
+            Recv.Add((ushort)0xACA1, "CM_PLAYER_DUNGEON_COOLTIME_LIST");
+            Recv.Add((ushort)0xB106, "CM_PLAYER_ITEM_TRASH");
+            Recv.Add((ushort)0x9DE4, "CM_PLAYER_DROP_ITEM_PICKUP"); // OK
+
+            // EXCHANGE
+            Recv.Add((ushort)0xFCEB, "CM_EXCHANGE_ITEM_ADD_BUY"); // OK
+            Recv.Add((ushort)0xF1C5, "CM_EXCHANGE_ITEM_REMOVE_BUY");
+            Recv.Add((ushort)0xF624, "CM_EXCHANGE_ITEM_ADD_SELL");
+            Recv.Add((ushort)0xAE84, "CM_EXCHANGE_ITEM_REMOVE_SELL");
+            Recv.Add((ushort)0xFBCD, "CM_EXCHANGE_COMPLETE");
+            Recv.Add((ushort)0x8D7A, "CM_EXCHANGE_CANCEL");
+
+            // MAP
+            Recv.Add((ushort)0x8D02, "CM_MAP_SHOW"); // TODO
+
+            // ACTIVITIES
+            Recv.Add((ushort)0x88B2, "CM_PLAYER_EMOTE"); // OK
+            Recv.Add((ushort)0x5761, "CM_ENCHANT_WINDOW_OPEN");
+            Recv.Add((ushort)0xB5E3, "CM_INSTANCERANK_WINDOW_OPEN");
+            Recv.Add((ushort)0x62EB, "CM_BATTLEGROUND_WINDOW_OPEN");
+
+            // STOCK EXCHANGE ITEM
+            Recv.Add((ushort)0xCE53, "CM_STOCK_EXCHANGE_ITEM_UNIQUE_LIST"); // OK
+            Recv.Add((ushort)0xD7AD, "CM_STOCK_EXCHANGE_ITEM_UNIQUE_REQUEST"); // OK
+            Recv.Add((ushort)0x70E7, "CM_STOCK_EXCHANGE_ITEM_ACCOUNT_LIST"); // OK
+            Recv.Add((ushort)0x6913, "CM_STOCK_EXCHANGE_ITEM_ACCOUNT_REQUEST"); // OK
+            Recv.Add((ushort)0xD960, "CM_STOCK_EXCHANGE_ITEM_INFO"); // OK
+            Recv.Add((ushort)0x518F, "CM_STOCK_EXCHANGE_ITEM_UNK"); // OK
+
+            // GUILD
+            Recv.Add((ushort)0xCCE7, "CM_GUILD_MEMBER_LIST"); // OK
+            Recv.Add((ushort)0xFF6A, "CM_GUILD_INFO"); // OK
+            Recv.Add((ushort)0xBEB7, "CM_GUILD_APPLICATION"); // OK
+            Recv.Add((ushort)0xD387, "CM_GUILD_VERSUS_STATUS"); // OK
+            Recv.Add((ushort)0xC409, "CM_GUILD_LEAVE");
+            Recv.Add((ushort)0xD2DE, "CM_GUILD_SERVER_LIST"); // OK
+            Recv.Add((ushort)0xCF05, "CM_GUILD_LOGO"); // OK
+
+            // SOCIAL
+            Recv.Add((ushort)0x9577, "CM_PLAYER_FRIEND_LIST"); // OK
+            Recv.Add((ushort)0xDA73, "CM_PLAYER_FRIEND_ADD"); // OK
+            Recv.Add((ushort)0xDC58, "CM_PLAYER_FRIEND_REMOVE");
+            Recv.Add((ushort)0x63AE, "CM_PLAYER_FRIEND_NOTE");
+            Recv.Add((ushort)0xB1BA, "CM_PLAYER_BLOCK_ADD");
+            Recv.Add((ushort)0x50A3, "CM_PLAYER_BLOCK_REMOVE");
+            Recv.Add((ushort)0x63B0, "CM_PLAYER_BLOCK_NOTE");
+            Recv.Add((ushort)0xE726, "CM_REIGN_INFO");
+            Recv.Add((ushort)0x8D10, "CM_GUARD_PK_POLICY"); // OK
+
+            // GROUP
+            Recv.Add((ushort)0xBD26, "CM_GROUP_LEAVE");
+            Recv.Add((ushort)0xFDFB, "CM_GROUP_KICK");
+            Recv.Add((ushort)0xA5E6, "CM_GROUP_CONFIRM_KICK");
+            Recv.Add((ushort)0xA995, "CM_GROUP_CONFIRM_LEADER_CHANGE"); // OK
+            Recv.Add((ushort)0xA8BB, "CM_GROUP_DESTROY");
+
+            Recv.Add((ushort)0x8D48, "CM_PLAYER_TRADE_HISTORY");
+
+            // TERA SHOP
+            Recv.Add((ushort)0xEEDF, "CM_SHOP_WINDOW_OPEN"); // OK
+
+            // SYSTEM
+            Recv.Add((ushort)0x74DF, "CM_WELCOME_MESSAGE"); // OK
+            Recv.Add((ushort)0xCDBD, "CM_QUIT_TO_CHARACTER_LIST"); // OK
+            Recv.Add((ushort)0xA765, "CM_QUIT_TO_CHARACTER_LIST_CANCEL"); // OK
+            Recv.Add((ushort)0xD250, "CM_QUIT_GAME"); // OK
+            Recv.Add((ushort)0xBEE0, "CM_QUIT_GAME_CANCEL"); // OK
+
+            // PEGASUS
+            Recv.Add((ushort)0x8122, "CM_PEGASUS_START"); // OK
+
+            // CHANNEL
+            Recv.Add((ushort)0xFB75, "CM_CHANNEL_LIST"); // OK
 
             #endregion
 
             #region Server packets
 
-            Send.Add(typeof (SpCheckVersion), unchecked((short) 0x4DBD)); //1725 EU
+            //From jenova by angelis86, should be 2405
+            //https://code.google.com/p/tera-jenova/source/browse/trunk/src/TeraGame/src/main/java/com/angelis/tera/game/presentation/network/packet/ServerPacketHandler.java?r=61
 
-            //Characters
-            Send.Add(typeof (SpCharacterCheckNameResult), unchecked((short) 0xE315)); //1725 EU
-            Send.Add(typeof (SpCharacterCreateResult), unchecked((short) 0xC075)); //1725 EU
-            Send.Add(typeof (SpCharacterList), unchecked((short) 0xB38E)); //1725 EU
-            Send.Add(typeof (SpCharacterInit), unchecked((short) 0xBD48)); //1725 EU
-            Send.Add(typeof (SpCharacterStats), unchecked((short) 0xF0EB)); //1725 EU 
-            Send.Add(typeof (SpCharacterInfo), unchecked((short) 0xDE1C)); //1725 EU
-            Send.Add(typeof (SpCharacterBind), unchecked((short) 0x9487)); //1725 EU
-            Send.Add(typeof (SpCharacterPosition), unchecked((short) 0xD146)); //1725 EU
-            Send.Add(typeof (SpCharacterThings), unchecked((short) 0xECF0)); //1725 EU
-            Send.Add(typeof (SpCharacterEmotions), unchecked((short) 0xE0A0)); //1725 EU
-            Send.Add(typeof (SpCharacterState), unchecked((short) 0xEBCD)); //1725 EU
-            Send.Add(typeof (SpCharacterDelete), unchecked((short) 0xEFE4)); //1725 EU
-            Send.Add(typeof (SpCharacterDeath), unchecked((short) 0x63E7)); //1725 EU
-            Send.Add(typeof (SpCharacterMove), unchecked((short) 0xEBE2)); //1725 EU
-            Send.Add(typeof (SpCharacterGatherstats), unchecked((short) 0x928F)); //1725 EU
-            Send.Add(typeof (SpCharacterGuildInfo), unchecked((short) 0x581E)); //1725 EU
-            Send.Add(typeof (SpCharacterRelation), unchecked((short) 0x866A)); //1725 EU
-            Send.Add(typeof (SpRemoveCharacter), unchecked((short) 0x6256)); //1725 EU
-            Send.Add(typeof (SpCharacterCraftStats), unchecked((short) 0xA046)); //1725 EU
-            Send.Add(typeof (SpCharacterRecipes), unchecked((short) 0xCF01)); //1725 EU
-            Send.Add(typeof (SpCharacterZoneData), unchecked((short) 0xE7C9)); //1725 EU
+            // AUTH
+            Send.Add((ushort)0x4DBD, "SM_CHECK_VERSION"); // OK
+            Send.Add((ushort)0xDC28, "SM_LOADING_SCREEN_CONTROL_INFO"); // OK
+            Send.Add((ushort)0x521E, "SM_REMAIN_PLAY_TIME"); // OK
+            Send.Add((ushort)0xE9DE, "SM_LOGIN_ARBITER"); // OK
+            Send.Add((ushort)0xACC6, "SM_LOGIN_ACCOUNT_INFO"); // OK
+            Send.Add((ushort)0x8093, "SM_ACCOUNT_PACKAGE_LIST"); // OK
+            Send.Add((ushort)0xC8A8, "SM_SYSTEM_INFO"); // OK
 
-            //Chat
-            Send.Add(typeof (SpChatMessage), unchecked((short) 0x5703)); //1725 EU
-            Send.Add(typeof (SpChatPrivate), unchecked((short) 0xA082)); //1725 EU
-            Send.Add(typeof (SpChatInfo), unchecked((short) 0xE321)); //1725 EU
+            // CHARACTER
+            Send.Add((ushort)0x65C6, "SM_CHARACTER_LIST"); // OK
+            Send.Add((ushort)0x6779, "SM_CHARACTER_CREATE_ALLOWED"); // OK
+            Send.Add((ushort)0xB743, "SM_CHARACTER_CREATE_NAME_PATTERN_CHECK"); // OK
+            Send.Add((ushort)0xB5C4, "SM_CHARACTER_CREATE_NAME_USED_CHECK"); // OK
+            Send.Add((ushort)0x89C6, "SM_CHARACTER_CREATE"); // OK
+            Send.Add((ushort)0xF9E8, "SM_CHARACTER_DELETE"); // OK
+            Send.Add((ushort)0xCCE0, "SM_CHARACTER_RESTORE"); // OK
 
-            //Skills
-            Send.Add(typeof (SpSkillList), unchecked((short) 0xC1D9)); //1725 EU
-            Send.Add(typeof (SpAttack), unchecked((short) 0x69A2)); //1725 EU
-            Send.Add(typeof (SpAttackDestination), unchecked((short) 0x56D8)); //1725 EU
-            Send.Add(typeof (SpAttackShowBlock), unchecked((short) 0xD0C3)); //1725 EU
-            Send.Add(typeof (SpAttackResult), unchecked((short) 0x9D8F)); //1725 EU
-            Send.Add(typeof (SpAttackEnd), unchecked((short) 0xBF7C)); //1725 EU
-            Send.Add(typeof (SpSkillCooldown), unchecked((short) 0xA848)); //1725 EU
-            Send.Add(typeof (SpProjectile), unchecked((short) 0x7D90)); //1725 EU
-            Send.Add(typeof (SpRemoveProjectile), unchecked((short) 0x7CD2)); //1725 EU
-            Send.Add(typeof (SpItemCooldown), unchecked((short) 0xDDE0)); //1725 EU
-            Send.Add(typeof (SpMarkTarget), unchecked((short) 0x8625)); //1725 EU
+            // ENTER WORLD
+            Send.Add((ushort)0x5CCF, "SM_ENTER_WORLD"); // OK
+            Send.Add((ushort)0xD61A, "SM_LOGIN"); // OK
+            Send.Add((ushort)0xDD66, "SM_CURRENT_ELECTION_STATE"); // OK
+            Send.Add((ushort)0x9274, "SM_AVAILABLE_SOCIAL_LIST"); // OK
+            Send.Add((ushort)0x969C, "SM_NPC_GUILD_LIST"); // OK
+            Send.Add((ushort)0xA33A, "SM_VIRTUAL_LATENCY"); // OK
+            Send.Add((ushort)0x539D, "SM_MOVE_DISTANCE_DELTA"); // OK
+            Send.Add((ushort)0xAC2B, "SM_F2P_PREMIUM_USER_PERMISSION"); // OK
+            Send.Add((ushort)0x86B7, "SM_PLAYER_EQUIP_ITEM_CHANGER"); // Not
+            // sure
+            Send.Add((ushort)0xD85D, "SM_FESTIVAL_LIST"); // OK
+            Send.Add((ushort)0xF1AD, "SM_MASSTIGE_STATUS"); // OK
+            Send.Add((ushort)0x792B, "SM_LOAD_TOPO"); // OK
+            Send.Add((ushort)0xA953, "SM_LOAD_HINT"); // OK
+            Send.Add((ushort)0xA2D8, "SM_SIMPLE_TIP_REPEATED_CHECK"); // OK
+            Send.Add((ushort)0x8F16, "SM_USER_SETTINGS_LOAD"); // OK
+            Send.Add((ushort)0xA7DE, "SM_MOVIE_PLAY");
+            Send.Add((ushort)0x96BD, "SM_VISITED_SECTION_LIST");
+            Send.Add((ushort)0x5EB0, "SM_TRADEBROKER_HIGHEST_ITEM_LEVEL"); // OK
+            Send.Add((ushort)0x8A2B, "SM_ACHIEVEMENT_PROGRESS_UPDATE"); // OK
 
-            //Npc
-            Send.Add(typeof (SpNpcInfo), unchecked((short) 0x8AB2)); //1725 EU
-            Send.Add(typeof (SpRemoveNpc), unchecked((short) 0x73B1)); //1725 EU
-            Send.Add(typeof (SpNpcEmotion), unchecked((short) 0xC7DB)); //1725 EU
-            Send.Add(typeof (SpNpcStatus), unchecked((short) 0x68B1)); //1725 EU
-            Send.Add(typeof (SpNpcMove), unchecked((short) 0x580E)); //1725 EU
-            Send.Add(typeof (SpNpcHpMp), unchecked((short) 0xFB12)); //1725 EU
-            Send.Add(typeof (SpNpcHpWindow), unchecked((short) 0xC0B2)); //1725 EU
-            Send.Add(typeof (SpNpcIcon), unchecked((short) 0xBF6B)); //1725 EU
-            Send.Add(typeof (SpNpcTalk), unchecked((short) 0xD465)); //1603 EU
+            // PEGASUS
+            Send.Add((ushort)0xCAB4, "SM_PEGASUS_START"); // OK
+            Send.Add((ushort)0xC0E7, "SM_PEGASUS_UPDATE"); // OK
+            Send.Add((ushort)0xCA3E, "SM_PEGASUS_END"); // OK
+            Send.Add((ushort)0xDB85, "SM_PEGASUS_MAP_SHOW"); // OK
 
-            //Exit actions
-            Send.Add(typeof (SpRelogWindow), unchecked((short) 0xBFFE)); //1725 EU
-            Send.Add(typeof (SpExitWindow), unchecked((short) 0xE6D6)); //1725 EU
-            Send.Add(typeof (SpRelog), unchecked((short) 0x87C8)); //1725 EU
-            Send.Add(typeof (SpExit), unchecked((short) 0xAE39)); //1725 EU
+            // MOUNT
+            Send.Add((ushort)0xBF48, "SM_PLAYER_MOUNT"); // OK
+            Send.Add((ushort)0xAEB8, "SM_PLAYER_UNMOUNT"); // OK
 
-            Send.Add(typeof (SpShowDialog), unchecked((short) 0xD13D)); //1725 EU
-            Send.Add(typeof (SpShowWindow), unchecked((short) 0xB797)); //1725 EU
-            Send.Add(typeof (SpDropInfo), unchecked((short) 0xE764)); //1725 EU
-            Send.Add(typeof (SpShowIcon), unchecked((short) 0x9C9C)); //1725 EU
-            Send.Add(typeof (SpRemoveItem), unchecked((short) 0xDDBB)); //1725 EU
-            Send.Add(typeof (SpInventory), unchecked((short) 0x92C0)); //1725 EU
-            Send.Add(typeof (SpLevelUp), unchecked((short) 0x66A5)); //1725 EU
-            Send.Add(typeof (SpUpdateExp), unchecked((short) 0x8FC7)); //1725 EU
-            Send.Add(typeof (SpDeathDialog), unchecked((short) 0x5FCE)); //1725 EU
-            //Send.Add(typeof (SpCharacterBuffs), unchecked((short) 0xCA86)); //1512
-            Send.Add(typeof (SpAbnormal), unchecked((short) 0xC50E)); //1725 EU
-            Send.Add(typeof (SpRemoveAbnormal), unchecked((short) 0xE3F4)); //1725 EU
-            //Send.Add(typeof (SpHelp), unchecked((short) 0xB330)); //1512
-            Send.Add(typeof (SpTradeList), unchecked((short) 0xC849)); //1725 EU
-            Send.Add(typeof (SpUpdateTrade), unchecked((short) 0x733D)); //1725 EU
-            Send.Add(typeof (SpDropPickup), unchecked((short) 0xAE81)); //1725 EU
-            Send.Add(typeof (SpUpdateHp), unchecked((short) 0xD6BE)); //1725 EU
-            Send.Add(typeof (SpUpdateMp), unchecked((short) 0xB5DF)); //1725 EU
-            Send.Add(typeof (SpUpdateStamina), unchecked((short) 0x5CC4)); //1725 EU
-            Send.Add(typeof (SpSystemMessage), unchecked((short) 0xF8D3)); //1725 EU
-            Send.Add(typeof (SpDirectionChange), unchecked((short) 0x996F)); //1725 EU
-            Send.Add(typeof (SpCampfire), unchecked((short) 0xB0BE)); //1725 EU
-            Send.Add(typeof (SpRemoveCampfire), unchecked((short) 0xCB92)); //1725 EU
-            Send.Add(typeof(SpRemoveHpBar), unchecked((short)0xD7EE)); //1725 EU
+            // GUILD
+            Send.Add((ushort)0xE489, "SM_GUILD_MEMBER_LIST"); // OK
+            Send.Add((ushort)0xA942, "SM_GUILD_VERSUS_STATUS"); // OK
+            Send.Add((ushort)0x5606, "SM_GUILD_SERVER_LIST"); // OK)
 
-            Send.Add(typeof (SpDuelCounter), unchecked((short) 0xC93C)); //1725 EU
+            // PET
+            Send.Add((ushort)0xDD08, "SM_PET_INCUBATOR_INFO_CHANGE"); // OK
+            Send.Add((ushort)0x8908, "SM_PET_INFO_CLEAR"); // OK
 
-            Send.Add(typeof (SpSkillPurchased), unchecked((short) 0x6235)); //1725 EU
-            Send.Add(typeof (SpTraidSkillList), unchecked((short) 0xA774)); //1725 EU
-            Send.Add(typeof (SpSystemWindow), unchecked((short) 0xF05B)); //1725 EU
-            Send.Add(typeof (SpCanSendRequest), unchecked((short) 0x554E)); //1725 EU ???
-            Send.Add(typeof (SpHideRequest), unchecked((short)0xD627)); //1603 EU
-            Send.Add(typeof (SpSystemNotice), unchecked((short) 0x5F11)); //1725 EU
-            Send.Add(typeof (SpItemInfo), unchecked((short) 0x8E8C)); //1725 EU
-            Send.Add(typeof (SpSimpleItemInfo), unchecked((short) 0xB359)); //1725 EU
-            Send.Add(typeof (SpCreatureMoveTo), unchecked((short) 0xB983)); //1725 EU
+            // ALLIANCE
+            Send.Add((ushort)0xEB1B, "SM_ALLIANCE_INFO"); // OK
 
-            //Climb
-            Send.Add(typeof (SpClimb), unchecked((short) 0xD9A1)); //1725 EU
+            // ATTACK
+            Send.Add((ushort)0xCF42, "SM_ACTION_STAGE"); // OK
+            Send.Add((ushort)0xD2E1, "SM_ACTION_END"); // OK
+            Send.Add((ushort)0xFF1F, "SM_CREATURE_INSTANCE_ARROW"); // OK
+            Send.Add((ushort)0xA71F, "SM_PLAYER_EXPERIENCE_UPDATE"); // OK
 
-            //Pegasus
-            Send.Add(typeof (SpFlightPoints), unchecked((short) 0xDFDD)); //1725 EU
-            Send.Add(typeof (SpPegasusInfo), unchecked((short) 0x953D)); //1725 EU
-            Send.Add(typeof (SpPegasusFlight), unchecked((short) 0xC2E6)); //1725 EU
-            Send.Add(typeof (SpPegasusFinishFly), unchecked((short) 0x98FD)); //1725 EU
+            // OPTIONS
+            Send.Add((ushort)0xB4C9, "SM_OPTION_SHOW_MASK");
 
-            //Mounts
-            Send.Add(typeof (SpMountShow), unchecked((short) 0x888D)); //1725 EU
-            Send.Add(typeof (SpMountHide), unchecked((short) 0x888C)); //1725 EU
-            Send.Add(typeof(SpMountUnkResponse), unchecked((short)0xC82A)); //1725 EU
+            // SKILL
+            Send.Add((ushort)0x80CE, "SM_SKILL_START_COOLTIME"); // OK
+            Send.Add((ushort)0x0001, "SM_SKILL_PERIOD");
+            Send.Add((ushort)0x9F0C, "SM_SKILL_RESULTS"); // OK
+            Send.Add((ushort)0xDEC3, "SM_PLAYER_SKILL_LIST"); // OK
 
-            // Inspect
-            Send.Add(typeof(SpCharacterInspect), unchecked((short)0xE153)); //1725 EU
-            Send.Add(typeof(SpInspectUid), unchecked((short)0x59A9)); //1725 EU
-            Send.Add(typeof(SpInspectUnk), unchecked((short)0x77C3)); //1725 EU
+            // CHAT
+            Send.Add((ushort)0xC4DE, "SM_CHAT"); // OK
+            Send.Add((ushort)0x8CD3, "SM_CHAT_LOOKING_FOR_GROUP"); // OK
+            Send.Add((ushort)0xA856, "SM_CHAT_LOOKING_FOR_GROUP_INFO"); // OK
+            Send.Add((ushort)0x8A9F, "SM_CHAT_INFO"); // OK<
+            Send.Add((ushort)0x9F6E, "SM_WHISP"); // OK
 
-            //Quests
-            Send.Add(typeof (SpQuest), unchecked((short) 0xE80F)); //1725 EU
-            Send.Add(typeof (SpComplitedQuests), unchecked((short) 0xB791)); //1725 EU
-            Send.Add(typeof (SpQuestComplite), unchecked((short) 0xA94D)); //1725 EU
-            Send.Add(typeof (SpQuestMovie), unchecked((short) 0xFA43)); //1725 EU
+            // PLAYER
+            Send.Add((ushort)0x7064, "SM_PLAYER_FRIEND_LIST"); // OK
+            Send.Add((ushort)0x840C, "SM_OWN_PLAYER_SPAWN"); // OK
+            Send.Add((ushort)0xCD87, "SM_PLAYER_STATS_UPDATE"); // OK
+            Send.Add((ushort)0xE3F9, "SM_PLAYER_MOVE"); // OK
+            Send.Add((ushort)0xD371, "SM_PLAYER_ZONE_CHANGE");
+            Send.Add((ushort)0xB8C0, "SM_PLAYER_SELECT_CREATURE"); // OK
+            Send.Add((ushort)0xBEFE, "SM_PLAYER_STATE"); // OK
+            Send.Add((ushort)0xA3C0, "SM_RESPONSE_GAMESTAT_PONG");
+            Send.Add((ushort)0x6022, "SM_PLAYER_DONJON_CLEAR_COUNT_LIST");
+            Send.Add((ushort)0x5390, "SM_PLAYER_SPAWN"); // OK
+            Send.Add((ushort)0x8668, "SM_PLAYER_DESPAWN"); // OK
+            Send.Add((ushort)0xC7A3, "SM_PLAYER_CLIMB_START");
+            Send.Add((ushort)0xDFDC, "SM_PLAYER_DESCRIPTION"); // OK
+            Send.Add((ushort)0xF5B4, "SM_PLAYER_UNK1"); // OK
+            Send.Add((ushort)0xF169, "SM_PLAYER_UNK2"); // OK
+            Send.Add((ushort)0xA3C6, "SM_PLAYER_DEATH");
+            Send.Add((ushort)0x8CB7, "SM_PLAYER_REVIVE");
+            Send.Add((ushort)0x862C, "SM_PLAYER_DEATH_WINDOW");
+            Send.Add((ushort)0xC99E, "SM_PLAYER_GATHER_STATS"); // OK
 
-            //Party
-            Send.Add(typeof (SpPartyList), unchecked((short) 0xBD9C)); //1725 EU
-            Send.Add(typeof(SpPartyRemoveMember), unchecked((short)0xE230)); //1725 EU
-            Send.Add(typeof (SpPartyStats), unchecked((short) 0xA908)); //1725 EU
-            Send.Add(typeof(SpPartyLeave), unchecked((short)0xC5A1)); //1725 EU
-            Send.Add(typeof (SpPartyVote), unchecked((short) 0xF5B5)); //1603 EU
-            Send.Add(typeof(SpPartyAbnormals), unchecked((short)0xD7EB)); //1725 EU
-            Send.Add(typeof(SpPartyMemberPosition), unchecked((short)0xACC1)); //1725 EU
+            // OBJECT
+            Send.Add((ushort)0x5DB2, "SM_GAMEOBJECT_SPAWN");
+            Send.Add((ushort)0xC7A2, "SM_GAMEOBJECT_DESPAWN");
 
-            //Guilds
-            Send.Add(typeof(SpServerGuilds), unchecked((short)0x6B0A)); //1725 EU
-            Send.Add(typeof (SpRequestInvite), unchecked((short) 0x7EA4)); //1725 EU
-            Send.Add(typeof (SpGuildMemberList), unchecked((short) 0x90E0)); //1725 EU
-            Send.Add(typeof (SpGuildRanking), unchecked((short) 0x80BC)); //1725 EU
-            Send.Add(typeof (SpGuildHistory), unchecked((short) 0xA04E)); //1725 EU
+            // CRAFT
+            Send.Add((ushort)0x97F1, "SM_CRAFT_STATS"); // OK
+            Send.Add((ushort)0xA3DF, "SM_CRAFT_RECIPE_LIST"); // OK
 
-            //Friends
-            Send.Add(typeof (SpFriendAdd), unchecked((short) 0x5B48)); //1603 EU
-            Send.Add(typeof (SpFriendList), unchecked((short) 0x820A)); //1603 EU
-            Send.Add(typeof (SpFriendUpdate), unchecked((short) 0xACAC)); //1603 EU
+            // ABNORMALITY
+            Send.Add((ushort)0xDFA9, "SM_ABNORMALITY_BEGIN"); // OK
+            Send.Add((ushort)0x9E24, "SM_ABNORMALITY_END"); // OK
 
-            //Gathering
-            Send.Add(typeof (SpGatherInfo), unchecked((short) 0x7102)); //1725 EU
-            Send.Add(typeof (SpRemoveGather), unchecked((short) 0xB372)); //1725 EU
-            Send.Add(typeof (SpGatherStart), unchecked((short) 0x61EA)); //1725 EU
-            Send.Add(typeof (SpGatherProgress), unchecked((short) 0xC666)); //1725 EU
-            Send.Add(typeof (SpGatherEnd), unchecked((short) 0xA769)); //1725 EU
-            Send.Add(typeof (SpUpdateGather), unchecked((short) 0x67AE)); //1603 EU
+            // CREATURE
+            Send.Add((ushort)0xBD20, "SM_CREATURE_HP_UPDATE");
+            Send.Add((ushort)0xDD71, "SM_CREATURE_UNK"); // OK
+            Send.Add((ushort)0xC8B0, "SM_CREATURE_MP_UPDATE");
+            Send.Add((ushort)0x68C2, "SM_CREATURE_SPAWN"); // OK
+            Send.Add((ushort)0xEA0B, "SM_CREATURE_DESPAWN"); // OK
+            Send.Add((ushort)0xAA64, "SM_CREATURE_MOVE");
+            Send.Add((ushort)0xEC17, "SM_CREATURE_ROTATE");
+            Send.Add((ushort)0xC2EA, "SM_CREATURE_TARGET_PLAYER");
+            Send.Add((ushort)0x95B4, "SM_CREATURE_SHOW_HP");
 
-            //Trade
-            Send.Add(typeof (SpTradeWindow), unchecked((short) 0xDD9A)); //1725 EU
-            Send.Add(typeof(SpPlayerTradeHistory), unchecked((short)0xDF5C)); //1725 EU
-            Send.Add(typeof(SpTradeHideWindow), unchecked((short)0x8895)); //1725 EU
+            // DROP
+            Send.Add((ushort)0x95CC, "SM_DROP_ITEM_LOOT"); // OK
+            Send.Add((ushort)0xD68B, "SM_DROP_ITEM_DESPAWN"); // OK
+            Send.Add((ushort)0xEB8B, "SM_DROP_ITEM_SPAWN"); // OK
 
-            //Craft/Extract
-            Send.Add(typeof (SpCraftUpdateWindow), unchecked((short) 0xE876)); //1725 EU
-            Send.Add(typeof (SpExtractProgressbar), unchecked((short) 0xF1E2)); //1725 EU
-            Send.Add(typeof (SpCraftWindow), unchecked((short) 0x53C7)); //1725 EU
-            Send.Add(typeof (SpCraftInitBar), unchecked((short) 0x648C)); //1725 EU
-            Send.Add(typeof (SpCraftProgress), unchecked((short) 0xB8FC)); //1725 EU
+            // DIALOG
+            Send.Add((ushort)0x5A8A, "SM_DIALOG"); // OK
+            Send.Add((ushort)0xEFBC, "SM_DIALOG_CLOSE"); // OK
+            Send.Add((ushort)0xFD90, "SM_DIALOG_EVENT"); // OK
+            Send.Add((ushort)0x819E, "SM_DIALOG_MENU_SELECT"); // OK
+            Send.Add((ushort)0x9E7A, "SM_DIALOG_TRADELIST_SHOW"); // OK
 
-            //Warehouse
-            Send.Add(typeof(SpWarehouseItems), unchecked((short)0x6505)); //1725 EU
+            // CAMPFIRE
+            Send.Add((ushort)0xCCE4, "SM_CAMPFIRE_SPAWN");
+            Send.Add((ushort)0xB5EF, "SM_CAMPFIRE_DESPAWN");
 
-            //Zone
-            Send.Add(typeof (SpZoneUnkAnswer), unchecked((short) 0x9F91)); //1725 EU
-            Send.Add(typeof (SpZoneUnkAnswer2), unchecked((short) 0xB0A1)); //1725 EU
+            // GROUP
+            Send.Add((ushort)0xB848, "SM_GROUP_MEMBER_LIST"); // OK
+            Send.Add((ushort)0xED19, "SM_GROUP_QUEST_SHARE"); // OK
+            Send.Add((ushort)0xBB1C, "SM_GROUP_MEMBER_STATS"); // OK
+            Send.Add((ushort)0xE82F, "SM_GROUP_ABNORMALS");
+            Send.Add((ushort)0xB314, "SM_GROUP_UNK"); // OK
+            Send.Add((ushort)0x4FD6, "SM_GROUP_MEMBER_HP_UPDATE"); // OK
+            Send.Add((ushort)0x6DBE, "SM_GROUP_MEMBER_MP_UPDATE");
+            Send.Add((ushort)0xEF84, "SM_GROUP_MEMBER_MOVE"); // OK
+            Send.Add((ushort)0x8378, "SM_GROUP_LEAVE"); // OK
+            Send.Add((ushort)0xCD5C, "SM_GROUP_LEADER_CHANGED"); // OK
+            Send.Add((ushort)0xF1E5, "SM_GROUP_CONFIRM_KICK_WINDOW_SHOW");
 
-            //UI Settings
-            Send.Add(typeof(SpUISettings), unchecked((short)0xE265));
+            // PROFIL
+            Send.Add((ushort)0xF8E2, "SM_PLAYER_SET_TITLE");
+            Send.Add((ushort)0xB8C4, "SM_PLAYER_DONJON_STATS_PVP"); // TODO
 
-            //AF6B 16000400000000
+            // QUEST
+            Send.Add((ushort)0xE3AE, "SM_QUEST_CLEAR_INFO"); // OK
+            Send.Add((ushort)0xCCA7, "SM_QUEST_INFO"); // OK
+            Send.Add((ushort)0xC7D9, "SM_QUEST_DAILY_COMPLETE_COUNT"); // OK
+            Send.Add((ushort)0x95BF, "SM_MISSION_COMPLETE_INFO"); // Not sure
+            Send.Add((ushort)0xF929, "SM_QUEST_BALLOON");
+            Send.Add((ushort)0x8F45, "SM_QUEST_VILLAGER_INFO");
+            Send.Add((ushort)0xFB81, "SM_QUEST_WORLD_VILLAGER_INFO");
+            Send.Add((ushort)0x5714, "SM_QUEST_WORLD_VILLAGER_INFO_CLEAR");
+            Send.Add((ushort)0xB433, "SM_QUEST_UPDATE");
 
-            // party kick vote
-            // party buffs 9E8A04001000010050004F3800001000200034ADE605A05C0800020000002000300008ACE605B0A1030001000000300040006CACE60570AB11000100000040000000D0ACE60578B6080001000000500000007CC400000000000001
-            // medal *Party maker*       1055010008000800000007000000EAAA404F00000000
-            // medal *Expedition relief* 10550100080008000000890000003C68404F00000000
-            // message *party has disbanned* 15D5060040003100390033000000
+            // INVENTORY
+            Send.Add((ushort)0x8034, "SM_INVENTORY"); // OK
+            Send.Add((ushort)0xC6A9, "SM_ITEM_INFO"); // OK
+            Send.Add((ushort)0xD3D7, "SM_ITEM_SIMPLE_INFO");
+            Send.Add((ushort)0xE040, "SM_PLAYER_INVENTORY_SLOT_CHANGED"); // OK
+            Send.Add((ushort)0x8890, "SM_PLAYER_APPEARANCE_CHANGE"); // OK
+            Send.Add((ushort)0x5601, "SM_ITEM_START_COOLTIME");
+            Send.Add((ushort)0xE62F, "SM_EXCHANGE_WINDOW_UPDATE");
 
-            Send.Add(typeof (SpForFun), unchecked((short) 0x7777)); //...
-            // ReSharper restore RedundantCast
+            // STOCK EXCHANGE ITEM
+            Send.Add((ushort)0xACBE, "SM_STOCK_EXCHANGE_ITEM_HINT"); // OK
+
+            Send.Add((ushort)0xB28D, "SM_STOCK_EXCHANGE_ITEM_UNIQUE_LIST"); // OK
+            Send.Add((ushort)0xF3A8, "SM_STOCK_EXCHANGE_ITEM_UNIQUE_ADD"); // OK
+
+            Send.Add((ushort)0xFD9D, "SM_STOCK_EXCHANGE_ITEM_ACCOUNT_LIST"); // OK
+            Send.Add((ushort)0xBD6E, "SM_STOCK_EXCHANGE_ITEM_ACCOUNT_ADD"); // OK
+            Send.Add((ushort)0x6B70, "SM_STOCK_EXCHANGE_ITEM_INFO"); // OK
+            Send.Add((ushort)0xDC8F, "SM_STOCK_EXCHANGE_ITEM_UNK"); // OK
+
+            // TRADE
+            Send.Add((ushort)0xCCD6, "SM_TRADE_WINDOW_SHOW");
+
+            // MAP
+            Send.Add((ushort)0x9860, "SM_MAP"); // TODO
+
+            // SOCIAL
+            Send.Add((ushort)0x6B3F, "SM_SOCIAL"); // OK
+            Send.Add((ushort)0xC18B, "SM_PLAYER_FRIEND_LIST");
+            Send.Add((ushort)0x9547, "SM_PLAYER_FRIEND_ADD_SUCCESS");
+            Send.Add((ushort)0x9946, "SM_PLAYER_FRIEND_REMOVE_SUCCESS");
+            Send.Add((ushort)0xC156, "SM_REIGN_INFO");
+            Send.Add((ushort)0x6425, "SM_GUARD_PK_POLICY"); // OK
+
+            // SHOP
+            Send.Add((ushort)0xE6AF, "SM_SHOP_WINDOW_OPEN"); // TODO
+
+            // SYSTEM
+            Send.Add((ushort)0xDD29, "SM_SYSTEM_MESSAGE"); // OK
+            Send.Add((ushort)0xAB23, "SM_WELCOME_MESSAGE"); // OK
+            Send.Add((ushort)0xC54E, "SM_QUIT_TO_CHARACTER_LIST_WINDOW"); // OK
+            Send.Add((ushort)0xF348, "SM_QUIT_TO_CHARACTER_LIST_CANCEL"); // OK
+            Send.Add((ushort)0x8BA9, "SM_QUIT_TO_CHARACTER_LIST"); // OK
+            Send.Add((ushort)0xB5E4, "SM_QUIT_GAME_WINDOW"); // OK
+            Send.Add((ushort)0xDD59, "SM_QUIT_GAME_CANCEL"); // OK
+            Send.Add((ushort)0xA594, "SM_QUIT_GAME"); // OK
+
+            // REQUEST
+            Send.Add((ushort)0xAF1A, "SM_REQUEST_CONTRACT"); // OK
+            Send.Add((ushort)0xAF0C, "SM_REQUEST_CONTRACT_REPLY"); // OK
+            Send.Add((ushort)0xA249, "SM_REQUEST_CONTRACT_CANCEL");
+            Send.Add((ushort)0xBA1A, "SM_REQUEST_COMPLETE"); // OK
+            Send.Add((ushort)0xCECD, "SM_REQUEST_WINDOW_SHOW"); // OK
+            Send.Add((ushort)0x55B9, "SM_REQUEST_WINDOW_HIDE");
+
+            // CHANNEL
+            Send.Add((ushort)0xF32B, "SM_PLAYER_ENTER_CHANNEL"); // TODO
+            Send.Add((ushort)0x907B, "SM_PLAYER_CHANNEL_INFO"); // OK
+            Send.Add((ushort)0xF419, "SM_PLAYER_CHANNEL_LIST"); // OK
+
+            // GATHER
+            Send.Add((ushort)0xC775, "SM_GATHER_START"); // OK
+            Send.Add((ushort)0x949B, "SM_GATHER_PROGRESS"); // OK
+            Send.Add((ushort)0xD0F5, "SM_GATHER_END"); // OK
+            Send.Add((ushort)0xDB23, "SM_GATHER_SPAWN"); // OK
+            Send.Add((ushort)0xC86C, "SM_GATHER_DESPAWN"); // OK
+            Send.Add((ushort)0x6AB5, "SM_GATHERCRAFT_POINT"); // OK
+
+            // UNK
+            Send.Add((ushort)0x670A, "SM_PLAYER_UNK"); // OK
+
 
             #endregion
 
-            SendNames = Send.ToDictionary(p => p.Value, p => p.Key.Name);
+            //SendNames = Send.ToDictionary(p => p.Value, p => p.Key.Name);
         }
     }
 }

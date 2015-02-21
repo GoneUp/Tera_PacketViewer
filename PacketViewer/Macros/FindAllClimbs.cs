@@ -23,8 +23,8 @@ namespace PacketViewer.Macros
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            short spClimb = Packet.GetPacketOpcode(MainWindow, "SpClimb");
-            short spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
+            ushort spClimb = Packet.GetPacketOpcode(MainWindow, "SpClimb");
+            ushort spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
 
             int mapId = 0;
 

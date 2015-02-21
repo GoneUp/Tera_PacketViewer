@@ -24,8 +24,8 @@ namespace PacketViewer.Macros
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            short spNpcInfoOpCode = Packet.GetPacketOpcode(MainWindow, "SpNpcInfo");
-            short spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
+            ushort spNpcInfoOpCode = Packet.GetPacketOpcode(MainWindow, "SpNpcInfo");
+            ushort spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
 
             Dictionary<int, Dictionary<long, byte[]>> npcs = new Dictionary<int, Dictionary<long, byte[]>>();
 

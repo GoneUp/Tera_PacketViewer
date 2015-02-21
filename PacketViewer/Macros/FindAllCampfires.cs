@@ -25,8 +25,8 @@ namespace PacketViewer.Macros
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            short spCampfireOpCode = Packet.GetPacketOpcode(MainWindow, "SpCampfire");
-            short spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
+            ushort spCampfireOpCode = Packet.GetPacketOpcode(MainWindow, "SpCampfire");
+            ushort spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
 
             Dictionary<int, List<CampfireSpawnTemplate>> templates = new Dictionary<int, List<CampfireSpawnTemplate>>();
 

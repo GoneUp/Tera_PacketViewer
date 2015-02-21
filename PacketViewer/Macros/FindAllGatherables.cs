@@ -22,8 +22,8 @@ namespace PacketViewer.Macros
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            short spGatherInfoOpCode = Packet.GetPacketOpcode(MainWindow, "SpGatherInfo");
-            short spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
+            ushort spGatherInfoOpCode = Packet.GetPacketOpcode(MainWindow, "SpGatherInfo");
+            ushort spBindOpCode = Packet.GetPacketOpcode(MainWindow, "SpCharacterBind");
 
             Dictionary<int, Dictionary<long, byte[]>> gathers = new Dictionary<int, Dictionary<long, byte[]>>();
 

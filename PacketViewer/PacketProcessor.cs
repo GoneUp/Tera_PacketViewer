@@ -120,7 +120,7 @@ namespace PacketViewer
             if (ServerBuffer.Length < length)
                 return false;
 
-            short opCode = BitConverter.ToInt16(ServerBuffer, 2);
+            ushort opCode = BitConverter.ToUInt16(ServerBuffer, 2);
 
             Packets.Add(new Packet(true, opCode, GetServerData(length)));
 
@@ -173,7 +173,7 @@ namespace PacketViewer
             if (ClientBuffer.Length < length)
                 return false;
 
-            short opCode = BitConverter.ToInt16(ClientBuffer, 2);
+            ushort opCode = BitConverter.ToUInt16(ClientBuffer, 2);
 
             Packets.Add(new Packet(false, opCode, GetClientData(length)));
 
