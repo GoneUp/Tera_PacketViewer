@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F2F4078C-F3A6-4624-B85F-3A724B261F92}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="Scs">
+      <HintPath>..\packages\SCS.1.1.0.1\lib\net40\Scs.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache.cs" />
+    <Compile Include="Data.cs" />
+    <Compile Include="Enums\AttackStatus.cs" />
+    <Compile Include="Enums\AttackType.cs" />
+    <Compile Include="Enums\ChatType.cs" />
+    <Compile Include="Enums\CheckNameResult.cs" />
+    <Compile Include="Enums\Craft\CraftStat.cs" />
+    <Compile Include="Enums\CreatureState.cs" />
+    <Compile Include="Enums\DamageType.cs" />
+    <Compile Include="Enums\DialogIcon.cs" />
+    <Compile Include="Enums\DialogNpcString.cs" />
+    <Compile Include="Enums\DialogQuestString.cs" />
+    <Compile Include="Enums\EffectType.cs" />
+    <Compile Include="Enums\Gather\ResourceType.cs" />
+    <Compile Include="Enums\Gather\TypeName.cs" />
+    <Compile Include="Enums\ItemDressSlot.cs" />
+    <Compile Include="Enums\ItemEffectType.cs" />
+    <Compile Include="Enums\ItemKind.cs" />
+    <Compile Include="Enums\ItemObtain.cs" />
+    <Compile Include="Enums\ItemQuality.cs" />
+    <Compile Include="Enums\ItemType.cs" />
+    <Compile Include="Enums\Item\CombatItemType.cs" />
+    <Compile Include="Enums\Item\ItemCategory.cs" />
+    <Compile Include="Enums\Item\ItemResourseType.cs" />
+    <Compile Include="Enums\Item\RequiredEquipmentType.cs" />
+    <Compile Include="Enums\Item\StorageType.cs" />
+    <Compile Include="Enums\MovementDirection.cs" />
+    <Compile Include="Enums\NpcTitle.cs" />
+    <Compile Include="Enums\NpcRace.cs" />
+    <Compile Include="Enums\NpcSize.cs" />
+    <Compile Include="Enums\ObjectFamily.cs" />
+    <Compile Include="Enums\Party\PartyMember.cs" />
+    <Compile Include="Enums\Pegasus\PType.cs" />
+    <Compile Include="Enums\PetName.cs" />
+    <Compile Include="Enums\PlayerClass.cs" />
+    <Compile Include="Enums\PlayerEmotion.cs" />
+    <Compile Include="Enums\PlayerMode.cs" />
+    <Compile Include="Enums\Player\PlayerMoveType.cs" />
+    <Compile Include="Enums\Player\PlayerRelation.cs" />
+    <Compile Include="Enums\QuestStatus.cs" />
+    <Compile Include="Enums\QuestStatusIcon.cs" />
+    <Compile Include="Enums\QuestStepType.cs" />
+    <Compile Include="Enums\QuestType.cs" />
+    <Compile Include="Enums\Race.cs" />
+    <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\ReportType.cs" />
+    <Compile Include="Enums\SkillEngine\AbnormalityShowType.cs" />
+    <Compile Include="Enums\SkillEngine\PushTarget.cs" />
+    <Compile Include="Enums\SkillEngine\SkillType.cs" />
+    <Compile Include="Enums\SkillEngine\TargetingAreaType.cs" />
+    <Compile Include="Enums\SkillEngine\TargetingMethod.cs" />
+    <Compile Include="Enums\SkillEngine\TargetingType.cs" />
+    <Compile Include="Enums\RequestType.cs" />
+    <Compile Include="Enums\SystemWindow.cs" />
+    <Compile Include="Enums\VisualEffectType.cs" />
+    <Compile Include="Interfaces\IAi.cs" />
+    <Compile Include="Interfaces\IConnection.cs" />
+    <Compile Include="Interfaces\IController.cs" />
+    <Compile Include="Interfaces\IEffect.cs" />
+    <Compile Include="Interfaces\IQuestStep.cs" />
+    <Compile Include="Interfaces\IRecvPacket.cs" />
+    <Compile Include="Interfaces\ISendPacket.cs" />
+    <Compile Include="Interfaces\IVisible.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\Account\Account.cs" />
+    <Compile Include="Structures\Craft\Recipe.cs" />
+    <Compile Include="Structures\Creature\Creature.cs" />
+    <Compile Include="Structures\Creature\CreatureBaseStats.cs" />
+    <Compile Include="Structures\Creature\CreatureEffectsImpact.cs" />
+    <Compile Include="Structures\Creature\CreatureLifeStats.cs" />
+    <Compile Include="Structures\Gather\Gather.cs" />
+    <Compile Include="Structures\Geometry\Geom.cs" />
+    <Compile Include="Structures\Geometry\Point3D.cs" />
+    <Compile Include="Structures\Geometry\Polygon.cs" />
+    <Compile Include="Structures\Guild\Guild.cs" />
+    <Compile Include="Structures\Guild\GuildHistoryStrings.cs" />
+    <Compile Include="Structures\Guild\GuildMemberRank.cs" />
+    <Compile Include="Structures\Guild\GuildMemberRankPrivileges.cs" />
+    <Compile Include="Structures\Guild\HistoryEvent.cs" />
+    <Compile Include="Structures\Npc\Npc.cs" />
+    <Compile Include="Structures\Npc\NpcShape.cs" />
+    <Compile Include="Structures\Objects\Projectile.cs" />
+    <Compile Include="Structures\Player\AchevesStats.cs" />
+    <Compile Include="Structures\Player\StorageItem.cs" />
+    <Compile Include="Structures\Player\Player.cs" />
+    <Compile Include="Structures\Player\PlayerCraftStats.cs" />
+    <Compile Include="Structures\Player\PlayerData.cs" />
+    <Compile Include="Structures\Player\RaceGenderClass.cs" />
+    <Compile Include="Structures\Player\Storage.cs" />
+    <Compile Include="Structures\Player\UseSkillArgs.cs" />
+    <Compile Include="Structures\Quest\Enums\QuestNpcIcon.cs" />
+    <Compile Include="Structures\Quest\Enums\QuestRewardType.cs" />
+    <Compile Include="Structures\Quest\Quest.cs" />
+    <Compile Include="Structures\Quest\QuestData.cs" />
+    <Compile Include="Structures\Quest\QuestReward.cs" />
+    <Compile Include="Structures\Quest\QuestStep.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskAcquisitionHunt.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskConditions.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskDeliveItems.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskEscort.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskGather.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskGeomeunteum.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskGroupHunting.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskGuard.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskHuntingDelivery.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskHunting.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskItemThatStabbedPassed.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskItemUse.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskMovePC.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskNotImpliment.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskObjectAction.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskOverTheState.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskPlaybackVideo.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskQuarter.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskRepeat.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskSkillStrike.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskTeleport.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskVisit.cs" />
+    <Compile Include="Structures\Quest\Tasks\QTaskVisitTheBlackCrack.cs" />
+    <Compile Include="Structures\SkillEngine\Abnormality.cs" />
+    <Compile Include="Structures\SkillEngine\AbnormalityEffect.cs" />
+    <Compile Include="Structures\SkillEngine\ActionStage.cs" />
+    <Compile Include="Structures\SkillEngine\Animation.cs" />
+    <Compile Include="Structures\SkillEngine\AnimSeq.cs" />
+    <Compile Include="Structures\SkillEngine\AreaEffect.cs" />
+    <Compile Include="Structures\SkillEngine\Attack.cs" />
+    <Compile Include="Structures\SkillEngine\ChargeStage.cs" />
+    <Compile Include="Structures\SkillEngine\ChargingStageList.cs" />
+    <Compile Include="Structures\SkillEngine\Cost.cs" />
+    <Compile Include="Structures\SkillEngine\DefaultSkillSet.cs" />
+    <Compile Include="Structures\SkillEngine\Precondition.cs" />
+    <Compile Include="Structures\SkillEngine\ProjectileData.cs" />
+    <Compile Include="Structures\SkillEngine\ProjectileSkill.cs" />
+    <Compile Include="Structures\SkillEngine\Skill.cs" />
+    <Compile Include="Structures\SkillEngine\SkillAction.cs" />
+    <Compile Include="Structures\SkillEngine\Targeting.cs" />
+    <Compile Include="Structures\SkillEngine\TargetingArea.cs" />
+    <Compile Include="Structures\SkillEngine\UserSkill.cs" />
+    <Compile Include="Structures\Statistical.cs" />
+    <Compile Include="Structures\Template\CampfireSpawnTemplate.cs" />
+    <Compile Include="Structures\Template\GatherSpawnTemplate.cs" />
+    <Compile Include="Structures\Template\GatherTemplate.cs" />
+    <Compile Include="Structures\Template\Gather\GSpawnTemplate.cs" />
+    <Compile Include="Structures\Template\Item\CategorieStats\ChangeColorItem.cs" />
+    <Compile Include="Structures\Template\Item\CategorieStats\IDefaultCategorieStat.cs" />
+    <Compile Include="Structures\Template\Item\CategorieStats\EquipmentStat.cs" />
+    <Compile Include="Structures\Template\Item\CategorieStats\SkillStat.cs" />
+    <Compile Include="Structures\Template\Item\ItemTemplate.cs" />
+    <Compile Include="Structures\Template\Item\Passivity.cs" />
+    <Compile Include="Structures\Template\NpcTemplate.cs" />
+    <Compile Include="Structures\Template\SpawnTemplate.cs" />
+    <Compile Include="Structures\TeraObject.cs" />
+    <Compile Include="Structures\Uid.cs" />
+    <Compile Include="Structures\UidFactory.cs" />
+    <Compile Include="Structures\World\Campfire.cs" />
+    <Compile Include="Structures\World\Continent\Area.cs" />
+    <Compile Include="Structures\World\Continent\Continent.cs" />
+    <Compile Include="Structures\World\Continent\Section.cs" />
+    <Compile Include="Structures\World\AttackResult.cs" />
+    <Compile Include="Structures\World\Climb.cs" />
+    <Compile Include="Structures\World\Dialog.cs" />
+    <Compile Include="Structures\World\DialogButton.cs" />
+    <Compile Include="Structures\World\Duel.cs" />
+    <Compile Include="Structures\World\Abnormal.cs" />
+    <Compile Include="Structures\World\FlyTeleport.cs" />
+    <Compile Include="Structures\World\GeoLocation.cs" />
+    <Compile Include="Structures\World\GeoPoint.cs" />
+    <Compile Include="Structures\World\Item.cs" />
+    <Compile Include="Structures\World\MapInstance.cs" />
+    <Compile Include="Structures\World\Mount.cs" />
+    <Compile Include="Structures\World\Party\Party.cs" />
+    <Compile Include="Structures\World\Pegasus\FlyStep.cs" />
+    <Compile Include="Structures\World\Pegasus\PegasusPath.cs" />
+    <Compile Include="Structures\World\Pegasus\PPStage.cs" />
+    <Compile Include="Structures\World\Requests\DuelInvite.cs" />
+    <Compile Include="Structures\World\Requests\Extract.cs" />
+    <Compile Include="Structures\World\Requests\GuildCreate.cs" />
+    <Compile Include="Structures\World\Requests\GuildInvite.cs" />
+    <Compile Include="Structures\World\Requests\PartyInvite.cs" />
+    <Compile Include="Structures\World\Requests\Request.cs" />
+    <Compile Include="Structures\World\Requests\EmptyRequest.cs" />
+    <Compile Include="Structures\World\Requests\TradeStart.cs" />
+    <Compile Include="Structures\World\ShoppingCart.cs" />
+    <Compile Include="Structures\World\ShoppingItem.cs" />
+    <Compile Include="Structures\World\Tradelist.cs" />
+    <Compile Include="Structures\World\VisualEffect.cs" />
+    <Compile Include="Structures\World\WorldPosition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{58DE62EB-E364-44E2-8721-F4F6EAF3168E}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

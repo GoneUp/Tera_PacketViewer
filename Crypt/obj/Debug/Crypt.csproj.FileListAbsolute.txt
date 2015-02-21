@@ -1,0 +1,19 @@
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\Crypt.dll
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\Crypt.pdb
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\protobuf-net.dll
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\Scs.dll
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\protobuf-net.pdb
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\protobuf-net.xml
+I:\Henry\Projekte\Tera\Tera\Crypt\bin\Debug\Scs.xml
+I:\Henry\Projekte\Tera\Tera\Crypt\obj\Debug\Crypt.dll
+I:\Henry\Projekte\Tera\Tera\Crypt\obj\Debug\Crypt.pdb
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\Crypt.dll
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\Crypt.pdb
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\protobuf-net.dll
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\Scs.dll
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\protobuf-net.pdb
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\protobuf-net.xml
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\bin\Debug\Scs.xml
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\obj\Debug\Crypt.csprojResolveAssemblyReference.cache
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\obj\Debug\Crypt.dll
+I:\Henry\Projekte\Tera\Tera Unk\Crypt\obj\Debug\Crypt.pdb

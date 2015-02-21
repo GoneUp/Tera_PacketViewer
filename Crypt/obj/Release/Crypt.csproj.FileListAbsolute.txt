@@ -1,0 +1,10 @@
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\Crypt.dll
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\Crypt.pdb
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\protobuf-net.dll
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\Scs.dll
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\protobuf-net.pdb
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\protobuf-net.xml
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\bin\Release\Scs.xml
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\obj\Release\Crypt.csprojResolveAssemblyReference.cache
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\obj\Release\Crypt.dll
+I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\Crypt\obj\Release\Crypt.pdb

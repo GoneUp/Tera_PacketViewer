@@ -1,0 +1,63 @@
+﻿<Window x:Class="PacketViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PacketSniffer -- Base by Cerium Unity -- Edit by GoneUp" Height="648" Width="898">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="233*"/>
+            <ColumnDefinition Width="684*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Popup Name="myPopup" Margin="0,0,0,3">
+            <TextBlock Name="myPopupText" Background="LightBlue"  Foreground="Blue"> Popup Text</TextBlock>
+        </Popup>
+
+        <Menu Height="24" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <MenuItem Header="Menu">
+                <MenuItem Header="Open stream" Click="OpenFile" />
+                <MenuItem Header="Exit" Click="Exit" />
+            </MenuItem>
+            <MenuItem Name="MacrosMenuItem" Header="Macros" />
+        </Menu>
+
+        <ListBox Name="PacketsList" Margin="10,93,0,10" Grid.Row="1" SelectionChanged="OnPacketSelect"/>
+
+        <RichTextBox Name="TextBox" Grid.Column="1" Margin="10,93,10,10" Grid.Row="1" VerticalScrollBarVisibility="Visible" />
+        <RichTextBox Name="HexTextBox" Grid.Column="1" Margin="10,10,10,0" Grid.Row="1" VerticalScrollBarVisibility="Visible" Height="76" VerticalAlignment="Top" />
+
+        <ComboBox Name="PacketNamesList" Margin="10,10,34,0" Grid.Row="1" VerticalAlignment="Top" Height="22"/>
+        <Button Content=">" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" Click="FindByName" HorizontalAlignment="Right" Width="29" Height="22"/>
+
+        <TextBox Name="HexBox" Margin="10,37,34,0" Grid.Row="1" TextWrapping="Wrap" Text="Find Hex" VerticalAlignment="Top" Height="22"/>
+        <Button Content=">" Margin="0,37,0,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="29" Click="FindByHex" Height="22"/>
+
+        <TextBox Name="OpCodeBox" Margin="10,64,34,0" Grid.Row="1" TextWrapping="Wrap" Text="Find OpCode" VerticalAlignment="Top" Height="22"/>
+        <Button Content=">" Margin="0,64,0,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="29" Click="FindByOpCode" Height="22"/>
+        <ComboBox x:Name="BoxNic" HorizontalAlignment="Left" Margin="5,24,0,0" VerticalAlignment="Top" Width="649" Grid.Column="1" SelectionChanged="BoxNic_SelectionChanged"/>
+        <ComboBox x:Name="BoxServers" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="182">
+            <ComboBoxItem Content="79.110.94.217;EU Akasha"/>
+            <ComboBoxItem Content="79.110.94.218;EU Arcadia"/>
+            <ComboBoxItem Content="79.110.94.214;EU Elinu"/>
+            <ComboBoxItem Content="79.110.94.212;EU Fraya"/>
+            <ComboBoxItem Content="79.110.94.213;EU Hasmina" IsSelected="True"/>
+            <ComboBoxItem Content="79.110.94.215;EU Icaruna"/>
+            <ComboBoxItem Content="79.110.94.219;EU Kaidun"/>
+            <ComboBoxItem Content="79.110.94.211;EU Killian"/>
+            <ComboBoxItem Content="79.110.94.216;EU Veritas"/>
+            <ComboBoxItem Content="79.110.94.218;EU Zenobia"/>
+            <ComboBoxItem Content="119.205.255.119;KR Arun"/>
+            <ComboBoxItem Content="119.205.255.118;KR Bellick"/>
+            <ComboBoxItem Content="119.205.255.106;KR Mystelle"/>
+            <ComboBoxItem Content="208.67.49.28;NA Tempest Reach"/>
+            <ComboBoxItem Content="208.67.49.92;NA Mount Tyrannas"/>
+            <ComboBoxItem Content="208.67.49.100;NA Valley of Titans"/>
+            <ComboBoxItem Content="208.67.49.84;NA Ascension Valley"/>
+            <ComboBoxItem Content="208.67.49.52;NA Lake of Tears"/>
+            <ComboBoxItem Content="208.67.49.68;NA Celestial Hills"/>
+        </ComboBox>
+    </Grid>
+</Window>
