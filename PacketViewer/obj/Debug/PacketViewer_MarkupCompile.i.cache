@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\
+I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\
 PacketViewer
 none
 false
 DEBUG;TRACE
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\App.xaml
-2-1103542647
+I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\App.xaml
+2-1949653527
 
-18-627088047
-161544128126
-MainWindow.xaml;Style.xaml;
+15-1214692163
+11-1255562657
+Forms\MainWindow.xaml;Forms\Style.xaml;
 
 False
 

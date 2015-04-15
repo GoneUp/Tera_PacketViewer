@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcodeDLL", "OpcodeDLL\OpcodeDLL.vcxproj", "{E7E18D39-C539-4717-A2C7-1F21C12A0233}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7E18D39-C539-4717-A2C7-1F21C12A0233}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E7E18D39-C539-4717-A2C7-1F21C12A0233}.Debug|Win32.Build.0 = Debug|Win32
+		{E7E18D39-C539-4717-A2C7-1F21C12A0233}.Release|Win32.ActiveCfg = Release|Win32
+		{E7E18D39-C539-4717-A2C7-1F21C12A0233}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
