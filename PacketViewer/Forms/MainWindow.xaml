@@ -4,8 +4,8 @@
         Title="PacketSniffer -- Base by Cerium Unity -- Edit by GoneUp" Height="648" Width="898" Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="233*"/>
-            <ColumnDefinition Width="684*"/>
+            <ColumnDefinition Width="257*"/>
+            <ColumnDefinition Width="633*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="56"/>
@@ -19,12 +19,14 @@
         <Menu Height="24" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Header="Menu">
                 <MenuItem Header="Open stream" Click="OpenFile" />
-                <MenuItem Header="Exit" Click="Exit" />
             </MenuItem>
-            <MenuItem Name="MacrosMenuItem" Header="Macros" />
+            <MenuItem Name="MacrosMenuItem" Header="Misc" >
+                <MenuItem Header="Max Packets to Show:"/>
+                <TextBox x:Name="boxMaxPackets" Text="3000" TextChanged="boxMaxPackets_TextChanged"/>
+            </MenuItem>
         </Menu>
 
-        <ListBox Name="PacketsList" Margin="10,93,0,10" Grid.Row="1" SelectionChanged="OnPacketSelect"/>
+        <ListBox Name="PacketsList" Margin="10,93,0,38" Grid.Row="1" SelectionChanged="OnPacketSelect"/>
 
         <RichTextBox Name="TextBox" Grid.Column="1" Margin="10,93,10,10" Grid.Row="1" VerticalScrollBarVisibility="Visible" />
         <RichTextBox Name="HexTextBox" Grid.Column="1" Margin="10,10,10,0" Grid.Row="1" VerticalScrollBarVisibility="Visible" Height="76" VerticalAlignment="Top" />
@@ -37,8 +39,8 @@
 
         <TextBox Name="OpCodeBox" Margin="10,64,34,0" Grid.Row="1" TextWrapping="Wrap" Text="Find OpCode" VerticalAlignment="Top" Height="22"/>
         <Button Content=">" Margin="0,64,0,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="29" Click="FindByOpCode" Height="22"/>
-        <ComboBox x:Name="BoxNic" HorizontalAlignment="Left" Margin="5,24,0,0" VerticalAlignment="Top" Width="649" Grid.Column="1" SelectionChanged="BoxNic_SelectionChanged"/>
-        <ComboBox x:Name="BoxServers" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="182">
+        <ComboBox x:Name="BoxNic" HorizontalAlignment="Left" Margin="5,24,-21,0" VerticalAlignment="Top" Width="649" Grid.Column="1" SelectionChanged="BoxNic_SelectionChanged" Height="22"/>
+        <ComboBox x:Name="BoxServers" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="182" Height="22">
             <ComboBoxItem Content="79.110.94.217;EU Akasha"/>
             <ComboBoxItem Content="79.110.94.218;EU Arcadia"/>
             <ComboBoxItem Content="79.110.94.214;EU Elinu"/>
@@ -59,5 +61,8 @@
             <ComboBoxItem Content="208.67.49.52;NA Lake of Tears"/>
             <ComboBoxItem Content="208.67.49.68;NA Celestial Hills"/>
         </ComboBox>
+        <CheckBox x:Name="boxAutoScroll" Content="AutoScroll" Margin="10,0,161,10" Grid.Row="2" Width="73" IsChecked="True" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="boxCapture" Content="Capture" Margin="101,0,83,11" Grid.Row="1" Width="73" IsChecked="True"  VerticalAlignment="Bottom"/>
+        <Button x:Name="btnClearCapture" Content="Clear Log" Margin="0,0,2,10" Grid.Row="2" FontSize="8" Click="btnClearCapture_Click" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="81"/>
     </Grid>
 </Window>

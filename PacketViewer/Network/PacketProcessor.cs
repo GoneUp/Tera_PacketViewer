@@ -120,14 +120,15 @@ namespace PacketViewer.Network
             ushort opCode = BitConverter.ToUInt16(ServerBuffer, 2);
             string opcodename = PacketTranslator.GetPacketOpcodeName(MainWindow, opCode);
 
-            Packets.Add(new Packet_old(true, opCode, opcodename, GetServerData(length), false));
+            Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, GetServerData(length), false);
+            ;
 
             string itemText = string.Format("[S] {0} [{1}]"
                                             , Packets[Packets.Count - 1].Name
                                             , Packets[Packets.Count - 1].Data.Length
                 );
 
-            MainWindow.AppendPacket(Colors.LightBlue, itemText);
+            MainWindow.AppendPacket(Colors.LightBlue, itemText, tmpPacket);
 
            return false;
         }
@@ -174,14 +175,14 @@ namespace PacketViewer.Network
             ushort opCode = BitConverter.ToUInt16(ClientBuffer, 2);
             string opcodename = PacketTranslator.GetPacketOpcodeName(MainWindow, opCode);
 
-            Packets.Add(new Packet_old(false, opCode, opcodename, GetServerData(length), false));
+             Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, GetServerData(length), false);
 
             string itemText = string.Format("[C] {0} [{1}]"
                                             , Packets[Packets.Count - 1].Name
                                             , Packets[Packets.Count - 1].Data.Length
                 );
 
-            MainWindow.AppendPacket(Colors.WhiteSmoke, itemText);
+            MainWindow.AppendPacket(Colors.WhiteSmoke, itemText, tmpPacket);
             
             return false;
         }

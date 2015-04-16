@@ -15,6 +15,15 @@ namespace PacketViewer.Forms
 {
     public partial class MainWindow
     {
+
+        public Capture.Capture cap;
+        public bool CaptureRunning = false;
+
+        public PacketProcessor pp;
+
+        public int MaxPackets = 3000;
+
+        #region main
         public MainWindow()
         {
             InitializeComponent();
@@ -40,18 +49,15 @@ namespace PacketViewer.Forms
             {
                 BoxNic.Items.Add(nic);
             }
-       
+
             pp.Init();
         }
 
-        public Capture.Capture cap;
-        public bool CaptureRunning = false;
 
-        public PacketProcessor pp;
 
         public void OpenFile(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog {Filter = "*.hex|*.hex"};
+            OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "*.hex|*.hex" };
 
             if (openFileDialog.ShowDialog() == false)
                 return;
@@ -103,25 +109,20 @@ namespace PacketViewer.Forms
 
             SetText("Loaded " + pp.Packets.Count + " packets...");
         }
-        
-        
+        #endregion
 
-        private void Exit(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
+        #region invokes
         public void ClearPackets()
         {
             Dispatcher.BeginInvoke(
                 new Action(
                     delegate
                     {
-                       PacketsList.Items.Clear();
+                        PacketsList.Items.Clear();
                     }));
         }
 
-        public void AppendPacket(Color col, string itemText)
+        public void AppendPacket(Color col, string itemText, Packet_old tmpPacket)
         {
             Dispatcher.BeginInvoke(
                 new Action(
@@ -131,11 +132,25 @@ namespace PacketViewer.Forms
                         {
                             Content = itemText,
                             Background = new SolidColorBrush(col)
-                         };
+                        };
 
-                        PacketsList.Items.Add(item);
+                        if (PacketsList.Items.Count == MaxPackets)
+                        {
+                            PacketsList.Items.RemoveAt(0);
+                            pp.Packets.RemoveAt(0);
+                        }
 
-                        PacketsList.ScrollIntoView(item);
+                        if (boxCapture.IsChecked.Value)
+                        {
+                            PacketsList.Items.Add(item);
+
+                            if (boxAutoScroll.IsChecked.Value)
+                            {
+                                PacketsList.ScrollIntoView(item);
+                            }
+
+                            pp.Packets.Add(tmpPacket);
+                        }
                     }));
         }
 
@@ -150,38 +165,78 @@ namespace PacketViewer.Forms
                     }));
         }
 
-        public void AppendHex(string text)
-        {
-            Dispatcher.BeginInvoke(
-                new Action(
-                    delegate
-                    {
-                       HexTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-                    }));
-        }
 
         public void SetText(string text)
         {
             Dispatcher.BeginInvoke(
                 new Action(
                     delegate
-                        {
-                            TextBox.Document.Blocks.Clear();
-                            TextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-                        }));
+                    {
+                        TextBox.Document.Blocks.Clear();
+                        TextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+                    }));
         }
+        #endregion
 
+        #region formfuncs
         private void OnPacketSelect(object sender, SelectionChangedEventArgs e)
         {
             if (PacketsList.SelectedIndex == -1)
                 return;
-            
+
             SetHex(pp.Packets[PacketsList.SelectedIndex].Hex);
             SetText(pp.Packets[PacketsList.SelectedIndex].Text);
 
             OpCodeBox.Text = pp.Packets[PacketsList.SelectedIndex].Hex.Substring(0, 4);
         }
 
+        private void BoxNic_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string nic_des = (string)BoxNic.SelectedValue;
+            string senderIp = ((string)BoxServers.Text).Split(';')[0];
+
+            if (CaptureRunning)
+            {
+                cap.StopCapture();
+
+            }
+
+            pp.Init();
+            PacketsList.Items.Clear();
+            cap.StartCapture(nic_des, senderIp);
+
+        }
+
+        private void btnClearCapture_Click(object sender, RoutedEventArgs e)
+        {
+            PacketsList.Items.Clear();
+            if (pp != null)
+            {
+                pp.Packets.Clear();
+            }
+
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void boxMaxPackets_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string input = boxMaxPackets.Text.Replace(" ", "");
+            int tmpMax;
+            if (input != "" && int.TryParse(input, out tmpMax))
+            {
+                if (tmpMax > 0)
+                {
+                    MaxPackets = tmpMax;
+                }
+            }
+        }
+        #endregion
+
+        #region search
         private void FindByName(object sender, RoutedEventArgs e)
         {
             if (pp.Packets == null)
@@ -274,27 +329,8 @@ namespace PacketViewer.Forms
                 }
             }
         }
+        #endregion
 
-        private void BoxNic_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string nic_des = (string)BoxNic.SelectedValue;
-            string senderIp = ((string) BoxServers.Text).Split(';')[0];
 
-            if (CaptureRunning)
-            {
-                cap.StopCapture();
-              
-            }
-
-            pp.Init();
-            PacketsList.Items.Clear();
-            cap.StartCapture(nic_des, senderIp);
-
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
     }
 }
