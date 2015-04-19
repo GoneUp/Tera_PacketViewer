@@ -12,8 +12,8 @@ namespace Crypt
 
         public byte[] ClientKey1 = new byte[128];
         public byte[] ClientKey2 = new byte[128];
-        public byte[] ServerKey1 = Utils.Random128Key();
-        public byte[] ServerKey2 = Utils.Random128Key();
+        public byte[] ServerKey1 = new byte[128];
+        public byte[] ServerKey2 = new byte[128];
 
         public byte[] TmpKey1 = new byte[128];
         public byte[] TmpKey2 = new byte[128];

@@ -175,7 +175,7 @@ namespace PacketViewer.Network
             ushort opCode = BitConverter.ToUInt16(ClientBuffer, 2);
             string opcodename = PacketTranslator.GetPacketOpcodeName(MainWindow, opCode);
 
-             Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, GetServerData(length), false);
+             Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, GetClientData(length), false);
 
             string itemText = string.Format("[C] {0} [{1}]"
                                             , Packets[Packets.Count - 1].Name
