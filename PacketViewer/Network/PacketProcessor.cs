@@ -124,8 +124,8 @@ namespace PacketViewer.Network
             ;
 
             string itemText = string.Format("[S] {0} [{1}]"
-                                            , Packets[Packets.Count - 1].Name
-                                            , Packets[Packets.Count - 1].Data.Length
+                                            , tmpPacket.Name
+                                            , tmpPacket.Data.Length
                 );
 
             MainWindow.AppendPacket(Colors.LightBlue, itemText, tmpPacket);
@@ -178,8 +178,8 @@ namespace PacketViewer.Network
              Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, GetClientData(length), false);
 
             string itemText = string.Format("[C] {0} [{1}]"
-                                            , Packets[Packets.Count - 1].Name
-                                            , Packets[Packets.Count - 1].Data.Length
+                                            , tmpPacket.Name
+                                            , tmpPacket.Data.Length
                 );
 
             MainWindow.AppendPacket(Colors.WhiteSmoke, itemText, tmpPacket);

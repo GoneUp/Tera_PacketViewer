@@ -1,7 +1,8 @@
 ﻿<Window x:Class="PacketViewer.Forms.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PacketSniffer -- Base by Cerium Unity -- Edit by GoneUp" Height="648" Width="898" Closed="Window_Closed">
+        Title="PacketSniffer -- Base by Cerium Unity -- Edit by GoneUp" Height="648" Width="898" Closed="Window_Closed"
+        Icon="../icon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="257*"/>

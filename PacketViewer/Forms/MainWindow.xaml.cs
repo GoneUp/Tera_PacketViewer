@@ -217,18 +217,27 @@ namespace PacketViewer.Forms
 
         private void BoxNic_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string nic_des = (string)BoxNic.SelectedValue;
-            string senderIp = ((string)BoxServers.Text).Split(';')[0];
-
-            if (CaptureRunning)
+            try
             {
-                cap.StopCapture();
+                string nic_des = (string)BoxNic.SelectedValue;
+                string senderIp = ((string)BoxServers.Text).Split(';')[0];
 
+                if (CaptureRunning)
+                {
+                    cap.StopCapture();
+
+                }
+
+                pp.Init();
+                PacketsList.Items.Clear();
+                cap.StartCapture(nic_des, senderIp);
+            }
+            catch (Exception ex)
+            {
+
+                SetText("Start Capture failure. \n Message:" + ex);
             }
 
-            pp.Init();
-            PacketsList.Items.Clear();
-            cap.StartCapture(nic_des, senderIp);
 
         }
 

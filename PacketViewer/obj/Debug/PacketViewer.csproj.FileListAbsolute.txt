@@ -1,105 +1,6 @@
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer.csprojResolveAssemblyReference.cache
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\MainWindow.baml
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\Style.baml
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\App.baml
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\MainWindow.g.cs
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\App.g.cs
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer_MarkupCompile.cache
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer.g.resources
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer.Properties.Resources.resources
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer.csproj.GenerateResource.Cache
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\PacketViewer.exe.config
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Crypt.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Data.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Network.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\protobuf-net.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Utils.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Scs.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Communication.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\NLog.dll
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Crypt.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Data.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Network.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Utils.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\protobuf-net.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\protobuf-net.xml
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\Communication.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\bin\Debug\NLog.pdb
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera\PacketViewer\obj\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\PacketViewer.exe.config
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Crypt.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Data.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Network.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\protobuf-net.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Scs.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Utils.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Communication.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\NLog.dll
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Crypt.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Data.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Network.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Utils.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\protobuf-net.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\protobuf-net.xml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Scs.xml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\Communication.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\NLog.xml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer.csprojResolveAssemblyReference.cache
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\MainWindow.baml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\Style.baml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\App.baml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\MainWindow.g.cs
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\App.g.cs
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer_MarkupCompile.cache
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer.g.resources
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer.Properties.Resources.resources
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\obj\Debug\PacketViewer.csproj.GenerateResource.Cache
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\PacketDotNet.xml
-I:\Henry\Projekte\Tera\Tera Unk\PacketViewer\bin\Debug\SharpPcap.xml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\PacketViewer.exe.config
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Crypt.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Data.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Network.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\protobuf-net.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Scs.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Utils.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Communication.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\NLog.dll
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Crypt.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Data.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Network.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Utils.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\PacketDotNet.xml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\protobuf-net.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\protobuf-net.xml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Scs.xml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\SharpPcap.xml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\Communication.pdb
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\bin\Debug\NLog.xml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer.csprojResolveAssemblyReference.cache
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\MainWindow.baml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\Style.baml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\App.baml
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\MainWindow.g.cs
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\App.g.cs
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer_MarkupCompile.cache
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer.g.resources
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer.Properties.Resources.resources
-I:\Henry\Projekte\Tera\Tera Unk Only Viewer Fork\PacketViewer\obj\Debug\PacketViewer.csproj.GenerateResource.Cache
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\bin\Debug\PacketViewer.exe.config
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.pdb
+I:\Henry\Projekte\Tera\Tera_PacketViewer\build\PacketViewer.exe.config
+I:\Henry\Projekte\Tera\Tera_PacketViewer\build\PacketViewer.exe
+I:\Henry\Projekte\Tera\Tera_PacketViewer\build\PacketViewer.pdb
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.csprojResolveAssemblyReference.cache
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\Forms\MainWindow.baml
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\Forms\Style.baml
@@ -110,7 +11,5 @@ I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer_Mar
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.g.resources
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.Properties.Resources.resources
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.csproj.GenerateResource.Cache
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\bin\Debug\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\bin\Debug\PacketViewer.pdb
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\bin\Debug\Crypt.dll
-I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\bin\Debug\Crypt.pdb
+I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.exe
+I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Debug\PacketViewer.pdb
