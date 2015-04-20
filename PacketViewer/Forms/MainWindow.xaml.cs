@@ -76,6 +76,17 @@ namespace PacketViewer.Forms
             }
 
             pp.Init();
+
+
+            //Print Info
+            string info = String.Format("Loaded {0} Opcodes. \n" +
+                                        "Loaded {1} servers.\n" +
+                                        "{2} network devices available.\n" +
+                                        "Github of this Project: https://github.com/GoneUp/Tera_PacketViewer\n" +
+                                        "Released at Ragezone: http://forum.ragezone.com/f797/release-tera-live-packet-sniffer-1052922/\n" +
+                                        "Have Fun ;)", PacketNamesList.Items.Count, BoxServers.Items.Count, BoxNic.Items.Count);
+            SetText(info);
+            
         }
 
 
