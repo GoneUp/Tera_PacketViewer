@@ -27,6 +27,8 @@ namespace PacketViewer.Forms
         public MainWindow()
         {
             InitializeComponent();
+
+            //Opcode Section
             PacketTranslator.Init(this);
 
             IEnumerable<string> sortDescendingQuery =
@@ -39,7 +41,30 @@ namespace PacketViewer.Forms
 
             PacketNamesList.SelectedIndex = 0;
 
+            //Serverlist
+            List<string> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
 
+            if (servers != null && servers.Count > 0)
+            {
+                //We got a custom serverlist.xml loaded....
+                BoxServers.Items.Clear();
+
+                foreach (var server in servers)
+                {
+                    int index = BoxServers.Items.Add(server);
+
+                    //GoneUp Special ;)
+                    if (server.Contains("Hasmina"))
+                    {
+                        BoxServers.SelectedIndex = index;
+                    }
+
+                }
+
+
+            }
+
+            //Capture 
             pp = new PacketProcessor(this);
             cap = new Capture.Capture(this);
 

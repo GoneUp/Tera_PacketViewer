@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Windows.Documents;
+using System.Xml;
 
 namespace PacketViewer
 {
@@ -84,8 +88,8 @@ namespace PacketViewer
                 builder.Append("\t");
                 count += 3;
             }
-                 
-            for (int i = (pass * 16) - 16; i < (data.Length -1); i++)
+
+            for (int i = (pass * 16) - 16; i < (data.Length - 1); i++)
             {
                 char c = (char)data[i];
                 if (c > 0x1f && c < 0x80)
@@ -129,6 +133,44 @@ namespace PacketViewer
                 return false;
 
             return new Random().Next(0, 100) <= chance;
+        }
+
+        public static List<string> LoadServerlistFile(string path)
+        {
+            /*
+             * <Servers>
+        <List>
+                <Server Title="[EU] Killian" Ip="79.110.94.211"/>
+             * */
+
+            if (File.Exists(path))
+            {
+                List<string> servers = new List<string>();
+
+                using (XmlReader reader = XmlReader.Create(new StreamReader(path)))
+                {
+                    reader.MoveToContent();
+                    while (reader.Read())
+                    {
+                        if (reader.Name == "Server")
+                        {
+                            reader.MoveToAttribute("Title");
+                            string title = reader.Value;
+                            reader.MoveToAttribute("Ip");
+                            string ip = reader.Value;
+
+                            //Format: 79.110.94.217;EU Akasha
+                            string finalString = String.Format("{0};{1}", ip, title);
+                            servers.Add(finalString);
+                        }
+                        
+                    }
+                }
+
+                return servers;
+            }
+
+            return null;
         }
     }
 }

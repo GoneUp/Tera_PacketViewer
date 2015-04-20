@@ -1,0 +1,28 @@
+<Servers>
+        <List>
+                <Server Title="[EU] Killian" Ip="79.110.94.211"/>
+                <Server Title="[EU] Fraya" Ip="79.110.94.212"/>
+                <Server Title="[EU] Hasmina" Ip="79.110.94.213"/>
+                <Server Title="[EU] Elinu" Ip="79.110.94.214"/>
+                <Server Title="[EU] Icaruna" Ip="79.110.94.215"/>
+                <Server Title="[EU] Veritas" Ip="79.110.94.216"/>
+                <Server Title="[EU] Akasha" Ip="79.110.94.217"/>
+                <Server Title="[EU] Arcadia" Ip="79.110.94.218"/>
+                <Server Title="[EU] Kaidun" Ip="79.110.94.219"/>
+                <Server Title="[KR] Mystelle" Ip="119.205.255.106"/>
+                <Server Title="[KR] Bellick" Ip="119.205.255.118"/>
+                <Server Title="[KR] Arun" Ip="119.205.255.119"/>
+                <Server Title="[NA] Tempest Reach" Ip="208.67.49.28"/>
+                <Server Title="[NA] Lake of Tears" Ip="208.67.49.52"/>
+                <Server Title="[NA] Celestial Hills" Ip="208.67.49.68"/>
+                <Server Title="[NA] Ascension Valley" Ip="208.67.49.84"/>
+                <Server Title="[NA] Mount Tyrannas" Ip="208.67.49.92"/>
+                <Server Title="[NA] Valley of Titans" Ip="208.67.49.100"/>
+                <Server Title="[RU] Arun" Ip="91.225.237.5"/>
+                <Server Title="[RU] Kaitor" Ip="91.225.237.6"/>
+                <Server Title="[RU] Arborea" Ip="91.225.237.7"/>
+                <Server Title="[RU] Lorkada" Ip="91.225.237.8"/>
+                <Server Title="[RU] Baldera" Ip="91.225.237.9"/>
+                <Server Title="[RU] Westonia" Ip="91.225.237.12"/>
+        </List>
+</Servers>
