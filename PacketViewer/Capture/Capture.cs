@@ -6,6 +6,7 @@ using PacketDotNet;
 using PacketDotNet.Utils;
 using PacketViewer.Forms;
 using SharpPcap;
+using SharpPcap.WinPcap;
 
 namespace PacketViewer.Capture
 {
@@ -26,42 +27,42 @@ namespace PacketViewer.Capture
         public List<string> GetDevices()
         {
             List<string> tmpList = new List<string>();
-            CaptureDeviceList deviceList = CaptureDeviceList.Instance;
+            WinPcapDeviceList deviceList = WinPcapDeviceList.Instance;
 
-            foreach (ICaptureDevice device in deviceList)
+            for (int i = 0; i < deviceList.Count; i++)
             {
-                tmpList.Add(device.Description);
+                tmpList.Add(GetDeviceString(deviceList[i], i));
             }
 
             return tmpList;
         }
 
+        private string GetDeviceString(WinPcapDevice dev, int index)
+        {
+            return string.Format("({0}) {1} ## {2} ", index, dev.Interface.FriendlyName , dev.Interface.Description);
+        }
         public void StartCapture(string deviceName, string ip)
         {
+
             if (deviceName == "" || ip == "")
             {
-                return;
+                throw new Exception("Device Input Fail");
             }
 
-            CaptureDeviceList deviceList = CaptureDeviceList.Instance;
+            //Get our index back. (0) blabla
+            int index = Convert.ToInt32(deviceName.Split(')')[0].Replace("(", ""));
 
-
-            foreach (var dev in deviceList)
+            if (WinPcapDeviceList.Instance.Count <= index)
             {
-                if (dev.Description == deviceName)
-                {
-                    device = dev;
-                }
+                throw new Exception("Device Fail");
             }
 
-            if (device == null)
-            {
-                MessageBox.Show("Device Fail");
-            }
+            device = WinPcapDeviceList.Instance[index];
+            
 
             // Register our handler function to the
             // 'packet arrival' event
-            device.OnPacketArrival += new SharpPcap.PacketArrivalEventHandler(device_OnPacketArrival);
+            device.OnPacketArrival += device_OnPacketArrival;
 
             // Open the device for capturing
             int readTimeoutMilliseconds = 1000;
