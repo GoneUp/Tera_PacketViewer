@@ -26,67 +26,76 @@ namespace PacketViewer.Forms
         #region main
         public MainWindow()
         {
-            InitializeComponent();
-
-            //Opcode Section
-            PacketTranslator.Init(this);
-
-            IEnumerable<string> sortDescendingQuery =
-                          from w in PacketTranslator.PacketNames.Values
-                          orderby w ascending
-                          select w;
-
-            foreach (var packetName in sortDescendingQuery)
-                PacketNamesList.Items.Add(packetName);
-
-            PacketNamesList.SelectedIndex = 0;
-
-            //Serverlist
-            List<string> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
-
-            if (servers != null && servers.Count > 0)
+            try
             {
-                //We got a custom serverlist.xml loaded....
-                BoxServers.Items.Clear();
+                InitializeComponent();
 
-                foreach (var server in servers)
+                //Opcode Section
+                PacketTranslator.Init(this);
+
+                IEnumerable<string> sortDescendingQuery =
+                    from w in PacketTranslator.PacketNames.Values
+                    orderby w ascending
+                    select w;
+
+                foreach (var packetName in sortDescendingQuery)
+                    PacketNamesList.Items.Add(packetName);
+
+                PacketNamesList.SelectedIndex = 0;
+
+                //Serverlist
+                List<string> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
+
+                if (servers != null && servers.Count > 0)
                 {
-                    int index = BoxServers.Items.Add(server);
+                    //We got a custom serverlist.xml loaded....
+                    BoxServers.Items.Clear();
 
-                    //GoneUp Special ;)
-                    if (server.Contains("Hasmina"))
+                    foreach (var server in servers)
                     {
-                        BoxServers.SelectedIndex = index;
+                        int index = BoxServers.Items.Add(server);
+
+                        //GoneUp Special ;)
+                        if (server.Contains("Hasmina"))
+                        {
+                            BoxServers.SelectedIndex = index;
+                        }
+
                     }
+
 
                 }
 
+                //Capture 
+                pp = new PacketProcessor(this);
+                cap = new Capture.Capture(this);
 
+                var list = cap.GetDevices();
+
+                foreach (var nic in list)
+                {
+                    BoxNic.Items.Add(nic);
+                }
+
+                pp.Init();
+
+
+                //Print Info
+                string info = String.Format("Loaded {0} Opcodes. \n" +
+                                            "Loaded {1} servers.\n" +
+                                            "{2} network devices available.\n" +
+                                            "Github of this Project: https://github.com/GoneUp/Tera_PacketViewer\n" +
+                                            "Released at Ragezone: http://forum.ragezone.com/f797/release-tera-live-packet-sniffer-1052922/\n" +
+                                            "Have Fun ;)", PacketNamesList.Items.Count, BoxServers.Items.Count,
+                    BoxNic.Items.Count);
+                SetText(info);
             }
-
-            //Capture 
-            pp = new PacketProcessor(this);
-            cap = new Capture.Capture(this);
-
-            var list = cap.GetDevices();
-
-            foreach (var nic in list)
+            catch (Exception ex)
             {
-                BoxNic.Items.Add(nic);
+
+                string info = "Startup FAIL! Is WinPcap installed? \n " + ex;
+                SetText(info);
             }
-
-            pp.Init();
-
-
-            //Print Info
-            string info = String.Format("Loaded {0} Opcodes. \n" +
-                                        "Loaded {1} servers.\n" +
-                                        "{2} network devices available.\n" +
-                                        "Github of this Project: https://github.com/GoneUp/Tera_PacketViewer\n" +
-                                        "Released at Ragezone: http://forum.ragezone.com/f797/release-tera-live-packet-sniffer-1052922/\n" +
-                                        "Have Fun ;)", PacketNamesList.Items.Count, BoxServers.Items.Count, BoxNic.Items.Count);
-            SetText(info);
-            
         }
 
 
