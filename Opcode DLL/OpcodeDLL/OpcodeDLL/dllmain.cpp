@@ -6,9 +6,8 @@
 //Usinng
 using namespace std;
 
-//OpCodeAdress TERA CLIENT 30.09
-string OpCodeVersion = "3009";
-DWORD GetOpCodeNameAddress = 0x0191AE60;
+string OpCodeVersion = "3104";
+DWORD GetOpCodeNameAddress = 0x17E29B0;
 
 
 string GetOpCodeName(DWORD Opcode)

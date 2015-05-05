@@ -3,7 +3,7 @@
   <Modules>
     <InjectorModule>
       <Enable>true</Enable>
-      <Path>I:\Henry\Projekte\Tera\Opcode DLL\OpcodeDLL_3009.dll</Path>
+      <Path>I:\Henry\Projekte\Tera\Tera_PacketViewer\Opcode DLL\OpcodeDLL_3104.dll</Path>
     </InjectorModule>
   </Modules>
   <Options>

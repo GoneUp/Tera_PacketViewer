@@ -8,7 +8,7 @@ Post Copy:
 For those wondering how to get the opcode names here's a little guide.
 
 1. In cheat engine, find the function that references the string "I_TELEPORT". Look just above that and find the start of the function. (In this case 0x0191D0A0)
-
+--Use the view -> referenced strings function, search for I_TELEPORT there.
 
 
 2. Make a c++ dll that looks like http://pastebin.com/qTGzrW8w with the address that you got in the previous step. 
