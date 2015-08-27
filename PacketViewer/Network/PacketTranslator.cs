@@ -22,7 +22,7 @@ namespace PacketViewer.Network
                 while ((line = reader.ReadLine()) != null)
                 {
                     //I_TELEPORT = 0
-                    string[] tmpString = line.Replace(" ","").Split('=');
+                    string[] tmpString = line.Replace(" ", "").Split('=');
                     PacketNames.Add(Convert.ToUInt16(tmpString[1]), tmpString[0]);
                 }
 
@@ -30,21 +30,20 @@ namespace PacketViewer.Network
             else
             {
                 MessageBox.Show("Opcodefile not found!");
-                
             }
 
         }
 
-        public static ushort GetPacketOpcode(MainWindow window, string name)
+        public static ushort GetOpcode(MainWindow window, string name)
         {
             ushort opCode =
                 (from val in PacketNames
                  where val.Value.Equals(name)
                  select val.Key).FirstOrDefault();
-         return opCode;
+            return opCode;
         }
 
-        public static string GetPacketOpcodeName(MainWindow window, ushort opCode)
+        public static string GetOpcodeName(MainWindow window, ushort opCode)
         {
             string name;
 

@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.Win32;
+using PacketViewer.Classes;
 using PacketViewer.Network;
 
 //Base by Cerium Unity. Edit by GoneUp. 21.02.2014
@@ -44,7 +45,7 @@ namespace PacketViewer.Forms
                 PacketNamesList.SelectedIndex = 0;
 
                 //Serverlist
-                List<string> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
+                List<ServerInfo> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
 
                 if (servers != null && servers.Count > 0)
                 {
@@ -53,17 +54,9 @@ namespace PacketViewer.Forms
 
                     foreach (var server in servers)
                     {
-                        int index = BoxServers.Items.Add(server);
-
-                        //GoneUp Special ;)
-                        if (server.Contains("Hasmina"))
-                        {
-                            BoxServers.SelectedIndex = index;
-                        }
-
+                        int index = BoxServers.Items.Add(server.GetDisplayString());
+                        if (server.Focus) BoxServers.SelectedIndex = index;
                     }
-
-
                 }
 
                 //Capture 
@@ -240,7 +233,7 @@ namespace PacketViewer.Forms
             try
             {
                 string nic_des = (string)BoxNic.SelectedValue;
-                string senderIp = ((string)BoxServers.Text).Split(';')[0];
+                string senderIp = (BoxServers.Text).Split(';')[0];
 
                 if (CaptureRunning)
                 {
@@ -251,6 +244,8 @@ namespace PacketViewer.Forms
                 pp.Init();
                 PacketsList.Items.Clear();
                 cap.StartCapture(nic_des, senderIp);
+
+                SetText(String.Format("Listening for packets of {0}.", (BoxServers.Text).Split(';')[1]));
             }
             catch (Exception ex)
             {

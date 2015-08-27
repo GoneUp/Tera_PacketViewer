@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Documents;
 using System.Xml;
+using PacketViewer.Classes;
 
 namespace PacketViewer
 {
@@ -135,17 +136,18 @@ namespace PacketViewer
             return new Random().Next(0, 100) <= chance;
         }
 
-        public static List<string> LoadServerlistFile(string path)
+        public static List<ServerInfo> LoadServerlistFile(string path)
         {
             /*
              * <Servers>
         <List>
                 <Server Title="[EU] Killian" Ip="79.110.94.211"/>
+                  <Server Title="[EU] LOL" Ip="79.110.94.211" DefaultFocus="True"/>
              * */
 
             if (File.Exists(path))
             {
-                List<string> servers = new List<string>();
+                List<ServerInfo> servers = new List<ServerInfo>();
 
                 using (XmlReader reader = XmlReader.Create(new StreamReader(path)))
                 {
@@ -154,19 +156,24 @@ namespace PacketViewer
                     {
                         if (reader.Name == "Server")
                         {
-                            reader.MoveToAttribute("Title");
-                            string title = reader.Value;
-                            reader.MoveToAttribute("Ip");
-                            string ip = reader.Value;
+                            ServerInfo info = new ServerInfo();
 
-                            //Format: 79.110.94.217;EU Akasha
-                            string finalString = String.Format("{0};{1}", ip, title);
-                            servers.Add(finalString);
+                            reader.MoveToAttribute("Title");
+                            info.Title = reader.Value;
+                            reader.MoveToAttribute("Ip");
+                            info.Ip = reader.Value;
+                            info.Focus = false;
+
+                            if (reader.AttributeCount == 3)
+                            {
+                                reader.MoveToAttribute("DefaultFocus");
+                                info.Focus = Convert.ToBoolean(reader.Value);
+                            }
+
+                            servers.Add(info);
                         }
-                        
                     }
                 }
-
                 return servers;
             }
 

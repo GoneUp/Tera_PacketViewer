@@ -2,7 +2,7 @@
         <List>
                 <Server Title="[EU] Killian" Ip="79.110.94.211"/>
                 <Server Title="[EU] Fraya" Ip="79.110.94.212"/>
-                <Server Title="[EU] Hasmina" Ip="79.110.94.213"/>
+                <Server Title="[EU] Hasmina" Ip="79.110.94.213" DefaultFocus="True"/>
                 <Server Title="[EU] Elinu" Ip="79.110.94.214"/>
                 <Server Title="[EU] Icaruna" Ip="79.110.94.215"/>
                 <Server Title="[EU] Veritas" Ip="79.110.94.216"/>

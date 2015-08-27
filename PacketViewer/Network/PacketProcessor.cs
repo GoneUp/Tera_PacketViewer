@@ -118,7 +118,7 @@ namespace PacketViewer.Network
                 return false;
 
             ushort opCode = BitConverter.ToUInt16(ServerBuffer, 2);
-            string opcodename = PacketTranslator.GetPacketOpcodeName(MainWindow, opCode);
+            string opcodename = PacketTranslator.GetOpcodeName(MainWindow, opCode);
 
             Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, GetServerData(length), false);
             ;
@@ -173,7 +173,7 @@ namespace PacketViewer.Network
                 return false;
 
             ushort opCode = BitConverter.ToUInt16(ClientBuffer, 2);
-            string opcodename = PacketTranslator.GetPacketOpcodeName(MainWindow, opCode);
+            string opcodename = PacketTranslator.GetOpcodeName(MainWindow, opCode);
 
              Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, GetClientData(length), false);
 

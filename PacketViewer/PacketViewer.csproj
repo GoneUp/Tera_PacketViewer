@@ -71,6 +71,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Capture\Capture.cs" />
+    <Compile Include="Classes\ServerInfo.cs" />
     <Compile Include="Forms\InputValueBox.cs" />
     <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
