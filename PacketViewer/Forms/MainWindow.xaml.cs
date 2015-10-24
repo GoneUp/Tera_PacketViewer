@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -32,7 +35,7 @@ namespace PacketViewer.Forms
                 InitializeComponent();
 
                 //Opcode Section
-                PacketTranslator.Init(this);
+                PacketTranslator.Init();
 
                 IEnumerable<string> sortDescendingQuery =
                     from w in PacketTranslator.PacketNames.Values
@@ -90,63 +93,6 @@ namespace PacketViewer.Forms
                 SetText(info);
             }
         }
-
-
-
-        public void OpenFile(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "*.hex|*.hex" };
-
-            if (openFileDialog.ShowDialog() == false)
-                return;
-
-            pp.Init();
-            pp.OpenFileMode = true;
-
-            PacketsList.Items.Clear();
-
-            using (FileStream fileStream = File.OpenRead(openFileDialog.FileName))
-            {
-                using (TextReader stream = new StreamReader(fileStream))
-                {
-                    while (true)
-                    {
-                        string line = stream.ReadLine();
-                        if (line == null)
-                            break;
-                        if (line.Length == 0)
-                            continue;
-                        if (pp.State == -1)
-                        {
-                            pp.State = 0;
-                            continue;
-                        }
-
-                        bool isServer = line[0] == ' ';
-
-                        string hex = line.Substring(isServer ? 14 : 10, 49).Replace(" ", "");
-                        byte[] data = hex.ToBytes();
-
-                        if (isServer)
-                        {
-                            pp.AppendServerData(data);
-                            // ReSharper disable CSharpWarnings::CS0642
-                            while (pp.ProcessServerData()) ;
-                            // ReSharper restore CSharpWarnings::CS0642
-                        }
-                        else
-                        {
-                            pp.AppendClientData(data);
-                            // ReSharper disable CSharpWarnings::CS0642
-                            while (pp.ProcessClientData()) ;
-                            // ReSharper restore CSharpWarnings::CS0642
-                        }
-                    }
-                }
-            }
-
-            SetText("Loaded " + pp.Packets.Count + " packets...");
-        }
         #endregion
 
         #region invokes
@@ -156,6 +102,7 @@ namespace PacketViewer.Forms
                 new Action(
                     delegate
                     {
+                        pp.Packets.Clear();
                         PacketsList.Items.Clear();
                     }));
         }
@@ -172,7 +119,7 @@ namespace PacketViewer.Forms
                             Background = new SolidColorBrush(col)
                         };
 
-                        if (PacketsList.Items.Count == MaxPackets)
+                        while (PacketsList.Items.Count >= MaxPackets)
                         {
                             PacketsList.Items.RemoveAt(0);
                             pp.Packets.RemoveAt(0);
@@ -381,5 +328,63 @@ namespace PacketViewer.Forms
         #endregion
 
 
+        #region perf_test
+
+        public void Test()
+        {
+            /*
+             * Conclusion: Both got a equal overall performance on these tests. Peronally I perfer the List. Less copys, cleander code.
+             * Test for PacketViewer.Network.PacketList 
+            Enqueue for 10000! took 265 ms 
+            Dequeue for 10000! took 597 ms 
+            Test for PacketViewer.Network.PacketQueue 
+            Enqueue for 10000! took 598 ms 
+            Dequeue for 10000! took 301 ms 
+             */
+
+            IPacketList[] lists = { new PacketList(), new PacketQueue() };
+            StringBuilder builder = new StringBuilder();
+            Stopwatch watch = new Stopwatch();
+
+            for (int j = 0; j < 4; j++)
+            {
+
+
+                Random r = new Random();
+                int n = 10000;
+                int[] rnd = new int[n];
+                byte[][] rndB = new byte[n][];
+                for (int i = 0; i < n; i++)
+                {
+                    rnd[i] = r.Next(1, 100000);
+                    rndB[i] = new byte[rnd[i]];
+                    r.NextBytes(rndB[i]);
+                }
+
+                foreach (IPacketList list in lists)
+                {
+                    builder.AppendFormat("Test for {0} \n", list);
+                    watch.Start();
+                    list.Clear();
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        list.Enqueue(rndB[i]);
+                    }
+                    watch.Stop();
+                    builder.AppendFormat("Enqueue for {0}! took {1} ms \n", n, watch.ElapsedMilliseconds);
+
+                    watch.Restart();
+                    for (int i = n - 1; i >= 0; i--)
+                    {
+                        list.GetBytes(rnd[i]);
+                    }
+                    watch.Stop();
+                    builder.AppendFormat("Dequeue for {0}! took {1} ms \n", n, watch.ElapsedMilliseconds);
+                }
+            }
+            SetText(builder.ToString());
+        }
+        #endregion
     }
 }

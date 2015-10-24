@@ -112,8 +112,8 @@ namespace PacketViewer.Capture
                     else
                     {
                         //Do a check for a new game Connection. Each handshake starts with a dword 1 packet from the server.
-                        byte[] test = { 0x01, 0x00, 0x00, 0x00 };
-                        if (StructuralComparisons.StructuralEqualityComparer.Equals(test, tcp.PayloadData))
+                        byte[] handshakeSig = { 0x01, 0x00, 0x00, 0x00 };
+                        if (StructuralComparisons.StructuralEqualityComparer.Equals(handshakeSig, tcp.PayloadData))
                         {
                             //New Connection detected. 
                             //We should reset State and Security Info

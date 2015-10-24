@@ -18,9 +18,6 @@
         </Popup>
 
         <Menu Height="24" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <MenuItem Header="Menu">
-                <MenuItem Header="Open stream" Click="OpenFile" />
-            </MenuItem>
             <MenuItem Name="MacrosMenuItem" Header="Misc" >
                 <MenuItem Header="Max Packets to Show:"/>
                 <TextBox x:Name="boxMaxPackets" Text="3000" TextChanged="boxMaxPackets_TextChanged"/>

@@ -11,7 +11,7 @@ namespace PacketViewer.Network
     {
         public static Dictionary<ushort, string> PacketNames = new Dictionary<ushort, string>();
 
-        public static void Init(MainWindow mw)
+        public static void Init()
         {
             string path = Directory.GetCurrentDirectory() + "\\opcodefile.txt";
             if (File.Exists(path))
@@ -34,7 +34,7 @@ namespace PacketViewer.Network
 
         }
 
-        public static ushort GetOpcode(MainWindow window, string name)
+        public static ushort GetOpcode(string name)
         {
             ushort opCode =
                 (from val in PacketNames
@@ -43,7 +43,7 @@ namespace PacketViewer.Network
             return opCode;
         }
 
-        public static string GetOpcodeName(MainWindow window, ushort opCode)
+        public static string GetOpcodeName(ushort opCode)
         {
             string name;
 

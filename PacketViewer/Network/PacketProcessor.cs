@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Crypt;
 using PacketViewer.Forms;
@@ -11,11 +12,10 @@ namespace PacketViewer.Network
         public Session SecSession;
         public int State;
 
-        public byte[] ServerBuffer;
-        public byte[] ClientBuffer;
+        public IPacketList ServerPackets;
+        public IPacketList ClientPackets;
 
         public List<Packet_old> Packets;
-        public bool OpenFileMode = false;
 
         protected MainWindow MainWindow;
 
@@ -30,9 +30,10 @@ namespace PacketViewer.Network
             SecSession = new Session();
             State = -1;
 
-            ServerBuffer = new byte[0];
-            ClientBuffer = new byte[0];
-            Packets = new List<Packet_old>();  
+            ServerPackets = new PacketList();
+            ClientPackets = new PacketList();
+
+            Packets = new List<Packet_old>();
         }
 
         public void AppendServerData(byte[] data)
@@ -40,20 +41,7 @@ namespace PacketViewer.Network
             if (State == 2)
                 SecSession.Encrypt(ref data);
 
-            Array.Resize(ref ServerBuffer, ServerBuffer.Length + data.Length);
-            Array.Copy(data, 0, ServerBuffer, ServerBuffer.Length - data.Length, data.Length);
-        }
-
-        public byte[] GetServerData(int length)
-        {
-            byte[] result = new byte[length];
-            Array.Copy(ServerBuffer, result, length);
-
-            byte[] reserve = (byte[]) ServerBuffer.Clone();
-            ServerBuffer = new byte[ServerBuffer.Length - length];
-            Array.Copy(reserve, length, ServerBuffer, 0, ServerBuffer.Length);
-
-            return result;
+            ServerPackets.Enqueue(data);
         }
 
         public void AppendClientData(byte[] data)
@@ -61,20 +49,7 @@ namespace PacketViewer.Network
             if (State == 2)
                 SecSession.Decrypt(ref data);
 
-            Array.Resize(ref ClientBuffer, ClientBuffer.Length + data.Length);
-            Array.Copy(data, 0, ClientBuffer, ClientBuffer.Length - data.Length, data.Length);
-        }
-
-        public byte[] GetClientData(int length)
-        {
-            byte[] result = new byte[length];
-            Array.Copy(ClientBuffer, result, length);
-
-            byte[] reserve = (byte[]) ClientBuffer.Clone();
-            ClientBuffer = new byte[ClientBuffer.Length - length];
-            Array.Copy(reserve, length, ClientBuffer, 0, ClientBuffer.Length);
-
-            return result;
+            ClientPackets.Enqueue(data);
         }
 
         public bool ProcessServerData()
@@ -83,54 +58,38 @@ namespace PacketViewer.Network
             {
                 case -1:
                     //Garbage. Drop it.
-                    GetServerData(ServerBuffer.Length);
+                    ServerPackets.Clear();
                     return false;
                 case 0:
-                    if (ServerBuffer.Length < 128)
+                    if (ServerPackets.GetLength() < 128)
                     {
                         //First Dword 1 Options Packet. Ignore it.
-                        if (OpenFileMode == false)
-                        {
-                             GetServerData(ServerBuffer.Length);
-                        }
-                       
+                        ServerPackets.Clear();
                         return false;
                     }
 
-                    SecSession.ServerKey1 = GetServerData(128);
+                    SecSession.ServerKey1 = ServerPackets.GetBytes(128);
                     State++;
                     return true;
                 case 1:
-                    if (ServerBuffer.Length < 128)
-                        return false;
-                    SecSession.ServerKey2 = GetServerData(128);
+                    if (ServerPackets.GetLength() < 128) return false;
+                    SecSession.ServerKey2 = ServerPackets.GetBytes(128);
                     SecSession.Init();
                     State++;
                     return true;
             }
 
-            if (ServerBuffer.Length < 4)
-                return false;
+            if (!ServerPackets.PacketAvailable()) return false;
 
-            int length = BitConverter.ToUInt16(ServerBuffer, 0);
+            int length = ServerPackets.NextPacketLength();
+            byte[] data = ServerPackets.GetBytes(length);
 
-            if (ServerBuffer.Length < length)
-                return false;
-
-            ushort opCode = BitConverter.ToUInt16(ServerBuffer, 2);
-            string opcodename = PacketTranslator.GetOpcodeName(MainWindow, opCode);
-
-            Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, GetServerData(length), false);
-            ;
-
-            string itemText = string.Format("[S] {0} [{1}]"
-                                            , tmpPacket.Name
-                                            , tmpPacket.Data.Length
-                );
-
-            MainWindow.AppendPacket(Colors.LightBlue, itemText, tmpPacket);
-
-           return false;
+            ushort opCode = BitConverter.ToUInt16(data, 2);
+            string opcodename = PacketTranslator.GetOpcodeName(opCode);
+            Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, data, false);
+            Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket));
+            
+            return true;
         }
 
         public bool ProcessClientData()
@@ -139,52 +98,29 @@ namespace PacketViewer.Network
             {
                 case -1:
                     //Garbage. Drop it.
-                    GetClientData(ClientBuffer.Length);
+                    ClientPackets.Clear();
                     return false;
 
                 case 0:
-                    if (ClientBuffer.Length < 128)
-                    {
-                        // garbage from a running game session. we ignore it.
-                        //If we open a hex File we handle it diffrent ;)
-                        if (OpenFileMode == false)
-                        {
-                            GetClientData(ClientBuffer.Length);
-                        }
-                        return false;
-                    }
-
-                    SecSession.ClientKey1 = GetClientData(128);
+                    if (ClientPackets.GetLength() < 128) return false;
+                    SecSession.ClientKey1 = ClientPackets.GetBytes(128);
                     return true;
                 case 1:
-                    if (ClientBuffer.Length < 128)
-                        return false;
-
-                    SecSession.ClientKey2 = GetClientData(128); 
+                    if (ClientPackets.GetLength() < 128) return false;
+                    SecSession.ClientKey2 = ClientPackets.GetBytes(128);
                     return true;
             }
 
-            if (ClientBuffer.Length < 4)
-                return false;
+            if (!ClientPackets.PacketAvailable()) return false;
 
-            int length = BitConverter.ToUInt16(ClientBuffer, 0);
+            int length = ClientPackets.NextPacketLength();
+            byte[] data = ClientPackets.GetBytes(length);
+            ushort opCode = BitConverter.ToUInt16(data, 2);
+            string opcodename = PacketTranslator.GetOpcodeName(opCode);
+            Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, data, false);
+            Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
 
-            if (ClientBuffer.Length < length)
-                return false;
-
-            ushort opCode = BitConverter.ToUInt16(ClientBuffer, 2);
-            string opcodename = PacketTranslator.GetOpcodeName(MainWindow, opCode);
-
-             Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, GetClientData(length), false);
-
-            string itemText = string.Format("[C] {0} [{1}]"
-                                            , tmpPacket.Name
-                                            , tmpPacket.Data.Length
-                );
-
-            MainWindow.AppendPacket(Colors.WhiteSmoke, itemText, tmpPacket);
-            
-            return false;
+            return true;
         }
     }
 }
