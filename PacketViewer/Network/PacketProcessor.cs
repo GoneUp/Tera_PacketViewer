@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Crypt;
@@ -70,13 +71,13 @@ namespace PacketViewer.Network
 
                     SecSession.ServerKey1 = ServerPackets.GetBytes(128);
                     State++;
-                    return true;
+                    return false;
                 case 1:
                     if (ServerPackets.GetLength() < 128) return false;
                     SecSession.ServerKey2 = ServerPackets.GetBytes(128);
                     SecSession.Init();
                     State++;
-                    return true;
+                    return false;
             }
 
             if (!ServerPackets.PacketAvailable()) return false;
@@ -86,6 +87,7 @@ namespace PacketViewer.Network
 
             ushort opCode = BitConverter.ToUInt16(data, 2);
             string opcodename = PacketTranslator.GetOpcodeName(opCode);
+            Debug.Print(opcodename);
             Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, data, false);
             Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket));
             
@@ -104,11 +106,11 @@ namespace PacketViewer.Network
                 case 0:
                     if (ClientPackets.GetLength() < 128) return false;
                     SecSession.ClientKey1 = ClientPackets.GetBytes(128);
-                    return true;
+                    return false;
                 case 1:
                     if (ClientPackets.GetLength() < 128) return false;
                     SecSession.ClientKey2 = ClientPackets.GetBytes(128);
-                    return true;
+                    return false;
             }
 
             if (!ClientPackets.PacketAvailable()) return false;

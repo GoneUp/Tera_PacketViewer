@@ -110,15 +110,15 @@ namespace PacketViewer.Network
         public bool PacketAvailable()
         {
             //peek length from buffer, check with buffer len
-            if (queue.Count == 0 && leftover == null) return false;
+            if (queue.Count == 0 && leftover == null && length < 2) return false;
             int packetLen = NextPacketLength();
             return (GetLength() >= packetLen);
         }
 
         public int NextPacketLength()
         {
-            if (leftover != null) return BitConverter.ToInt16(leftover, 0);
-            return BitConverter.ToInt16(queue.Peek(), 0);
+            if (leftover != null) return BitConverter.ToUInt16(leftover, 0);
+            return BitConverter.ToUInt16(queue.Peek(), 0);
         }
     }
 }

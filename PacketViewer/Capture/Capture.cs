@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using PacketDotNet;
 using PacketDotNet.Utils;
@@ -15,6 +18,7 @@ namespace PacketViewer.Capture
 
         private ICaptureDevice device;
         private string captureIp;
+        private CancellationTokenSource cancelationTokenSource;
 
         protected MainWindow MainWindow;
 
@@ -75,12 +79,16 @@ namespace PacketViewer.Capture
 
             // Start the capturing process
             device.StartCapture();
+
+            cancelationTokenSource = new CancellationTokenSource();
+            new Task(Process, cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
         }
 
         public void StopCapture()
         {
             device.StopCapture();
             device.Close();
+            cancelationTokenSource.Cancel();
             captureIp = "";
         }
 
@@ -94,19 +102,14 @@ namespace PacketViewer.Capture
                 TcpPacket tcp = (TcpPacket)ipPacket.PayloadPacket;
 
 
-                if (ipPacket != null && tcp != null)
+                if (ipPacket != null && tcp != null && tcp.PayloadData != null && tcp.PayloadData.Length > 0)
                 {
                     string destIp = ipPacket.DestinationAddress.ToString();
-
 
                     if (destIp == captureIp)
                     {
                         //Client -> Server
                         MainWindow.pp.AppendClientData(tcp.PayloadData);
-
-                        // ReSharper disable CSharpWarnings::CS0642
-                        while (MainWindow.pp.ProcessClientData()) ;
-                        // ReSharper restore CSharpWarnings::CS0642
 
                     }
                     else
@@ -125,9 +128,6 @@ namespace PacketViewer.Capture
 
                         //Sever -> Client
                         MainWindow.pp.AppendServerData(tcp.PayloadData);
-                        // ReSharper disable CSharpWarnings::CS0642
-                        while (MainWindow.pp.ProcessServerData()) ;
-                        // ReSharper restore CSharpWarnings::CS0642
                     }
 
                 }
@@ -138,6 +138,15 @@ namespace PacketViewer.Capture
                 MainWindow.SetText("device_OnPacketArrival failure. \n Message:" + ex);
             }
 
+        }
+
+        private void Process()
+        {
+            while (!cancelationTokenSource.IsCancellationRequested)
+            {
+                MainWindow.pp.ProcessServerData();
+                MainWindow.pp.ProcessClientData();
+            }
         }
     }
 }
