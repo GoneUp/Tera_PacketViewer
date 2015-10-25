@@ -11,7 +11,7 @@ namespace PacketViewer.Network
     public class PacketProcessor
     {
         public Session SecSession;
-        public int State;
+        public bool Initialized;
 
         public IPacketList ServerPackets;
         public IPacketList ClientPackets;
@@ -29,100 +29,118 @@ namespace PacketViewer.Network
         public void Init()
         {
             SecSession = new Session();
-            State = -1;
+            Initialized = false;
 
-            ServerPackets = new PacketList();
-            ClientPackets = new PacketList();
+            ServerPackets = new PacketList("S");
+            ClientPackets = new PacketList("C");
 
             Packets = new List<Packet_old>();
         }
 
         public void AppendServerData(byte[] data)
         {
-            if (State == 2)
+            if (Initialized)
                 SecSession.Encrypt(ref data);
 
             ServerPackets.Enqueue(data);
+
         }
 
         public void AppendClientData(byte[] data)
         {
-            if (State == 2)
+
+            if (Initialized)
                 SecSession.Decrypt(ref data);
 
             ClientPackets.Enqueue(data);
+
         }
 
-        public bool ProcessServerData()
+        public void ProcessAllServerData()
         {
-            switch (State)
+            if (!Initialized) return;
+            while (ServerPackets.PacketAvailable())
             {
-                case -1:
-                    //Garbage. Drop it.
-                    ServerPackets.Clear();
-                    return false;
-                case 0:
-                    if (ServerPackets.GetLength() < 128)
-                    {
-                        //First Dword 1 Options Packet. Ignore it.
-                        ServerPackets.Clear();
-                        return false;
-                    }
-
-                    SecSession.ServerKey1 = ServerPackets.GetBytes(128);
-                    State++;
-                    return false;
-                case 1:
-                    if (ServerPackets.GetLength() < 128) return false;
-                    SecSession.ServerKey2 = ServerPackets.GetBytes(128);
-                    SecSession.Init();
-                    State++;
-                    return false;
+                ProcessServerData(); //aka one packet
             }
+        }
 
-            if (!ServerPackets.PacketAvailable()) return false;
-
+        public void ProcessServerData()
+        {
             int length = ServerPackets.NextPacketLength();
-            byte[] data = ServerPackets.GetBytes(length);
+            if (length == 0) throw new Exception("Server data reader is broken....");
 
+            byte[] data = ServerPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
             string opcodename = PacketTranslator.GetOpcodeName(opCode);
             Debug.Print(opcodename);
             Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, data, false);
-            Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket));
-            
-            return true;
+            //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket));
+            MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket);
         }
 
-        public bool ProcessClientData()
+        public void ProcessAllClientData()
         {
-            switch (State)
+            if (!Initialized) return;
+            while (ClientPackets.PacketAvailable())
             {
-                case -1:
-                    //Garbage. Drop it.
-                    ClientPackets.Clear();
-                    return false;
-
-                case 0:
-                    if (ClientPackets.GetLength() < 128) return false;
-                    SecSession.ClientKey1 = ClientPackets.GetBytes(128);
-                    return false;
-                case 1:
-                    if (ClientPackets.GetLength() < 128) return false;
-                    SecSession.ClientKey2 = ClientPackets.GetBytes(128);
-                    return false;
+                ProcessClientData(); //aka one packet
             }
+        }
 
-            if (!ClientPackets.PacketAvailable()) return false;
+        public void ProcessClientData()
+        {
+            //if (!ClientPackets.PacketAvailable()) return;
 
             int length = ClientPackets.NextPacketLength();
             byte[] data = ClientPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
             string opcodename = PacketTranslator.GetOpcodeName(opCode);
+            Debug.Print(opcodename);
             Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, data, false);
-            Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
+            //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
+            MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket);
+        }
 
-            return true;
+        public void TryInit()
+        {
+            if (Initialized) return;
+
+            if (ClientPackets.GetLength() >= 256 && ServerPackets.GetLength() >= (256 + 4))
+            {
+                Debug.Print("--------------Init");
+                ServerPackets.GetBytes(4); //first dword
+                SecSession.ServerKey1 = ServerPackets.GetBytes(128);
+                SecSession.ServerKey2 = ServerPackets.GetBytes(128);
+                SecSession.ClientKey1 = ClientPackets.GetBytes(128);
+                SecSession.ClientKey2 = ClientPackets.GetBytes(128);
+                SecSession.Init();
+
+                Debug.Print("-----------Init2");
+                lock (MainWindow.cap.EventLock)
+                {
+                    //Lock tcp sniffer, we dont want any new packets while we are processing the backlog
+
+                    Initialized = true;
+                    byte[] tmp;
+                    if (ServerPackets.GetLength() > 0)
+                    {
+                        tmp = ServerPackets.GetBytes(ServerPackets.GetLength());
+                        SecSession.Encrypt(ref tmp);
+                        ServerPackets.Enqueue(tmp);
+                        Debug.Print("#########NEXT S LEN " + ServerPackets.NextPacketLength());
+                    }
+
+                    if (ClientPackets.GetLength() > 0)
+                    {
+                        tmp = ClientPackets.GetBytes(ClientPackets.GetLength());
+                        SecSession.Decrypt(ref tmp);
+                        ClientPackets.Enqueue(tmp);
+                        Debug.Print("#########NEXT C LEN " + ServerPackets.NextPacketLength());
+                    }
+                }
+                Debug.Print("------------Init done");
+            }
         }
     }
 }

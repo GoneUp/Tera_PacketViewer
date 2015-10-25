@@ -19,12 +19,19 @@ namespace PacketViewer.Capture
         private ICaptureDevice device;
         private string captureIp;
         private CancellationTokenSource cancelationTokenSource;
+        private bool running;
+        public object EventLock = new object();
 
         protected MainWindow MainWindow;
 
         public Capture(MainWindow mainWindow)
         {
             MainWindow = mainWindow;
+        }
+
+        public bool Running
+        {
+            get { return running; }
         }
 
 
@@ -82,10 +89,13 @@ namespace PacketViewer.Capture
 
             cancelationTokenSource = new CancellationTokenSource();
             new Task(Process, cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
+            running = true;
         }
 
         public void StopCapture()
         {
+            running = false;
+            EventLock = new object();
             device.StopCapture();
             device.Close();
             cancelationTokenSource.Cancel();
@@ -96,40 +106,41 @@ namespace PacketViewer.Capture
         {
             try
             {
-                ByteArraySegment raw = new ByteArraySegment(eCap.Packet.Data);
-                EthernetPacket ethernetPacket = new EthernetPacket(raw);
-                IpPacket ipPacket = (IpPacket)ethernetPacket.PayloadPacket;
-                TcpPacket tcp = (TcpPacket)ipPacket.PayloadPacket;
-
-
-                if (ipPacket != null && tcp != null && tcp.PayloadData != null && tcp.PayloadData.Length > 0)
+                lock (EventLock)
                 {
-                    string destIp = ipPacket.DestinationAddress.ToString();
+                    ByteArraySegment raw = new ByteArraySegment(eCap.Packet.Data);
+                    EthernetPacket ethernetPacket = new EthernetPacket(raw);
+                    IpPacket ipPacket = (IpPacket) ethernetPacket.PayloadPacket;
+                    TcpPacket tcp = (TcpPacket) ipPacket.PayloadPacket;
 
-                    if (destIp == captureIp)
-                    {
-                        //Client -> Server
-                        MainWindow.pp.AppendClientData(tcp.PayloadData);
 
-                    }
-                    else
+                    if (ipPacket != null && tcp != null && tcp.PayloadData != null && tcp.PayloadData.Length > 0)
                     {
-                        //Do a check for a new game Connection. Each handshake starts with a dword 1 packet from the server.
-                        byte[] handshakeSig = { 0x01, 0x00, 0x00, 0x00 };
-                        if (StructuralComparisons.StructuralEqualityComparer.Equals(handshakeSig, tcp.PayloadData))
+                        string destIp = ipPacket.DestinationAddress.ToString();
+
+                        if (destIp == captureIp)
                         {
-                            //New Connection detected. 
-                            //We should reset State and Security Info
-                            MainWindow.pp.Init();
-                            MainWindow.pp.State = 0;
-                            MainWindow.ClearPackets();
+                            //Client -> Server
+                            MainWindow.pp.AppendClientData(tcp.PayloadData);
+
+                        }
+                        else
+                        {
+                            //Do a check for a new game Connection. Each handshake starts with a dword 1 packet from the server.
+                            byte[] handshakeSig = {0x01, 0x00, 0x00, 0x00};
+                            if (StructuralComparisons.StructuralEqualityComparer.Equals(handshakeSig, tcp.PayloadData))
+                            {
+                                //New Connection detected. 
+                                //We should reset State and Security Info
+                                MainWindow.pp.Init();
+                                MainWindow.ClearPackets();
+                            }
+
+                            //Sever -> Client
+                            MainWindow.pp.AppendServerData(tcp.PayloadData);
                         }
 
-
-                        //Sever -> Client
-                        MainWindow.pp.AppendServerData(tcp.PayloadData);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -144,8 +155,11 @@ namespace PacketViewer.Capture
         {
             while (!cancelationTokenSource.IsCancellationRequested)
             {
-                MainWindow.pp.ProcessServerData();
-                MainWindow.pp.ProcessClientData();
+                if (!MainWindow.pp.Initialized) MainWindow.pp.TryInit();
+                MainWindow.pp.ProcessAllServerData();
+                MainWindow.pp.ProcessAllClientData();
+
+                Thread.Sleep(10);
             }
         }
     }

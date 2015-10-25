@@ -21,11 +21,8 @@ namespace PacketViewer.Forms
     {
 
         public Capture.Capture cap;
-        public bool CaptureRunning = false;
-
         public PacketProcessor pp;
-
-        public int MaxPackets = 3000;
+        private int maxPackets;
 
         #region main
         public MainWindow()
@@ -119,7 +116,7 @@ namespace PacketViewer.Forms
                             Background = new SolidColorBrush(col)
                         };
 
-                        while (PacketsList.Items.Count >= MaxPackets)
+                        while (PacketsList.Items.Count >= maxPackets)
                         {
                             PacketsList.Items.RemoveAt(0);
                             pp.Packets.RemoveAt(0);
@@ -182,10 +179,9 @@ namespace PacketViewer.Forms
                 string nic_des = (string)BoxNic.SelectedValue;
                 string senderIp = (BoxServers.Text).Split(';')[0];
 
-                if (CaptureRunning)
+                if (cap.Running)
                 {
                     cap.StopCapture();
-
                 }
 
                 pp.Init();
@@ -226,7 +222,7 @@ namespace PacketViewer.Forms
             {
                 if (tmpMax > 0)
                 {
-                    MaxPackets = tmpMax;
+                    maxPackets = tmpMax;
                 }
             }
         }
@@ -342,7 +338,7 @@ namespace PacketViewer.Forms
             Dequeue for 10000! took 301 ms 
              */
 
-            IPacketList[] lists = { new PacketList(), new PacketQueue() };
+            IPacketList[] lists = { new PacketList(""), new PacketQueue() };
             StringBuilder builder = new StringBuilder();
             Stopwatch watch = new Stopwatch();
 
