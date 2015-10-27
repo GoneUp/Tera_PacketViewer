@@ -24,12 +24,19 @@
             </MenuItem>
         </Menu>
 
-        <ListBox Name="PacketsList" Margin="10,93,0,38" Grid.Row="1" SelectionChanged="OnPacketSelect"/>
+        <ListBox Name="PacketsList" Margin="10,93,0,38" Grid.Row="1" Grid.Column="0" SelectionChanged="OnPacketSelect">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
 
         <RichTextBox Name="TextBox" Grid.Column="1" Margin="10,93,10,10" Grid.Row="1" VerticalScrollBarVisibility="Visible" />
         <RichTextBox Name="HexTextBox" Grid.Column="1" Margin="10,10,10,0" Grid.Row="1" VerticalScrollBarVisibility="Visible" Height="76" VerticalAlignment="Top" />
 
-        <ComboBox Name="PacketNamesList" Margin="10,10,34,0" Grid.Row="1" VerticalAlignment="Top" Height="22"/>
+        <ComboBox Name="PacketNamesList" Margin="10,10,34,0" Grid.Row="1" Height="22" VerticalAlignment="Top"/>
         <Button Content=">" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" Click="FindByName" HorizontalAlignment="Right" Width="29" Height="22"/>
 
         <TextBox Name="HexBox" Margin="10,37,34,0" Grid.Row="1" TextWrapping="Wrap" Text="Find Hex" VerticalAlignment="Top" Height="22"/>
@@ -37,8 +44,9 @@
 
         <TextBox Name="OpCodeBox" Margin="10,64,34,0" Grid.Row="1" TextWrapping="Wrap" Text="Find OpCode" VerticalAlignment="Top" Height="22"/>
         <Button Content=">" Margin="0,64,0,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="29" Click="FindByOpCode" Height="22"/>
-        <ComboBox x:Name="BoxNic" HorizontalAlignment="Left" Margin="5,24,-21,0" VerticalAlignment="Top" Width="649" Grid.Column="1" SelectionChanged="BoxNic_SelectionChanged" Height="22"/>
-        <ComboBox x:Name="BoxServers" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="182" Height="22">
+        <ComboBox x:Name="BoxNic" Margin="5,24,10,0" VerticalAlignment="Top"
+                  Grid.Row="0" Grid.Column="1" SelectionChanged="BoxNic_SelectionChanged" Height="22"/>
+        <ComboBox Grid.Row="0" Grid.Column="0" x:Name="BoxServers" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="182" Height="22">
             <ComboBoxItem Content="79.110.94.217;EU Akasha"/>
             <ComboBoxItem Content="79.110.94.218;EU Arcadia"/>
             <ComboBoxItem Content="79.110.94.214;EU Elinu"/>

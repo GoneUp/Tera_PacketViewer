@@ -1,38 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PacketViewer.Network
+namespace PacketViewer.Network.Lists
 {
-    class PacketList : IPacketList
+    class PacketQueue : IPacketList
     {
-        private List<byte[]> list;
+        private Queue<byte[]> queue;
+        private byte[] leftover;
         private int length;
-        private string tag;
 
-        public PacketList(string tag)
+        public PacketQueue()
         {
-            this.tag = tag;
-            list = new List<byte[]>();
+            queue = new Queue<byte[]>();
         }
 
         public void Clear()
         {
-            length = 0;
-            list.Clear();
-            Debug.Print("{0} Clear", tag);
+            queue.Clear();
         }
 
         public void Enqueue(byte[] data)
         {
-            list.Add(data);
+            queue.Enqueue(data);
             length += data.Length;
-            Debug.Print("Enq {0} len {1}, ges {2}", tag, data.Length, length);
         }
 
         public byte[] GetBytes(int count)
@@ -41,18 +31,35 @@ namespace PacketViewer.Network
             byte[] buffer = null;
 
             //Option A: Single complete packet in one buffer
-            //Option B: Multiple packets in one buffer
+            //Option B: Multiple packets in one buffer --> keep the leftover that is not requested
             //Option C: Packet that is in muliple Buffers --> keep leftover
             //Option D: Got a leftover, copy that before --> ABC
 
-            Debug.Print("Get {0} count {1}, length_gesamt {2}", tag, count, length);
-            while (read < count && list.Count > 0)
+            
+            if (leftover != null)
             {
-                byte[] dequeued = list[0];
-                list.RemoveAt(0);
+                //D
+                buffer = new byte[count];
 
-                if (dequeued == null) continue;
-                Debug.Print("Get {0} deq count {1}, read {2}", tag, dequeued.Length, read);
+                if (leftover.Length <= count)  {
+                    Array.Copy(leftover, buffer, leftover.Length);
+                    read += leftover.Length;
+                    leftover = null;
+                }
+                else
+                {
+                    Array.Copy(leftover, buffer, count);
+                    byte[] newleftover = new byte[leftover.Length - count];
+                    Array.Copy(leftover, count, newleftover, 0, leftover.Length - count);
+                    leftover = newleftover;
+
+                    read += count;
+                }  
+            }
+
+            while (read < count && queue.Count > 0)
+            {
+                byte[] dequeued = queue.Dequeue();
 
                 if (dequeued.Length + read == count)
                 {
@@ -66,7 +73,6 @@ namespace PacketViewer.Network
                         Array.Copy(dequeued, 0, buffer, read, count - read);
                     }
                     read = count;
-                    Debug.Print(tag + "_A");
                 }
                 else if (dequeued.Length + read < count)
                 {
@@ -74,7 +80,6 @@ namespace PacketViewer.Network
                     if (buffer == null) buffer = new byte[count];
                     Array.Copy(dequeued, 0, buffer, read, dequeued.Length);
                     read += dequeued.Length;
-                    Debug.Print(tag + "_B read now " + read);
                 }
                 else if (dequeued.Length + read > count)
                 {
@@ -82,13 +87,10 @@ namespace PacketViewer.Network
                     if (buffer == null) buffer = new byte[count];
                     Array.Copy(dequeued, 0, buffer, read, count - read);
 
-                    //copy leftover back into first postition, next run will just get is as a normal part
-                    byte[] leftover = new byte[(dequeued.Length + read) - count];
-                    Array.Copy(dequeued, count - read, leftover, 0, leftover.Length);
-                    list.Insert(0, leftover);
+                    leftover = new byte[(dequeued.Length + read) - count];
+                    Array.Copy(dequeued, count - read, leftover, 0, leftover.Length); 
 
                     read = count;
-                    Debug.Print(tag + "_C buffer size {0}, leftover size {1}, next packet len {2}", buffer.Length, leftover.Length, NextPacketLength());
                 }
 
             }
@@ -110,22 +112,15 @@ namespace PacketViewer.Network
         public bool PacketAvailable()
         {
             //peek length from buffer, check with buffer len
-            if (list.Count == 0 || length < 2) return false;
+            if (queue.Count == 0 && leftover == null && length < 2) return false;
             int packetLen = NextPacketLength();
             return (GetLength() >= packetLen);
         }
 
         public int NextPacketLength()
         {
-            var tmp = new MemoryStream();
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] == null) continue;
-                if (tmp.Length >= 2) break;
-                tmp.Write(list[i], 0, list[i].Count());
-            }
-
-            return BitConverter.ToUInt16(tmp.GetBuffer(), 0);
+            if (leftover != null) return BitConverter.ToUInt16(leftover, 0);
+            return BitConverter.ToUInt16(queue.Peek(), 0);
         }
     }
 }

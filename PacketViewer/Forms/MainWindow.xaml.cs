@@ -14,6 +14,7 @@ using PacketViewer.Classes;
 using PacketViewer.Network;
 
 //Base by Cerium Unity. Edit by GoneUp. 21.02.2014
+using PacketViewer.Network.Lists;
 
 namespace PacketViewer.Forms
 {
@@ -201,6 +202,7 @@ namespace PacketViewer.Forms
 
         private void btnClearCapture_Click(object sender, RoutedEventArgs e)
         {
+            Test();
             PacketsList.Items.Clear();
             if (pp != null)
             {
@@ -338,7 +340,7 @@ namespace PacketViewer.Forms
             Dequeue for 10000! took 301 ms 
              */
 
-            IPacketList[] lists = { new PacketList(""), new PacketQueue() };
+            IPacketList[] lists = { new PacketStream(""), new PacketQueue() };
             StringBuilder builder = new StringBuilder();
             Stopwatch watch = new Stopwatch();
 
@@ -352,7 +354,7 @@ namespace PacketViewer.Forms
                 byte[][] rndB = new byte[n][];
                 for (int i = 0; i < n; i++)
                 {
-                    rnd[i] = r.Next(1, 100000);
+                    rnd[i] = r.Next(1, 1000);
                     rndB[i] = new byte[rnd[i]];
                     r.NextBytes(rndB[i]);
                 }

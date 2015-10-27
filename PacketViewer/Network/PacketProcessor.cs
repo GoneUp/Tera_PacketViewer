@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Crypt;
 using PacketViewer.Forms;
+using PacketViewer.Network.Lists;
 
 namespace PacketViewer.Network
 {
@@ -31,7 +32,7 @@ namespace PacketViewer.Network
             SecSession = new Session();
             Initialized = false;
 
-            ServerPackets = new PacketList("S");
+            ServerPackets = new PacketStream("S");
             ClientPackets = new PacketList("C");
 
             Packets = new List<Packet_old>();
@@ -59,6 +60,8 @@ namespace PacketViewer.Network
         public void ProcessAllServerData()
         {
             if (!Initialized) return;
+            if (ServerPackets.GetLength() > (0xFFFF)) 
+                Debug.Print("S BACKLOG " + ServerPackets.GetLength());
             while (ServerPackets.PacketAvailable())
             {
                 ProcessServerData(); //aka one packet
@@ -73,7 +76,7 @@ namespace PacketViewer.Network
             byte[] data = ServerPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
             string opcodename = PacketTranslator.GetOpcodeName(opCode);
-            Debug.Print(opcodename);
+            Debug.Print(DateTime.Now.ToLongTimeString() + " " + opcodename);
             Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, data, false);
             //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket));
             MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket);
@@ -82,6 +85,7 @@ namespace PacketViewer.Network
         public void ProcessAllClientData()
         {
             if (!Initialized) return;
+            if (ClientPackets.GetLength() > (0xFFFF)) Debug.Print("C BACKLOG " + ClientPackets.GetLength());
             while (ClientPackets.PacketAvailable())
             {
                 ProcessClientData(); //aka one packet
@@ -90,13 +94,13 @@ namespace PacketViewer.Network
 
         public void ProcessClientData()
         {
-            //if (!ClientPackets.PacketAvailable()) return;
-
             int length = ClientPackets.NextPacketLength();
+            if (length == 0) throw new Exception("Client data reader is broken....");
+
             byte[] data = ClientPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
             string opcodename = PacketTranslator.GetOpcodeName(opCode);
-            Debug.Print(opcodename);
+            //Debug.Print(opcodename);
             Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, data, false);
             //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
             MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket);

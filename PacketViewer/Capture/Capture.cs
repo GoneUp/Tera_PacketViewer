@@ -50,7 +50,7 @@ namespace PacketViewer.Capture
 
         private string GetDeviceString(WinPcapDevice dev, int index)
         {
-            return string.Format("({0}) {1} ## {2} ", index, dev.Interface.FriendlyName , dev.Interface.Description);
+            return string.Format("({0}) {1} ## {2} ", index, dev.Interface.FriendlyName, dev.Interface.Description);
         }
         public void StartCapture(string deviceName, string ip)
         {
@@ -69,7 +69,7 @@ namespace PacketViewer.Capture
             }
 
             device = WinPcapDeviceList.Instance[index];
-            
+
 
             // Register our handler function to the
             // 'packet arrival' event
@@ -110,8 +110,8 @@ namespace PacketViewer.Capture
                 {
                     ByteArraySegment raw = new ByteArraySegment(eCap.Packet.Data);
                     EthernetPacket ethernetPacket = new EthernetPacket(raw);
-                    IpPacket ipPacket = (IpPacket) ethernetPacket.PayloadPacket;
-                    TcpPacket tcp = (TcpPacket) ipPacket.PayloadPacket;
+                    IpPacket ipPacket = (IpPacket)ethernetPacket.PayloadPacket;
+                    TcpPacket tcp = (TcpPacket)ipPacket.PayloadPacket;
 
 
                     if (ipPacket != null && tcp != null && tcp.PayloadData != null && tcp.PayloadData.Length > 0)
@@ -127,7 +127,7 @@ namespace PacketViewer.Capture
                         else
                         {
                             //Do a check for a new game Connection. Each handshake starts with a dword 1 packet from the server.
-                            byte[] handshakeSig = {0x01, 0x00, 0x00, 0x00};
+                            byte[] handshakeSig = { 0x01, 0x00, 0x00, 0x00 };
                             if (StructuralComparisons.StructuralEqualityComparer.Equals(handshakeSig, tcp.PayloadData))
                             {
                                 //New Connection detected. 
@@ -155,11 +155,19 @@ namespace PacketViewer.Capture
         {
             while (!cancelationTokenSource.IsCancellationRequested)
             {
-                if (!MainWindow.pp.Initialized) MainWindow.pp.TryInit();
-                MainWindow.pp.ProcessAllServerData();
-                MainWindow.pp.ProcessAllClientData();
+                try
+                {
+                    if (!MainWindow.pp.Initialized) MainWindow.pp.TryInit();
+                    MainWindow.pp.ProcessAllClientData();
+                    MainWindow.pp.ProcessAllServerData();
+                }
+                catch (Exception ex)
+                {
+                    MainWindow.SetText(string.Format("Process failure. \n Message: {0} \n ClientPackets: {1} \n ServerPackets {2} \n", 
+                        ex, MainWindow.pp.ClientPackets, MainWindow.pp.ServerPackets));
+                }
 
-                Thread.Sleep(10);
+                Thread.Sleep(5);
             }
         }
     }

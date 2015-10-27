@@ -85,9 +85,10 @@
   <ItemGroup>
     <Compile Include="MiscFuncs.cs" />
     <Compile Include="Network\IPacketList.cs" />
-    <Compile Include="Network\PacketList.cs" />
+    <Compile Include="Network\Lists\PacketStream.cs" />
+    <Compile Include="Network\Lists\PacketList.cs" />
     <Compile Include="Network\PacketProcessor.cs" />
-    <Compile Include="Network\PacketQueue.cs" />
+    <Compile Include="Network\Lists\PacketQueue.cs" />
     <Compile Include="Network\PacketTranslator.cs" />
     <Compile Include="Network\Packet_old.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -20,7 +20,7 @@
       <PdhCountersRate>500</PdhCountersRate>
       <PdhCounters>
         <PdhCounter>\Arbeitsspeicher\Seiten/s</PdhCounter>
-        <PdhCounter>\Physikalischer Datentr&amp;amp;amp;#228;ger(_Total)\Durchschnittl. Warteschlangenl&amp;amp;amp;#228;nge des Datentr&amp;amp;amp;#228;gers</PdhCounter>
+        <PdhCounter>\Physikalischer Datentr&amp;amp;amp;amp;amp;#228;ger(_Total)\Durchschnittl. Warteschlangenl&amp;amp;amp;amp;amp;#228;nge des Datentr&amp;amp;amp;amp;amp;#228;gers</PdhCounter>
         <PdhCounter>\Prozessor(_Total)\Prozessorzeit (%)</PdhCounter>
       </PdhCounters>
     </PdhSettings>
@@ -69,7 +69,7 @@
   </Binaries>
   <Reports>
     <Report>
-      <Path>PacketViewer151025.vsp</Path>
+      <Path>PacketViewer151027(2).vsp</Path>
     </Report>
   </Reports>
   <Launches>
