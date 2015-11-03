@@ -70,7 +70,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Capture\Capture.cs" />
+    <Compile Include="Classes\BlockType.cs" />
+    <Compile Include="Classes\IPacketInput.cs" />
+    <Compile Include="Classes\TeraLogReader.cs" />
+    <Compile Include="Classes\WireshackReader.cs" />
+    <Compile Include="LogHelper.cs" />
+    <Compile Include="Network\Capture.cs" />
     <Compile Include="Classes\ServerInfo.cs" />
     <Compile Include="Forms\InputValueBox.cs" />
     <Compile Include="Forms\MainWindow.xaml.cs">

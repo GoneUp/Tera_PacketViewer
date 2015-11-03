@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -105,8 +106,19 @@ namespace PacketViewer.Forms
                     }));
         }
 
-        public void AppendPacket(Color col, string itemText, Packet_old tmpPacket)
+        public void AppendPacket(Packet_old tmpPacket)
         {
+            string itemText = tmpPacket.ToString();
+            Color col;
+            if (tmpPacket.Dir == Direction.SC)
+            {
+                col = Colors.LightBlue;
+            }
+            else
+            {
+                col = Colors.WhiteSmoke;
+            }
+
             Dispatcher.BeginInvoke(
                 new Action(
                     delegate
@@ -167,10 +179,10 @@ namespace PacketViewer.Forms
             if (PacketsList.SelectedIndex == -1)
                 return;
 
-            SetHex(pp.Packets[PacketsList.SelectedIndex].Hex);
-            SetText(pp.Packets[PacketsList.SelectedIndex].Text);
+            SetHex(pp.Packets[PacketsList.SelectedIndex].HexShortText);
+            SetText(pp.Packets[PacketsList.SelectedIndex].HexLongText);
 
-            OpCodeBox.Text = pp.Packets[PacketsList.SelectedIndex].Hex.Substring(0, 4);
+            OpCodeBox.Text = pp.Packets[PacketsList.SelectedIndex].HexShortText.Substring(0, 4);
         }
 
         private void BoxNic_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -202,7 +214,7 @@ namespace PacketViewer.Forms
 
         private void btnClearCapture_Click(object sender, RoutedEventArgs e)
         {
-            Test();
+            //Test();
             PacketsList.Items.Clear();
             if (pp != null)
             {
@@ -240,7 +252,7 @@ namespace PacketViewer.Forms
 
             for (int i = PacketsList.SelectedIndex + 1; i < pp.Packets.Count; i++)
             {
-                if (pp.Packets[i].Name == name)
+                if (pp.Packets[i].OpName == name)
                 {
                     PacketsList.SelectedIndex = i;
                     PacketsList.ScrollIntoView(PacketsList.SelectedItem);
@@ -253,7 +265,7 @@ namespace PacketViewer.Forms
 
             for (int i = 0; i < PacketsList.SelectedIndex; i++)
             {
-                if (pp.Packets[i].Name == name)
+                if (pp.Packets[i].OpName == name)
                 {
                     PacketsList.SelectedIndex = i;
                     PacketsList.ScrollIntoView(PacketsList.SelectedItem);
@@ -271,7 +283,7 @@ namespace PacketViewer.Forms
 
             for (int i = PacketsList.SelectedIndex + 1; i < pp.Packets.Count; i++)
             {
-                if (pp.Packets[i].Hex.IndexOf(hex, 4, StringComparison.OrdinalIgnoreCase) != -1)
+                if (pp.Packets[i].HexShortText.IndexOf(hex, 4, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     PacketsList.SelectedIndex = i;
                     PacketsList.ScrollIntoView(PacketsList.SelectedItem);
@@ -284,7 +296,7 @@ namespace PacketViewer.Forms
 
             for (int i = 0; i < PacketsList.SelectedIndex; i++)
             {
-                if (pp.Packets[i].Hex.IndexOf(hex, 4, StringComparison.OrdinalIgnoreCase) != -1)
+                if (pp.Packets[i].HexShortText.IndexOf(hex, 4, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     PacketsList.SelectedIndex = i;
                     PacketsList.ScrollIntoView(PacketsList.SelectedItem);
@@ -302,7 +314,7 @@ namespace PacketViewer.Forms
 
             for (int i = PacketsList.SelectedIndex + 1; i < pp.Packets.Count; i++)
             {
-                if (pp.Packets[i].Hex.IndexOf(hex, 0, StringComparison.OrdinalIgnoreCase) == 0)
+                if (pp.Packets[i].HexShortText.IndexOf(hex, 0, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     PacketsList.SelectedIndex = i;
                     PacketsList.ScrollIntoView(PacketsList.SelectedItem);
@@ -315,7 +327,7 @@ namespace PacketViewer.Forms
 
             for (int i = 0; i < PacketsList.SelectedIndex; i++)
             {
-                if (pp.Packets[i].Hex.IndexOf(hex, 0, StringComparison.OrdinalIgnoreCase) == 0)
+                if (pp.Packets[i].HexShortText.IndexOf(hex, 0, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     PacketsList.SelectedIndex = i;
                     PacketsList.ScrollIntoView(PacketsList.SelectedItem);
@@ -324,7 +336,6 @@ namespace PacketViewer.Forms
             }
         }
         #endregion
-
 
         #region perf_test
 
@@ -384,5 +395,37 @@ namespace PacketViewer.Forms
             SetText(builder.ToString());
         }
         #endregion
+
+        #region "open log"
+        private void openTeraLog_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "TeraLogs|*.TeraLog" };
+
+                if (openFileDialog.ShowDialog() == false)
+                    return;
+
+                pp.Init();
+                ClearPackets();
+                boxAutoScroll.IsChecked = false; //huge performance boost
+                maxPackets = int.MaxValue; //???????????? give the user a choice? maybe a really big packet log makes problems
+
+                TeraLogReader reader = new TeraLogReader(openFileDialog.FileName);
+                reader.SetProcessor(pp);
+                Task.Factory.StartNew(reader.Process); //dont block ui thread 
+
+                SetText(String.Format("Loading the File {0}...", Path.GetFileName(openFileDialog.FileName)));
+            }
+            catch (Exception ex)
+            {
+                SetText("Open TeraLog failure. \n Message:" + ex);
+            }
+
+        }
+        #endregion
+
+
+
     }
 }

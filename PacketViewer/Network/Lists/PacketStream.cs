@@ -21,8 +21,8 @@ namespace PacketViewer.Network.Lists
             dataLock = new object();
             tag = value;
             ms = new MemoryStream();
-        //    reader = new BinaryReader(ms);
-            if (tag == "S") dbg = true;
+            //reader = new BinaryReader(ms);
+            //if (tag == "S") dbg = true;
         }
 
         public void Clear()
@@ -100,9 +100,7 @@ namespace PacketViewer.Network.Lists
 
         public int NextPacketLength()
         {
-//            ms.Seek(pointer, SeekOrigin.Begin);
             int val = BitConverter.ToUInt16(ms.GetBuffer(), pointer);
-  //          ms.Seek(0, SeekOrigin.End);
             return val;
         }
 

@@ -75,11 +75,10 @@ namespace PacketViewer.Network
 
             byte[] data = ServerPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
-            string opcodename = PacketTranslator.GetOpcodeName(opCode);
-            Debug.Print(DateTime.Now.ToLongTimeString() + " " + opcodename);
-            Packet_old tmpPacket = new Packet_old(true, opCode, opcodename, data, false);
-            //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket));
-            MainWindow.AppendPacket(Colors.LightBlue, tmpPacket.ToString(), tmpPacket);
+            Packet_old tmpPacket = new Packet_old(Direction.SC, opCode, data, false);
+            Debug.Print(DateTime.Now.ToLongTimeString() + " " + tmpPacket.OpName);
+
+            MainWindow.AppendPacket(tmpPacket);
         }
 
         public void ProcessAllClientData()
@@ -99,11 +98,16 @@ namespace PacketViewer.Network
 
             byte[] data = ClientPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
-            string opcodename = PacketTranslator.GetOpcodeName(opCode);
-            //Debug.Print(opcodename);
-            Packet_old tmpPacket = new Packet_old(false, opCode, opcodename, data, false);
+            Packet_old tmpPacket = new Packet_old(Direction.CS, opCode, data, false);
+           
+            AppendPacket(tmpPacket);
+        }
+
+        //Just needed a general function that also can be accessed from TeraLogReader
+        public void AppendPacket(Packet_old tmpPacket)
+        { 
             //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
-            MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket);
+            MainWindow.AppendPacket(tmpPacket);
         }
 
         public void TryInit()

@@ -15,7 +15,6 @@ namespace PacketViewer.Capture
 {
     public class Capture
     {
-
         private ICaptureDevice device;
         private string captureIp;
         private CancellationTokenSource cancelationTokenSource;
