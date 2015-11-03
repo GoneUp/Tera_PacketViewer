@@ -402,7 +402,7 @@ namespace PacketViewer.Forms
             try
             {    
                 IPacketInput reader;
-                OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "*.TeraLog|*.TeraLog;*.hex|*.hex" };
+                OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "Supported Formats (*.TeraLog,*.hex)|*.TeraLog;*.hex" };
 
                 if (openFileDialog.ShowDialog() == false)
                     return;
@@ -413,11 +413,11 @@ namespace PacketViewer.Forms
                 maxPackets = int.MaxValue; //???????????? give the user a choice? maybe a really big packet log makes problems
 
                 string ext = Path.GetExtension(openFileDialog.FileName);
-                if (ext == "TeraLog")
+                if (ext == ".TeraLog")
                 {
                     reader = new TeraLogReader(openFileDialog.FileName);
                 }
-                else if (ext == "hex")
+                else if (ext == ".hex")
                 {
                     reader = new WireshackReader(openFileDialog.FileName);
                 }

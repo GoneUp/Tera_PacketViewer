@@ -76,7 +76,7 @@ namespace PacketViewer.Network
             byte[] data = ServerPackets.GetBytes(length);
             ushort opCode = BitConverter.ToUInt16(data, 2);
             Packet_old tmpPacket = new Packet_old(Direction.SC, opCode, data, false);
-            Debug.Print(DateTime.Now.ToLongTimeString() + " " + tmpPacket.OpName);
+            //Debug.Print(DateTime.Now.ToLongTimeString() + " " + tmpPacket.OpName);
 
             MainWindow.AppendPacket(tmpPacket);
         }

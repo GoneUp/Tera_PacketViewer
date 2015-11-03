@@ -44,15 +44,18 @@ namespace PacketViewer.Classes
                 string hex = line.Substring(isServer ? 14 : 10, 49).Replace(" ", "");
                 byte[] data = hex.ToBytes();
 
-                if (!processor.Initialized) processor.TryInit();
                 if (isServer)
                 {
-                    processor.ProcessAllServerData();
+                    processor.AppendServerData(data);
                 }
                 else
                 {
-                    processor.ProcessAllClientData();
+                    processor.AppendClientData(data);
                 }
+
+                if (!processor.Initialized) processor.TryInit();
+                processor.ProcessAllClientData();
+                processor.ProcessAllServerData();
             }
 
             reader.Close();
