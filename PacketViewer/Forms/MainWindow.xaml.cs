@@ -400,8 +400,9 @@ namespace PacketViewer.Forms
         private void openTeraLog_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
-                OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "TeraLogs|*.TeraLog" };
+            {    
+                IPacketInput reader;
+                OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "*.TeraLog|*.TeraLog;*.hex|*.hex" };
 
                 if (openFileDialog.ShowDialog() == false)
                     return;
@@ -411,7 +412,20 @@ namespace PacketViewer.Forms
                 boxAutoScroll.IsChecked = false; //huge performance boost
                 maxPackets = int.MaxValue; //???????????? give the user a choice? maybe a really big packet log makes problems
 
-                TeraLogReader reader = new TeraLogReader(openFileDialog.FileName);
+                string ext = Path.GetExtension(openFileDialog.FileName);
+                if (ext == "TeraLog")
+                {
+                    reader = new TeraLogReader(openFileDialog.FileName);
+                }
+                else if (ext == "hex")
+                {
+                    reader = new WireshackReader(openFileDialog.FileName);
+                }
+                else
+                {
+                    throw new Exception("Unknown File Format");
+                }
+                        
                 reader.SetProcessor(pp);
                 Task.Factory.StartNew(reader.Process); //dont block ui thread 
 
@@ -424,6 +438,8 @@ namespace PacketViewer.Forms
 
         }
         #endregion
+
+
 
 
 

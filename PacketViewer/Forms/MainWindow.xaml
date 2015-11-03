@@ -19,8 +19,7 @@
 
         <Menu Height="24" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Header="Open Log">
-                <MenuItem x:Name="openTeraLog" Header="Open Tera Connection Log" Click="openTeraLog_Click"/>
-                <MenuItem x:Name="openWSLog" Header="Open Wireshack Log" IsEnabled="False"/>
+                <MenuItem x:Name="openTeraLog" Header="Open Log" Click="openTeraLog_Click"/>
             </MenuItem>
             <MenuItem x:Name="MacrosMenuItem" Header="Misc" >
                 <MenuItem Header="Max Packets to Show:"/>
