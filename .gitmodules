@@ -1,3 +1,4 @@
 [submodule "external/TDM"]
 	path = external/TDM
 	url = https://github.com/gothos-folly/TeraDamageMeter.git
+  	ignore = dirty
