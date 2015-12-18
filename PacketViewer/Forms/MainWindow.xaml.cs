@@ -10,19 +10,21 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Xml.Schema;
 using Microsoft.Win32;
 using PacketViewer.Classes;
 using PacketViewer.Network;
 
 //Base by Cerium Unity. Edit by GoneUp. 21.02.2014
 using PacketViewer.Network.Lists;
+using Tera.Game;
 
 namespace PacketViewer.Forms
 {
     public partial class MainWindow
     {
 
-        public Capture.Capture cap;
+        public Capture cap;
         public PacketProcessor pp;
         private int maxPackets;
 
@@ -36,41 +38,27 @@ namespace PacketViewer.Forms
                 //Opcode Section
                 PacketTranslator.Init();
 
-                IEnumerable<string> sortDescendingQuery =
-                    from w in PacketTranslator.PacketNames.Values
-                    orderby w ascending
-                    select w;
-
-                foreach (var packetName in sortDescendingQuery)
-                    PacketNamesList.Items.Add(packetName);
-
-                PacketNamesList.SelectedIndex = 0;
-
                 //Serverlist
                 List<ServerInfo> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
 
                 if (servers != null && servers.Count > 0)
                 {
                     //We got a custom serverlist.xml loaded....
-                    BoxServers.Items.Clear();
+                    boxServers.Items.Clear();
 
                     foreach (var server in servers)
                     {
-                        int index = BoxServers.Items.Add(server.GetDisplayString());
-                        if (server.Focus) BoxServers.SelectedIndex = index;
+                        ComboBoxItem item = new ComboBoxItem();
+                        item.Tag = server;
+                        item.Content = server.ToString();
+                        int index = boxServers.Items.Add(item);
+                        if (server.Focus) boxServers.SelectedIndex = index;
                     }
                 }
 
                 //Capture 
                 pp = new PacketProcessor(this);
-                cap = new Capture.Capture(this);
-
-                var list = cap.GetDevices();
-
-                foreach (var nic in list)
-                {
-                    BoxNic.Items.Add(nic);
-                }
+                cap = new Capture(this);
 
                 pp.Init();
 
@@ -78,11 +66,10 @@ namespace PacketViewer.Forms
                 //Print Info
                 string info = String.Format("Loaded {0} Opcodes. \n" +
                                             "Loaded {1} servers.\n" +
-                                            "{2} network devices available.\n" +
                                             "Github of this Project: https://github.com/GoneUp/Tera_PacketViewer\n" +
                                             "Released at Ragezone: http://forum.ragezone.com/f797/release-tera-live-packet-sniffer-1052922/\n" +
-                                            "Have Fun ;)", PacketNamesList.Items.Count, BoxServers.Items.Count,
-                    BoxNic.Items.Count);
+                                            "Uses code of the TeraDamageMeter by gothos-folly: https://github.com/gothos-folly/TeraDamageMeter\n" +
+                                            "Have Fun ;)", PacketTranslator.PacketNames.Count, boxServers.Items.Count);
                 SetText(info);
             }
             catch (Exception ex)
@@ -102,7 +89,7 @@ namespace PacketViewer.Forms
                     delegate
                     {
                         pp.Packets.Clear();
-                        PacketsList.Items.Clear();
+                        boxPackets.Items.Clear();
                     }));
         }
 
@@ -129,19 +116,19 @@ namespace PacketViewer.Forms
                             Background = new SolidColorBrush(col)
                         };
 
-                        while (PacketsList.Items.Count >= maxPackets)
+                        while (boxPackets.Items.Count >= maxPackets)
                         {
-                            PacketsList.Items.RemoveAt(0);
+                            boxPackets.Items.RemoveAt(0);
                             pp.Packets.RemoveAt(0);
                         }
 
                         if (boxCapture.IsChecked.Value)
                         {
-                            PacketsList.Items.Add(item);
+                            boxPackets.Items.Add(item);
 
                             if (boxAutoScroll.IsChecked.Value)
                             {
-                                PacketsList.ScrollIntoView(item);
+                                boxPackets.ScrollIntoView(item);
                             }
 
                             pp.Packets.Add(tmpPacket);
@@ -149,83 +136,58 @@ namespace PacketViewer.Forms
                     }));
         }
 
-        public void SetHex(string text)
-        {
-            Dispatcher.BeginInvoke(
-                new Action(
-                    delegate
-                    {
-                        HexTextBox.Document.Blocks.Clear();
-                        HexTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-                    }));
-        }
-
-
         public void SetText(string text)
         {
             Dispatcher.BeginInvoke(
                 new Action(
                     delegate
                     {
-                        TextBox.Document.Blocks.Clear();
-                        TextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+                        boxPacketInfo.Document.Blocks.Clear();
+                        boxPacketInfo.Document.Blocks.Add(new Paragraph(new Run(text)));
                     }));
         }
         #endregion
 
         #region formfuncs
-        private void OnPacketSelect(object sender, SelectionChangedEventArgs e)
+        private void btnStartStop_Click(object sender, RoutedEventArgs e)
         {
-            if (PacketsList.SelectedIndex == -1)
-                return;
-
-            SetHex(pp.Packets[PacketsList.SelectedIndex].HexShortText);
-            SetText(pp.Packets[PacketsList.SelectedIndex].HexLongText);
-
-            OpCodeBox.Text = pp.Packets[PacketsList.SelectedIndex].HexShortText.Substring(0, 4);
-        }
-
-        private void BoxNic_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
+            if (cap.isRunning())
             {
-                string nic_des = (string)BoxNic.SelectedValue;
-                string senderIp = (BoxServers.Text).Split(';')[0];
+                cap.Stop();
 
-                if (cap.Running)
-                {
-                    cap.StopCapture();
-                }
+                btnStartStop.Content = "Start";
+            }
+            else
+            {
+                ServerInfo info = (ServerInfo)((ComboBoxItem)boxServers.SelectedItem).Tag;
 
                 pp.Init();
-                PacketsList.Items.Clear();
-                cap.StartCapture(nic_des, senderIp);
+                cap.Start(info);
 
-                SetText(String.Format("Listening for packets of {0}.", (BoxServers.Text).Split(';')[1]));
+                SetText(String.Format("Listening for packets of {0}.", (boxServers.Text).Split(';')[1]));
+                btnStartStop.Content = "Stop";
             }
-            catch (Exception ex)
-            {
-
-                SetText("Start Capture failure. \n Message:" + ex);
-            }
-
 
         }
+
+        private void OnPacketSelect(object sender, SelectionChangedEventArgs e)
+        {
+            if (boxPackets.SelectedIndex == -1)
+                return;
+
+            SetText(pp.Packets[boxPackets.SelectedIndex].HexLongText);
+        }
+
 
         private void btnClearCapture_Click(object sender, RoutedEventArgs e)
         {
             //Test();
-            PacketsList.Items.Clear();
+            boxPackets.Items.Clear();
             if (pp != null)
             {
                 pp.Packets.Clear();
             }
 
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
         }
 
         private void boxMaxPackets_TextChanged(object sender, TextChangedEventArgs e)
@@ -240,102 +202,14 @@ namespace PacketViewer.Forms
                 }
             }
         }
-        #endregion
 
-        #region search
-        private void FindByName(object sender, RoutedEventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
-            if (pp.Packets == null)
-                return;
-
-            string name = PacketNamesList.SelectedItem.ToString();
-
-            for (int i = PacketsList.SelectedIndex + 1; i < pp.Packets.Count; i++)
-            {
-                if (pp.Packets[i].OpName == name)
-                {
-                    PacketsList.SelectedIndex = i;
-                    PacketsList.ScrollIntoView(PacketsList.SelectedItem);
-                    return;
-                }
-            }
-
-            if (MessageBox.Show("Find from start?", "Not found", MessageBoxButton.YesNo) == MessageBoxResult.No)
-                return;
-
-            for (int i = 0; i < PacketsList.SelectedIndex; i++)
-            {
-                if (pp.Packets[i].OpName == name)
-                {
-                    PacketsList.SelectedIndex = i;
-                    PacketsList.ScrollIntoView(PacketsList.SelectedItem);
-                    return;
-                }
-            }
-        }
-
-        private void FindByHex(object sender, RoutedEventArgs e)
-        {
-            if (pp.Packets == null)
-                return;
-
-            string hex = HexBox.Text.Replace(" ", "");
-
-            for (int i = PacketsList.SelectedIndex + 1; i < pp.Packets.Count; i++)
-            {
-                if (pp.Packets[i].HexShortText.IndexOf(hex, 4, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    PacketsList.SelectedIndex = i;
-                    PacketsList.ScrollIntoView(PacketsList.SelectedItem);
-                    return;
-                }
-            }
-
-            if (MessageBox.Show("Find from start?", "Not found", MessageBoxButton.YesNo) == MessageBoxResult.No)
-                return;
-
-            for (int i = 0; i < PacketsList.SelectedIndex; i++)
-            {
-                if (pp.Packets[i].HexShortText.IndexOf(hex, 4, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    PacketsList.SelectedIndex = i;
-                    PacketsList.ScrollIntoView(PacketsList.SelectedItem);
-                    return;
-                }
-            }
-        }
-
-        private void FindByOpCode(object sender, RoutedEventArgs e)
-        {
-            if (pp.Packets == null)
-                return;
-
-            string hex = OpCodeBox.Text.Replace(" ", "");
-
-            for (int i = PacketsList.SelectedIndex + 1; i < pp.Packets.Count; i++)
-            {
-                if (pp.Packets[i].HexShortText.IndexOf(hex, 0, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    PacketsList.SelectedIndex = i;
-                    PacketsList.ScrollIntoView(PacketsList.SelectedItem);
-                    return;
-                }
-            }
-
-            if (MessageBox.Show("Find from start?", "Not found", MessageBoxButton.YesNo) == MessageBoxResult.No)
-                return;
-
-            for (int i = 0; i < PacketsList.SelectedIndex; i++)
-            {
-                if (pp.Packets[i].HexShortText.IndexOf(hex, 0, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    PacketsList.SelectedIndex = i;
-                    PacketsList.ScrollIntoView(PacketsList.SelectedItem);
-                    return;
-                }
-            }
+            Environment.Exit(0);
         }
         #endregion
+
+
 
         #region perf_test
 
@@ -396,11 +270,11 @@ namespace PacketViewer.Forms
         }
         #endregion
 
-        #region "open log"
+        #region open log
         private void openTeraLog_Click(object sender, RoutedEventArgs e)
         {
             try
-            {    
+            {
                 IPacketInput reader;
                 OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "Supported Formats (*.TeraLog,*.hex)|*.TeraLog;*.hex" };
 
@@ -425,7 +299,7 @@ namespace PacketViewer.Forms
                 {
                     throw new Exception("Unknown File Format");
                 }
-                        
+
                 reader.SetProcessor(pp);
                 Task.Factory.StartNew(reader.Process); //dont block ui thread 
 
@@ -438,6 +312,8 @@ namespace PacketViewer.Forms
 
         }
         #endregion
+
+
 
 
 

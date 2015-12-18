@@ -70,14 +70,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Classes\BlockType.cs" />
     <Compile Include="Classes\IPacketInput.cs" />
     <Compile Include="Classes\TeraLogReader.cs" />
     <Compile Include="Classes\WireshackReader.cs" />
-    <Compile Include="LogHelper.cs" />
     <Compile Include="Network\Capture.cs" />
     <Compile Include="Classes\ServerInfo.cs" />
-    <Compile Include="Forms\InputValueBox.cs" />
     <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -89,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MiscFuncs.cs" />
-    <Compile Include="Network\IPacketList.cs" />
+    <Compile Include="Network\Lists\IPacketList.cs" />
     <Compile Include="Network\Lists\PacketStream.cs" />
     <Compile Include="Network\Lists\PacketList.cs" />
     <Compile Include="Network\PacketProcessor.cs" />
@@ -126,6 +123,14 @@
     <ProjectReference Include="..\Crypt\Crypt.csproj">
       <Project>{c7039765-6bb9-4f4f-bd8a-d4415f69d5e6}</Project>
       <Name>Crypt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\external\TDM\Tera.Core\Tera.Core.csproj">
+      <Project>{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}</Project>
+      <Name>Tera.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\external\TDM\Tera.Sniffing\Tera.Sniffing.csproj">
+      <Project>{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}</Project>
+      <Name>Tera.Sniffing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

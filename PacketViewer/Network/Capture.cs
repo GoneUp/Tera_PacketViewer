@@ -1,173 +1,77 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using PacketDotNet;
-using PacketDotNet.Utils;
+using PacketViewer.Classes;
 using PacketViewer.Forms;
 using SharpPcap;
-using SharpPcap.WinPcap;
+using Tera;
+using Tera.Game;
+using Tera.Sniffing;
 
-namespace PacketViewer.Capture
+namespace PacketViewer.Network
 {
     public class Capture
     {
-        private ICaptureDevice device;
-        private string captureIp;
-        private CancellationTokenSource cancelationTokenSource;
-        private bool running;
-        public object EventLock = new object();
-
-        protected MainWindow MainWindow;
+        private TeraSniffer sniffer;
+        private readonly MainWindow mainWindow;
 
         public Capture(MainWindow mainWindow)
         {
-            MainWindow = mainWindow;
+            this.mainWindow = mainWindow;
         }
 
-        public bool Running
+        public void Start(ServerInfo server)
         {
-            get { return running; }
+            Stop();
+
+            sniffer = new TeraSniffer(new List<ServerInfo> {server}); //dont want to change the external code ;)
+            sniffer.MessageReceived += messageReceived;
+            sniffer.NewConnection += newConnection;
+
+            sniffer.Enabled = true;
         }
 
-
-        public List<string> GetDevices()
+        public void Stop()
         {
-            List<string> tmpList = new List<string>();
-            WinPcapDeviceList deviceList = WinPcapDeviceList.Instance;
-
-            for (int i = 0; i < deviceList.Count; i++)
+            if (sniffer != null)
             {
-                tmpList.Add(GetDeviceString(deviceList[i], i));
+                sniffer.Enabled = false;
+                sniffer = null;
             }
-
-            return tmpList;
         }
 
-        private string GetDeviceString(WinPcapDevice dev, int index)
+        private void newConnection(Server server)
         {
-            return string.Format("({0}) {1} ## {2} ", index, dev.Interface.FriendlyName, dev.Interface.Description);
-        }
-        public void StartCapture(string deviceName, string ip)
-        {
-
-            if (deviceName == "" || ip == "")
-            {
-                throw new Exception("Device Input Fail");
-            }
-
-            //Get our index back. (0) blabla
-            int index = Convert.ToInt32(deviceName.Split(')')[0].Replace("(", ""));
-
-            if (WinPcapDeviceList.Instance.Count <= index)
-            {
-                throw new Exception("Device Fail");
-            }
-
-            device = WinPcapDeviceList.Instance[index];
-
-
-            // Register our handler function to the
-            // 'packet arrival' event
-            device.OnPacketArrival += device_OnPacketArrival;
-
-            // Open the device for capturing
-            int readTimeoutMilliseconds = 1000;
-            device.Open(DeviceMode.Promiscuous, readTimeoutMilliseconds);
-
-            //Filter
-            string filter = "host " + ip;
-            device.Filter = filter;
-            captureIp = ip;
-
-            // Start the capturing process
-            device.StartCapture();
-
-            cancelationTokenSource = new CancellationTokenSource();
-            new Task(Process, cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
-            running = true;
+            mainWindow.SetText("New connection to " + server.Name);
         }
 
-        public void StopCapture()
-        {
-            running = false;
-            EventLock = new object();
-            device.StopCapture();
-            device.Close();
-            cancelationTokenSource.Cancel();
-            captureIp = "";
-        }
-
-        public void device_OnPacketArrival(object sender, CaptureEventArgs eCap)
+        private void messageReceived(Message message)
         {
             try
             {
-                lock (EventLock)
+                if (message.Direction == MessageDirection.ClientToServer)
                 {
-                    ByteArraySegment raw = new ByteArraySegment(eCap.Packet.Data);
-                    EthernetPacket ethernetPacket = new EthernetPacket(raw);
-                    IpPacket ipPacket = (IpPacket)ethernetPacket.PayloadPacket;
-                    TcpPacket tcp = (TcpPacket)ipPacket.PayloadPacket;
 
-
-                    if (ipPacket != null && tcp != null && tcp.PayloadData != null && tcp.PayloadData.Length > 0)
-                    {
-                        string destIp = ipPacket.DestinationAddress.ToString();
-
-                        if (destIp == captureIp)
-                        {
-                            //Client -> Server
-                            MainWindow.pp.AppendClientData(tcp.PayloadData);
-
-                        }
-                        else
-                        {
-                            //Do a check for a new game Connection. Each handshake starts with a dword 1 packet from the server.
-                            byte[] handshakeSig = { 0x01, 0x00, 0x00, 0x00 };
-                            if (StructuralComparisons.StructuralEqualityComparer.Equals(handshakeSig, tcp.PayloadData))
-                            {
-                                //New Connection detected. 
-                                //We should reset State and Security Info
-                                MainWindow.pp.Init();
-                                MainWindow.ClearPackets();
-                            }
-
-                            //Sever -> Client
-                            MainWindow.pp.AppendServerData(tcp.PayloadData);
-                        }
-
-                    }
+                    Packet_old tmpPacket = new Packet_old(Direction.CS, message.OpCode, message.Payload.Array, false);
+                    mainWindow.pp.AppendPacket(tmpPacket);
+                }
+                else
+                {
+                    Packet_old tmpPacket = new Packet_old(Direction.SC, message.OpCode, message.Payload.Array, false);
+                    mainWindow.pp.AppendPacket(tmpPacket);
                 }
             }
             catch (Exception ex)
             {
 
-                MainWindow.SetText("device_OnPacketArrival failure. \n Message:" + ex);
+                mainWindow.SetText("device_OnPacketArrival failure. \n Message:" + ex);
             }
-
         }
 
-        private void Process()
+        public bool isRunning()
         {
-            while (!cancelationTokenSource.IsCancellationRequested)
-            {
-                try
-                {
-                    if (!MainWindow.pp.Initialized) MainWindow.pp.TryInit();
-                    MainWindow.pp.ProcessAllClientData();
-                    MainWindow.pp.ProcessAllServerData();
-                }
-                catch (Exception ex)
-                {
-                    MainWindow.SetText(string.Format("Process failure. \n Message: {0} \n ClientPackets: {1} \n ServerPackets {2} \n", 
-                        ex, MainWindow.pp.ClientPackets, MainWindow.pp.ServerPackets));
-                }
-
-                Thread.Sleep(5);
-            }
+            if (sniffer == null) return false;
+            return sniffer.Enabled;
         }
     }
 }

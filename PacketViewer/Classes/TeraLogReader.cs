@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using PacketViewer.Network;
+using Tera.PacketLog;
 
 namespace PacketViewer.Classes
 {

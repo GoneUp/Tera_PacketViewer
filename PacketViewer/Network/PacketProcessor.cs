@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Crypt;
@@ -11,18 +12,21 @@ namespace PacketViewer.Network
 {
     public class PacketProcessor
     {
-        public Session SecSession;
+        private readonly Object lockObject;
+
         public bool Initialized;
+        public Session SecSession;     
 
         public IPacketList ServerPackets;
         public IPacketList ClientPackets;
 
         public List<Packet_old> Packets;
 
-        protected MainWindow MainWindow;
+        private readonly MainWindow MainWindow;
 
         public PacketProcessor(MainWindow mainWindow)
         {
+            lockObject = new object();
             MainWindow = mainWindow;
         }
 
@@ -125,7 +129,7 @@ namespace PacketViewer.Network
                 SecSession.Init();
 
                 Debug.Print("-----------Init2");
-                lock (MainWindow.cap.EventLock)
+                lock (lockObject)
                 {
                     //Lock tcp sniffer, we dont want any new packets while we are processing the backlog
 

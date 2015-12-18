@@ -3,28 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tera.Game;
 
 namespace PacketViewer.Classes
 {
-    public class ServerInfo
+    public class ServerInfo : Server
     {
-        public string Title;
-        public string Ip;
         public bool Focus;
 
-        public ServerInfo() { }
-
-        public ServerInfo(string name, string ip, bool focus)
+        public ServerInfo(string name, string ip, bool focus) : base(name, "", ip)
         {
-            Title = name;
-            Ip = ip;
             Focus = focus;
         }
 
-        public string GetDisplayString()
+        public override string ToString()
         {
             //Format: 79.110.94.217;EU Akasha
-            return String.Format("{0};{1}", Ip, Title);
+            return String.Format("{0};{1}", Ip, Name);
         }
     }
 }

@@ -156,19 +156,20 @@ namespace PacketViewer
                     {
                         if (reader.Name == "Server")
                         {
-                            ServerInfo info = new ServerInfo();
-
+                           
                             reader.MoveToAttribute("Title");
-                            info.Title = reader.Value;
+                            String name = reader.Value;
                             reader.MoveToAttribute("Ip");
-                            info.Ip = reader.Value;
-                            info.Focus = false;
+                            String ip = reader.Value;
+                            Boolean focus = false;
 
                             if (reader.AttributeCount == 3)
                             {
                                 reader.MoveToAttribute("DefaultFocus");
-                                info.Focus = Convert.ToBoolean(reader.Value);
-                            }
+                                focus = Convert.ToBoolean(reader.Value);
+                            } 
+                            
+                            ServerInfo info = new ServerInfo(name, ip, focus);
 
                             servers.Add(info);
                         }

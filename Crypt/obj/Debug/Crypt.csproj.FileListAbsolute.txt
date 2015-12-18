@@ -3,3 +3,8 @@ I:\Henry\Projekte\Tera\Tera_PacketViewer\build\Crypt.pdb
 I:\Henry\Projekte\Tera\Tera_PacketViewer\Crypt\obj\Debug\Crypt.dll
 I:\Henry\Projekte\Tera\Tera_PacketViewer\Crypt\obj\Debug\Crypt.pdb
 I:\Henry\Projekte\Tera\Tera_PacketViewer\Crypt\obj\Debug\Crypt.csprojResolveAssemblyReference.cache
+I:\Henry\Projekte\Tera\Tera_PV_Dev\build\Crypt.dll
+I:\Henry\Projekte\Tera\Tera_PV_Dev\build\Crypt.pdb
+I:\Henry\Projekte\Tera\Tera_PV_Dev\Crypt\obj\Debug\Crypt.csprojResolveAssemblyReference.cache
+I:\Henry\Projekte\Tera\Tera_PV_Dev\Crypt\obj\Debug\Crypt.dll
+I:\Henry\Projekte\Tera\Tera_PV_Dev\Crypt\obj\Debug\Crypt.pdb
