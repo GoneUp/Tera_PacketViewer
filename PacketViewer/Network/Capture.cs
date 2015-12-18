@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Documents;
 using PacketViewer.Classes;
 using PacketViewer.Forms;
 using SharpPcap;
@@ -49,15 +50,19 @@ namespace PacketViewer.Network
         {
             try
             {
+                //Message does not contain our length, add it to see the full packet
+                byte[] data = new byte[message.Data.Count];
+                Array.Copy(message.Data.Array, 0, data, 2, message.Data.Count - 2);
+                data[0] = (byte) (((short) message.Data.Count) & 255);
+                data[1] = (byte)(((short)message.Data.Count) >> 8);
                 if (message.Direction == MessageDirection.ClientToServer)
                 {
-
-                    Packet_old tmpPacket = new Packet_old(Direction.CS, message.OpCode, message.Payload.Array, false);
+                    Packet_old tmpPacket = new Packet_old(Direction.CS, message.OpCode, data, false);
                     mainWindow.pp.AppendPacket(tmpPacket);
                 }
                 else
                 {
-                    Packet_old tmpPacket = new Packet_old(Direction.SC, message.OpCode, message.Payload.Array, false);
+                    Packet_old tmpPacket = new Packet_old(Direction.SC, message.OpCode, data, false);
                     mainWindow.pp.AppendPacket(tmpPacket);
                 }
             }

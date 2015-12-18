@@ -4,9 +4,10 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using Crypt;
+
 using PacketViewer.Forms;
 using PacketViewer.Network.Lists;
+using Tera.Sniffing.Crypt;
 
 namespace PacketViewer.Network
 {
@@ -45,7 +46,7 @@ namespace PacketViewer.Network
         public void AppendServerData(byte[] data)
         {
             if (Initialized)
-                SecSession.Encrypt(ref data);
+                SecSession.Encrypt(data);
 
             ServerPackets.Enqueue(data);
 
@@ -55,7 +56,7 @@ namespace PacketViewer.Network
         {
 
             if (Initialized)
-                SecSession.Decrypt(ref data);
+                SecSession.Decrypt(data);
 
             ClientPackets.Enqueue(data);
 
@@ -112,6 +113,7 @@ namespace PacketViewer.Network
         { 
             //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
             MainWindow.AppendPacket(tmpPacket);
+            //ILMerge.exe /target:winexe /targetplatform:"v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319" /out:PV.exe PacketViewer.exe NetworkSniffer.dll PacketDotNet.dll SharpPcap.dll Tera.Core.dll Tera.Sniffing.dll
         }
 
         public void TryInit()
@@ -138,7 +140,7 @@ namespace PacketViewer.Network
                     if (ServerPackets.GetLength() > 0)
                     {
                         tmp = ServerPackets.GetBytes(ServerPackets.GetLength());
-                        SecSession.Encrypt(ref tmp);
+                        SecSession.Encrypt(tmp);
                         ServerPackets.Enqueue(tmp);
                         Debug.Print("#########NEXT S LEN " + ServerPackets.NextPacketLength());
                     }
@@ -146,7 +148,7 @@ namespace PacketViewer.Network
                     if (ClientPackets.GetLength() > 0)
                     {
                         tmp = ClientPackets.GetBytes(ClientPackets.GetLength());
-                        SecSession.Decrypt(ref tmp);
+                        SecSession.Decrypt(tmp);
                         ClientPackets.Enqueue(tmp);
                         Debug.Print("#########NEXT C LEN " + ServerPackets.NextPacketLength());
                     }

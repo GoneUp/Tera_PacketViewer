@@ -36,6 +36,9 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PacketViewer.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PacketDotNet, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,6 +74,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\IPacketInput.cs" />
+    <Compile Include="Classes\PacketFilter.cs" />
     <Compile Include="Classes\TeraLogReader.cs" />
     <Compile Include="Classes\WireshackReader.cs" />
     <Compile Include="Network\Capture.cs" />
@@ -120,10 +124,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crypt\Crypt.csproj">
-      <Project>{c7039765-6bb9-4f4f-bd8a-d4415f69d5e6}</Project>
-      <Name>Crypt</Name>
-    </ProjectReference>
     <ProjectReference Include="..\external\TDM\Tera.Core\Tera.Core.csproj">
       <Project>{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}</Project>
       <Name>Tera.Core</Name>

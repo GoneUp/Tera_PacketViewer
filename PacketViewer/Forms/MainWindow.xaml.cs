@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace PacketViewer.Forms
 
         public Capture cap;
         public PacketProcessor pp;
+        private PacketFilter filter;
         private int maxPackets;
 
         #region main
@@ -56,12 +58,13 @@ namespace PacketViewer.Forms
                     }
                 }
 
-                //Capture 
+
                 pp = new PacketProcessor(this);
                 cap = new Capture(this);
+                filter = new PacketFilter();
 
                 pp.Init();
-
+                btnStartStop_Click(null, null);
 
                 //Print Info
                 string info = String.Format("Loaded {0} Opcodes. \n" +
@@ -71,6 +74,7 @@ namespace PacketViewer.Forms
                                             "Uses code of the TeraDamageMeter by gothos-folly: https://github.com/gothos-folly/TeraDamageMeter\n" +
                                             "Have Fun ;)", PacketTranslator.PacketNames.Count, boxServers.Items.Count);
                 SetText(info);
+
             }
             catch (Exception ex)
             {
@@ -122,7 +126,7 @@ namespace PacketViewer.Forms
                             pp.Packets.RemoveAt(0);
                         }
 
-                        if (boxCapture.IsChecked.Value)
+                        if (filter.ShowPacket(tmpPacket))
                         {
                             boxPackets.Items.Add(item);
 
@@ -164,7 +168,7 @@ namespace PacketViewer.Forms
                 pp.Init();
                 cap.Start(info);
 
-                SetText(String.Format("Listening for packets of {0}.", (boxServers.Text).Split(';')[1]));
+                //SetText(String.Format("Listening for packets of {0}.", (boxServers.Text).Split(';')[1]));
                 btnStartStop.Content = "Stop";
             }
 
@@ -175,7 +179,10 @@ namespace PacketViewer.Forms
             if (boxPackets.SelectedIndex == -1)
                 return;
 
-            SetText(pp.Packets[boxPackets.SelectedIndex].HexLongText);
+            Packet_old p = pp.Packets[boxPackets.SelectedIndex];
+            SetText(p.HexLongText);
+            boxShowOpcode.Text = String.Format("0x{0:x4}", p.OpCode);
+            boxIgnoreOpcode.Text = String.Format("0x{0:x4}", p.OpCode);
         }
 
 
@@ -209,7 +216,97 @@ namespace PacketViewer.Forms
         }
         #endregion
 
+        #region filter
+        private void boxSC_Checked(object sender, RoutedEventArgs e)
+        {
+            if (filter != null && boxSC.IsChecked != null)
+                filter.showSC = (bool)boxSC.IsChecked;
+        }
 
+        private void boxCS_Checked(object sender, RoutedEventArgs e)
+        {
+            if (filter != null && boxCS.IsChecked != null)
+                filter.showCS = (bool)boxCS.IsChecked;
+        }
+
+        private void boxCapture_Checked(object sender, RoutedEventArgs e)
+        {
+            if (filter != null && boxCapture.IsChecked != null)
+                filter.showAny = (bool)boxCapture.IsChecked;
+        }
+
+        private void btnShowAdd_Click(object sender, RoutedEventArgs e)
+        {
+            ushort opcode = 0;
+            String input = boxShowOpcode.Text;
+
+            if (input.StartsWith("0x")) input = input.Substring(2);
+
+            try
+            {
+                opcode = Convert.ToUInt16(input, 16);
+                if (!filter.showOnlyOpcodes.Contains(opcode))
+                {
+                    filter.showOnlyOpcodes.Add(opcode);
+                    boxShowOpcodes.Items.Add(String.Format("{0:x4}", opcode));
+                }
+            }
+            catch (Exception ex) { }//handle convert errors
+        }
+
+        private void btnShowRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (boxShowOpcodes.SelectedIndex != -1)
+            {
+                ushort opcode = Convert.ToUInt16((String)boxShowOpcodes.SelectedItem, 16);
+
+                filter.showOnlyOpcodes.Remove(opcode);
+                boxShowOpcodes.Items.RemoveAt(boxShowOpcodes.SelectedIndex);
+            }
+        }
+
+        private void btnShowRemoveAll_Click(object sender, RoutedEventArgs e)
+        {
+            filter.showOnlyOpcodes.Clear();
+            boxShowOpcodes.Items.Clear();
+        }
+
+        private void btnIgnoreAdd_Click(object sender, RoutedEventArgs e)
+        {
+            ushort opcode = 0;
+            String input = boxIgnoreOpcode.Text;
+
+            if (input.StartsWith("0x")) input = input.Substring(2);
+
+            try
+            {
+                opcode = Convert.ToUInt16(input, 16);
+                if (!filter.ignoreOpcodes.Contains(opcode))
+                {
+                    filter.ignoreOpcodes.Add(opcode);
+                    boxIgnoreOpcodes.Items.Add(String.Format("{0:x4}", opcode));
+                }
+            }
+            catch (Exception ex) { }//handle convert errors
+        }
+
+        private void btnIgnoreRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (boxIgnoreOpcodes.SelectedIndex != -1)
+            {
+                ushort opcode = Convert.ToUInt16((String)boxIgnoreOpcodes.SelectedItem, 16);
+
+                filter.ignoreOpcodes.Remove(opcode);
+                boxIgnoreOpcodes.Items.RemoveAt(boxShowOpcodes.SelectedIndex);
+            }
+        }
+
+        private void btnIgnoreRemoveAll_Click(object sender, RoutedEventArgs e)
+        {
+            filter.ignoreOpcodes.Clear();
+            boxIgnoreOpcodes.Items.Clear();
+        }
+        #endregion
 
         #region perf_test
 

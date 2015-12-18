@@ -14,8 +14,8 @@ I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Release\PacketViewer.c
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Release\PacketViewer.exe
 I:\Henry\Projekte\Tera\Tera_PacketViewer\PacketViewer\obj\Release\PacketViewer.pdb
 I:\Henry\Projekte\Tera\Tera_PV_Dev\build\PacketViewer.exe.config
-I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.exe
-I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.pdb
+I:\Henry\Projekte\Tera\Tera_PV_Dev\build\PacketViewer.exe
+I:\Henry\Projekte\Tera\Tera_PV_Dev\build\PacketViewer.pdb
 I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.csprojResolveAssemblyReference.cache
 I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\Forms\MainWindow.baml
 I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\Forms\Style.baml
@@ -26,3 +26,5 @@ I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer_MarkupC
 I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.g.resources
 I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.Properties.Resources.resources
 I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.csproj.GenerateResource.Cache
+I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.exe
+I:\Henry\Projekte\Tera\Tera_PV_Dev\PacketViewer\obj\Release\PacketViewer.pdb
