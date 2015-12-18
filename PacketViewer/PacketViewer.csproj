@@ -40,15 +40,11 @@
     <StartupObject>PacketViewer.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PacketDotNet, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\PacketDotNet.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PacketDotNet">
+      <HintPath>..\Libs\PacketDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="SharpPcap, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\SharpPcap.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SharpPcap">
+      <HintPath>..\Libs\SharpPcap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -135,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libs\PacketDotNet.dll" />
+    <Content Include="Libs\SharpPcap.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
