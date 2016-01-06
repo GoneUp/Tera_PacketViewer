@@ -2,10 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="PacketViewer.Forms.MainWindow"
-        Title="PacketSniffer 6 -- Base by Cerium Unity -- Edit by GoneUp" Height="695" Width="903" Closed="Window_Closed"
+        Title="PacketSniffer 7 -- Base by Cerium Unity -- Edit by GoneUp" Height="695" Width="927" Closed="Window_Closed"
         Icon="../icon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="210"/>
         </Grid.ColumnDefinitions>
@@ -20,7 +21,7 @@
             </MenuItem>
         </Menu>
 
-        <ListBox x:Name="boxPackets" Margin="0" Grid.Row="1" SelectionChanged="OnPacketSelect" HorizontalAlignment="Left" VerticalAlignment="Top" Width="255" Height="628">
+        <ListBox x:Name="boxPackets" Margin="0,0,5,10" Grid.Row="1" SelectionChanged="OnPacketSelect">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -42,15 +43,15 @@
 
                 <RowDefinition Height="225*"/>
             </Grid.RowDefinitions>
-            <GroupBox Header="General" HorizontalAlignment="Left" Width="222" Grid.Row="1" Margin="-10,201,0,5" Grid.RowSpan="2"/>
+            <GroupBox Header="General" HorizontalAlignment="Left" Width="212" Grid.Row="1" Margin="0,201,0,5" Grid.RowSpan="2"/>
             <CheckBox x:Name="boxSC" Content="Server -&gt; Client" Margin="7,106,0,0" Grid.Row="2" IsChecked="True"  VerticalAlignment="Top" Height="16" RenderTransformOrigin="7.58,-2.5" HorizontalAlignment="Left" Width="100" Checked="boxSC_Checked" Unchecked="boxSC_Checked"/>
 
             <CheckBox x:Name="boxCS" Content="Client -&gt; Server" Margin="7,127,0,82" Grid.Row="2" IsChecked="True"  VerticalAlignment="Center" Height="16" RenderTransformOrigin="7.58,-2.5" HorizontalAlignment="Left" Width="100" Checked="boxCS_Checked" Unchecked="boxCS_Checked"/>
             <CheckBox x:Name="boxCapture" Content="Show new Packets" Grid.Row="2" IsChecked="True"  VerticalAlignment="Top" Height="18" HorizontalAlignment="Left" Width="125" Margin="7,169,0,0" Checked="boxCapture_Checked" Unchecked="boxCapture_Checked"/>
             <CheckBox x:Name="boxAutoScroll" Content="AutoScroll" Margin="7,148,0,0" Grid.Row="2" IsChecked="True" VerticalAlignment="Top" Height="16" HorizontalAlignment="Left" Width="72"/>
-            <GroupBox Header="Ignore Opcodes" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Height="185" Width="207" Grid.ColumnSpan="2"/>
-            <GroupBox Header="Show only Opcodes                       " HorizontalAlignment="Left"
-        		VerticalAlignment="Top" Height="201" Width="212" Grid.Row="1" Grid.ColumnSpan="2"/>
+            <GroupBox Header="Ignore Opcodes" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Height="185" Width="212"/>
+            <GroupBox Header="Show only Opcodes                       "
+        		VerticalAlignment="Top" Height="201" Grid.Row="1"/>
             <ListBox x:Name="boxIgnoreOpcodes" HorizontalAlignment="Left" Height="122" Margin="92,60,0,0" VerticalAlignment="Top" Width="110"/>
             <Button x:Name="btnIgnoreRemove" Content="Remove" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" Width="65" Height="22" Grid.ColumnSpan="2" Click="btnIgnoreRemove_Click"/>
             <Button x:Name="btnIgnoreRemoveAll" Content="Remove all" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" Width="65" Height="22" Grid.ColumnSpan="2" Click="btnIgnoreRemoveAll_Click"/>

@@ -162,14 +162,18 @@ namespace PacketViewer
                             reader.MoveToAttribute("Ip");
                             String ip = reader.Value;
                             Boolean focus = false;
+                            Boolean start = false;
 
-                            if (reader.AttributeCount == 3)
+                            if (reader.MoveToAttribute("DefaultFocus"))
                             {
-                                reader.MoveToAttribute("DefaultFocus");
                                 focus = Convert.ToBoolean(reader.Value);
-                            } 
-                            
-                            ServerInfo info = new ServerInfo(name, ip, focus);
+                            }
+                            if (reader.MoveToAttribute("AutoStart"))
+                            {
+                                start = Convert.ToBoolean(reader.Value);
+                            }
+
+                            ServerInfo info = new ServerInfo(name, ip, focus, start);
 
                             servers.Add(info);
                         }

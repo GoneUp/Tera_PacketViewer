@@ -10,10 +10,12 @@ namespace PacketViewer.Classes
     public class ServerInfo : Server
     {
         public bool Focus;
-
-        public ServerInfo(string name, string ip, bool focus) : base(name, "", ip)
+        public bool AutoStart;
+        
+        public ServerInfo(string name, string ip, bool focus, bool autoStart) : base(name, "", ip)
         {
             Focus = focus;
+            AutoStart = autoStart;
         }
 
         public override string ToString()

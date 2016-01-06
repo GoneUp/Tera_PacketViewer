@@ -39,7 +39,12 @@ namespace PacketViewer.Forms
 
                 //Opcode Section
                 PacketTranslator.Init();
+                pp = new PacketProcessor(this);
+                cap = new Capture(this);
+                filter = new PacketFilter();
 
+                pp.Init();
+               
                 //Serverlist
                 List<ServerInfo> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
 
@@ -50,21 +55,13 @@ namespace PacketViewer.Forms
 
                     foreach (var server in servers)
                     {
-                        ComboBoxItem item = new ComboBoxItem();
-                        item.Tag = server;
-                        item.Content = server.ToString();
+                        ComboBoxItem item = new ComboBoxItem {Tag = server, Content = server.ToString()};
                         int index = boxServers.Items.Add(item);
                         if (server.Focus) boxServers.SelectedIndex = index;
+                        if (server.AutoStart) btnStartStop_Click(null, null);
                     }
                 }
 
-
-                pp = new PacketProcessor(this);
-                cap = new Capture(this);
-                filter = new PacketFilter();
-
-                pp.Init();
-                btnStartStop_Click(null, null);
 
                 //Print Info
                 string info = String.Format("Loaded {0} Opcodes. \n" +
