@@ -6,9 +6,8 @@
         Icon="../icon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="193"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="224"/>
+            <ColumnDefinition Width="210"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="27"/>
@@ -21,7 +20,7 @@
             </MenuItem>
         </Menu>
 
-        <ListBox x:Name="boxPackets" Margin="0" Grid.Row="1" SelectionChanged="OnPacketSelect" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Height="628">
+        <ListBox x:Name="boxPackets" Margin="0" Grid.Row="1" SelectionChanged="OnPacketSelect" HorizontalAlignment="Left" VerticalAlignment="Top" Width="255" Height="628">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -31,7 +30,7 @@
         </ListBox>
 
         <RichTextBox x:Name="boxPacketInfo" Grid.Column="1" Margin="0,0,0,10" Grid.Row="1" VerticalScrollBarVisibility="Visible" />
-        <Grid Grid.Column="2" HorizontalAlignment="Left" Height="630" Margin="3,2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="212" >
+        <Grid Grid.Column="2" HorizontalAlignment="Left" Height="630" Margin="3,2,-5,0" Grid.Row="1" VerticalAlignment="Top" Width="212" >
             <Grid.ColumnDefinitions>
 
                 <ColumnDefinition Width="199*"/>
