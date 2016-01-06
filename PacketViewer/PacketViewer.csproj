@@ -37,14 +37,16 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>PacketViewer.App</StartupObject>
+    <StartupObject>PacketViewer.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PacketDotNet">
-      <HintPath>..\Libs\PacketDotNet.dll</HintPath>
+      <HintPath>Libs\PacketDotNet.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SharpPcap">
-      <HintPath>..\Libs\SharpPcap.dll</HintPath>
+      <HintPath>Libs\SharpPcap.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -93,6 +95,7 @@
     <Compile Include="Network\Lists\PacketQueue.cs" />
     <Compile Include="Network\PacketTranslator.cs" />
     <Compile Include="Network\Packet_old.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -123,18 +126,23 @@
     <ProjectReference Include="..\external\TDM\Tera.Core\Tera.Core.csproj">
       <Project>{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}</Project>
       <Name>Tera.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\external\TDM\Tera.Sniffing\Tera.Sniffing.csproj">
       <Project>{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}</Project>
       <Name>Tera.Sniffing</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libs\PacketDotNet.dll" />
-    <Content Include="Libs\SharpPcap.dll" />
+    <EmbeddedResource Include="Libs\NetworkSniffer.dll" />
+    <EmbeddedResource Include="Libs\PacketDotNet.dll" />
+    <EmbeddedResource Include="Libs\SharpPcap.dll" />
+    <EmbeddedResource Include="Libs\Tera.Core.dll" />
+    <EmbeddedResource Include="Libs\Tera.Sniffing.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
