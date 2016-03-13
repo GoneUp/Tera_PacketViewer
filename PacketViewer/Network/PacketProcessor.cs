@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
 using PacketViewer.Forms;
 using PacketViewer.Network.Lists;
+using Tera.PacketLog;
 using Tera.Sniffing.Crypt;
 
 namespace PacketViewer.Network
@@ -22,6 +24,7 @@ namespace PacketViewer.Network
         public IPacketList ClientPackets;
 
         public List<Packet_old> Packets;
+   
 
         private readonly MainWindow MainWindow;
 
@@ -83,7 +86,7 @@ namespace PacketViewer.Network
             Packet_old tmpPacket = new Packet_old(Direction.SC, opCode, data, false);
             //Debug.Print(DateTime.Now.ToLongTimeString() + " " + tmpPacket.OpName);
 
-            MainWindow.AppendPacket(tmpPacket);
+            AppendPacket(tmpPacket);
         }
 
         public void ProcessAllClientData()
@@ -113,7 +116,7 @@ namespace PacketViewer.Network
         { 
             //Task.Factory.StartNew(() => MainWindow.AppendPacket(Colors.WhiteSmoke, tmpPacket.ToString(), tmpPacket));
             MainWindow.AppendPacket(tmpPacket);
-            //ILMerge.exe /target:winexe /targetplatform:"v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319" /out:PV.exe PacketViewer.exe NetworkSniffer.dll PacketDotNet.dll SharpPcap.dll Tera.Core.dll Tera.Sniffing.dll
+ 
         }
 
         public void TryInit()

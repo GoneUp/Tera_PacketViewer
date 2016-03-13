@@ -302,6 +302,19 @@ namespace PacketViewer.Forms
         {
             filter.ignoreOpcodes.Clear();
             boxIgnoreOpcodes.Items.Clear();
+        }  
+        
+        private void boxFileLog_Checked(object sender, RoutedEventArgs e)
+        {
+            if (boxFileLog.IsChecked != null)
+            {
+                if ((bool) boxFileLog.IsChecked)
+                {
+                    cap.EnableLogging();
+                } else {
+                    cap.DisableLogging();
+                }
+            }
         }
         #endregion
 
@@ -406,6 +419,8 @@ namespace PacketViewer.Forms
 
         }
         #endregion
+
+    
 
 
 

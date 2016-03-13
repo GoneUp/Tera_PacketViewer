@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Documents;
 using PacketViewer.Classes;
@@ -7,6 +8,7 @@ using PacketViewer.Forms;
 using SharpPcap;
 using Tera;
 using Tera.Game;
+using Tera.PacketLog;
 using Tera.Sniffing;
 
 namespace PacketViewer.Network
@@ -15,6 +17,7 @@ namespace PacketViewer.Network
     {
         private TeraSniffer sniffer;
         private readonly MainWindow mainWindow;
+        private PacketLogWriter logWriter;
 
         public Capture(MainWindow mainWindow)
         {
@@ -65,12 +68,31 @@ namespace PacketViewer.Network
                     Packet_old tmpPacket = new Packet_old(Direction.SC, message.OpCode, data, false);
                     mainWindow.pp.AppendPacket(tmpPacket);
                 }
+
+                if (logWriter != null)
+                {
+                    logWriter.Append(message);
+                }
+
             }
             catch (Exception ex)
             {
 
                 mainWindow.SetText("device_OnPacketArrival failure. \n Message:" + ex);
             }
+        }
+
+        public void EnableLogging()
+        {
+            var header = new LogHeader { Region = "EU" };
+            logWriter = new PacketLogWriter(string.Format("{0}.TeraLog", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)), header);
+        }
+
+        public void DisableLogging()
+        {
+            logWriter.Dispose();
+            logWriter = null;
+
         }
 
         public bool isRunning()

@@ -89,6 +89,7 @@
                 <ComboBoxItem Content="208.67.49.68;NA Celestial Hills"/>
             </ComboBox>
             <Button x:Name="btnStartStop" Content="Start" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="195" Margin="7,49,0,0" Click="btnStartStop_Click" Grid.Row="2"/>
+            <CheckBox x:Name="boxFileLog" Content="Log to File" Margin="122,106,0,0" Grid.Row="2" IsChecked="False"  VerticalAlignment="Top" Height="16" RenderTransformOrigin="7.58,-2.5" HorizontalAlignment="Left" Width="80" Checked="boxFileLog_Checked"/>
 
         </Grid>
     </Grid>
