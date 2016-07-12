@@ -71,6 +71,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Configuration.cs" />
     <Compile Include="Classes\IPacketInput.cs" />
     <Compile Include="Classes\PacketFilter.cs" />
     <Compile Include="Classes\TeraLogReader.cs" />

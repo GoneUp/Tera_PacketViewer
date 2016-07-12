@@ -136,7 +136,7 @@ namespace PacketViewer
             return new Random().Next(0, 100) <= chance;
         }
 
-        public static List<ServerInfo> LoadServerlistFile(string path)
+        public static Configuration LoadServerlistFile(string path)
         {
             /*
              * <Servers>
@@ -179,7 +179,9 @@ namespace PacketViewer
                         }
                     }
                 }
-                return servers;
+
+                
+                return new Configuration(servers);
             }
 
             return null;

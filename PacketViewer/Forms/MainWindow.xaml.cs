@@ -46,14 +46,13 @@ namespace PacketViewer.Forms
                 pp.Init();
                
                 //Serverlist
-                List<ServerInfo> servers = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
-
-                if (servers != null && servers.Count > 0)
+                Configuration conf = MiscFuncs.LoadServerlistFile(Directory.GetCurrentDirectory() + "\\serverlist.xml");
+                if (conf != null && conf.getServers().Count > 0)
                 {
                     //We got a custom serverlist.xml loaded....
                     boxServers.Items.Clear();
 
-                    foreach (var server in servers)
+                    foreach (var server in conf.getServers())
                     {
                         ComboBoxItem item = new ComboBoxItem {Tag = server, Content = server.ToString()};
                         int index = boxServers.Items.Add(item);
